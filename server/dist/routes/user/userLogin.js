@@ -41,33 +41,28 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const user_1 = __importDefault(require("../../models/user"));
 dotenv.config();
 const router = (0, express_1.Router)();
-router.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, username, email, password, expenses, budget, funds } = req.body;
+router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email, password } = req.body;
+    console.log(req.body);
     try {
         const userFound = yield user_1.default.findOne({ email: email });
-        if (userFound) {
-            res.status(400).send("User already exists");
+        if (!userFound) {
+            res.status(400).send("User not found");
             return;
         }
-        const user = new user_1.default({
-            name: name,
-            username: username,
-            email: email,
-            password: password,
-            expenses: expenses,
-            budget: budget,
-            funds: funds,
-        });
-        const savedUser = yield user.save();
-        const token = jsonwebtoken_1.default.sign({ _id: savedUser._id }, process.env.JWT_SECRET, {
+        console.log(userFound);
+        const match = yield userFound.comparePassword(password);
+        if (!match) {
+            res.status(400).send("Wrong password");
+            return;
+        }
+        const token = jsonwebtoken_1.default.sign({ id: userFound._id }, process.env.JWT_SECRET, {
             expiresIn: 60 * 60 * 24,
         });
-        // res.cookie("jwt", token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 });
-        res.status(200).json({ token, savedUser });
+        res.send({ token, userFound });
     }
     catch (err) {
-        res.status(500).json({ err });
-        console.log(err.message);
+        console.log(err);
     }
 }));
 exports.default = router;
