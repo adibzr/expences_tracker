@@ -1,6 +1,8 @@
 import { Router } from "express";
 import User from "../../models/user";
-// import jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 const router = Router();
 
@@ -25,15 +27,13 @@ router.post("/newUser", async (req, res) => {
     });
 
     const savedUser = await user.save();
-
-    // const token: string = jwt.sign({ _id: savedUser._id }, "token", {
-    //   expiresIn: 60 * 60 * 24,
-    // });
+    const secret: string = process.env.JWT_SECRET;
+    const token: string = jwt.sign({ _id: savedUser._id }, secret);
     // res.cookie("jwt", token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 });
 
-    return res.status(200).json({ savedUser });
+    res.status(200).json({ savedUser });
   } catch (err) {
-    return res.status(500).json({ err });
+    res.status(500).json({ err });
   }
 });
 

@@ -34,14 +34,16 @@ router.post("/newUser", (req, res) => __awaiter(void 0, void 0, void 0, function
             funds: funds,
         });
         const savedUser = yield user.save();
-        // const token: string = jwt.sign({ _id: savedUser._id }, "token", {
-        //   expiresIn: 60 * 60 * 24,
-        // });
-        // res.cookie("jwt", token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 });
-        return res.status(200).json({ savedUser });
+        const token = jwt.sign({ _id: savedUser._id }, "token");
     }
-    catch (err) {
-        return res.status(500).json({ err });
-    }
+    finally // res.cookie("jwt", token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 });
+     { }
 }));
+// res.cookie("jwt", token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 });
+return res.status(200).json({ savedUser });
+try { }
+catch (err) {
+    return res.status(500).json({ err });
+}
+;
 exports.default = router;
