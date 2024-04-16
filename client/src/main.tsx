@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-//redux-toolkit
-import { store } from "./store";
+import "./global.css";
 import { StyledEngineProvider } from "@mui/material";
-import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
+import { store } from "./redux/store";
+
 const router = createBrowserRouter([
   {
     path: "/",
