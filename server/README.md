@@ -1,0 +1,4 @@
+.env example
+MONGODB_URI=
+PORT=
+JWT_SECRET=

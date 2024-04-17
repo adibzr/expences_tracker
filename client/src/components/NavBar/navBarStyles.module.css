@@ -1,0 +1,49 @@
+.container {
+  background-color: var(--color-violet-500);
+  padding: 0;
+}
+.appBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-violet-500);
+  padding: 0;
+}
+
+.items {
+  align-items: center;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5rem;
+}
+
+.links {
+  padding: 1rem 1.8rem;
+  display: block;
+  color: var(--color-light-300);
+  border-radius: 16px;
+  margin: 0.25rem;
+  font: var(--font-title3);
+  &:hover {
+    color: var(--color-violet-500);
+    background-color: var(--color-light-300);
+  }
+}
+.active {
+  color: var(--color-violet-500);
+  background-color: var(--color-light-300);
+}
+
+.logo {
+  background-image: url("https://res.cloudinary.com/dfgfylbvn/image/upload/v1713317341/expences_logo_s0abtf.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin: 0 3rem 0 4rem;
+  height: 46px;
+  min-width: 46px;
+}
+
+.profile {
+  display: flex;
+  margin: 0 4rem 0 4rem;
+}
