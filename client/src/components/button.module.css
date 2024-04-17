@@ -1,0 +1,24 @@
+.buttonLarge {
+  background-color: var(--color-violet-500);
+  color: var(--color-light-300);
+  padding: 1rem 3rem;
+  margin: 0.5rem 0;
+  border-radius: 16px;
+  font: var(--font-title2);
+  &:hover {
+    background-color: var(--color-light-400);
+    color: var(--color-violet-400);
+  }
+}
+.buttonSmall {
+  background-color: var(--color-violet-500);
+  color: var(--color-light-300);
+  padding: 1rem 3rem;
+  margin: 0.5rem 0;
+  border-radius: 16px;
+  font: var(--font-title2);
+  &:hover {
+    background-color: var(--color-light-400);
+    color: var(--color-violet-400);
+  }
+}
