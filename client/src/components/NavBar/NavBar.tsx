@@ -1,7 +1,6 @@
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
@@ -36,14 +35,14 @@ const ResponsiveAppBar = () => {
   };
 
   return (
-    <AppBar className={style.appBar} position="static">
-      <Toolbar disableGutters>
+    <AppBar className={style.header}>
+      <Container className={style.container} maxWidth={false}>
         <Box
           className={style.logo}
           sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
         ></Box>
         {/* sidebar */}
-        <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+        <Box className={style.sidebar}>
           <IconButton
             size="large"
             aria-label="account of current user"
@@ -62,35 +61,39 @@ const ResponsiveAppBar = () => {
           sx={{ display: { xs: "flex", md: "none" } }}
         ></Box>
         {/* navbar */}
-        <Box
-          className={style.items}
-          sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}
-        >
-          {pages.map((page) => (
-            <NavLink
-              key={page.name}
-              className={({ isActive }) =>
-                style.links + " " + (isActive ? style.active : "")
-              }
-              onClick={handleCloseNavMenu}
-              to={page.path}
-            >
-              {page.name}
-            </NavLink>
-          ))}
-        </Box>
-        <Box sx={{ flexGrow: 0 }}>
-          <Tooltip title="Profile">
-            <IconButton
-              className={style.profile}
-              onClick={handleClickProfile}
-              sx={{ p: 0 }}
-            >
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      </Toolbar>
+        <nav className={style.nav_container}>
+          <ul className={style.nav_list}>
+            {pages.map((page) => (
+              <li>
+                <NavLink
+                  key={page.name}
+                  className={({ isActive }) => (isActive ? style.active : "")}
+                  onClick={handleCloseNavMenu}
+                  to={page.path}
+                >
+                  {page.name}
+                </NavLink>
+              </li>
+            ))}
+            <li>
+              <Box>
+                <Tooltip title="Profile">
+                  <IconButton
+                    className={style.profile}
+                    onClick={handleClickProfile}
+                    sx={{ p: 0 }}
+                  >
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="/static/images/avatar/2.jpg"
+                    />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            </li>
+          </ul>
+        </nav>
+      </Container>
     </AppBar>
   );
 };
