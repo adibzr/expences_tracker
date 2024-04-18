@@ -1,14 +1,18 @@
 import { Route, Routes } from "react-router-dom";
-import NavBar from "./components/NavBar/NavBar";
+import Home from "./components/Home";
 import "./global.css";
+import NavBar from "./components/NavBar/NavBar";
 
 const App = () => {
   return (
     <div className="App">
       <Routes>
         <Route path="/" element={<NavBar />}>
-          <Route index element={<h1>home</h1>} />
-          <Route path="/income" element={<h1>income</h1>} />
+          <Route index element={<Home />} />
+          <Route
+            path="income"
+            element={<h1 style={{ color: "red", fontSize: "20px" }}>income</h1>}
+          />
           <Route path="/tranfer" element={<h1>tranfer</h1>} />
           <Route path="/financial-report" element={<h1>financial report</h1>} />
           <Route path="/budget" element={<h1>budget</h1>} />
