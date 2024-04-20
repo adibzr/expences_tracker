@@ -6,7 +6,7 @@ import Container from "@mui/material/Container";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import * as React from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 import DrawerComponent from "./Drawer";
 import style from "./navBarStyles.module.css";
 
@@ -25,7 +25,6 @@ const NavBar = () => {
     setOpen(true);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleCloseNavMenu = () => {
     setOpen(false);
   };
@@ -34,14 +33,22 @@ const NavBar = () => {
     null;
   };
 
+  const pagesSidebar: Array<{ path: string; name: string }> = [
+    { path: "/", name: "Home" },
+    ...pages,
+    { path: "/profile", name: "Profile" },
+  ];
+
   return (
     <>
       <AppBar className={style.header}>
         <Container className={style.container} maxWidth={false}>
-          <Box
-            className={style.logo}
-            sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
-          ></Box>
+          <Link to="/">
+            <Box
+              className={style.logo}
+              sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
+            ></Box>
+          </Link>
           {/* sidebar */}
           <Box className={style.sidebar}>
             <IconButton
@@ -55,7 +62,7 @@ const NavBar = () => {
               <MenuIcon />
             </IconButton>
           </Box>
-          <DrawerComponent open={open} setOpen={setOpen} pages={pages} />
+          <DrawerComponent open={open} setOpen={setOpen} pages={pagesSidebar} />
 
           <Box
             className={style.logo}

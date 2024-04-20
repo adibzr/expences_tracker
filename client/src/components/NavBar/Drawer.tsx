@@ -6,6 +6,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { Dispatch, SetStateAction } from "react";
+import { Link } from "react-router-dom";
 import style from "./drawer.module.css";
 
 interface DrawerProps {
@@ -27,11 +28,13 @@ const DrawerComponent: React.FC<DrawerProps> = ({ open, setOpen, pages }) => {
       <Box className={style.avatar}>
         <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
       </Box>
-      <List className={style.sidebar_items}>
+      <List>
         {pages.map((page) => (
           <ListItem key={page.name} disablePadding>
             <ListItemButton className={style.sidebar_link} disableRipple>
-              <ListItemText primary={page.name} />
+              <Link to={page.path}>
+                <ListItemText primary={page.name} />
+              </Link>
             </ListItemButton>
           </ListItem>
         ))}
