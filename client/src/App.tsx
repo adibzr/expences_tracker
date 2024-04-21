@@ -9,10 +9,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<NavBar />}>
           <Route index element={<Home />} />
-          <Route
-            path="income"
-            element={<h1 style={{ color: "red", fontSize: "20px" }}>income</h1>}
-          />
+          <Route path="income" element={<h1>income</h1>} />
           <Route path="/tranfer" element={<h1>tranfer</h1>} />
           <Route path="/financial-report" element={<h1>financial report</h1>} />
           <Route path="/budget" element={<h1>budget</h1>} />
