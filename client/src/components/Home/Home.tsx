@@ -1,4 +1,5 @@
-import HomeSlideItem from "./HomeSlideItem";
+import HomeSliderItem from "./HomeSliderItem";
+
 export interface SlideItemProps {
   img: string;
   alt: string;
@@ -24,23 +25,12 @@ const slideItem: SlideItemProps[] = [
     img: "https://res.cloudinary.com/dfgfylbvn/image/upload/v1713014344/Task_clip_board_vbkiar.png",
     alt: "Home 3",
     title: "Planning ahead",
-    subtitle: "Setup your budget for each category so you’r in control",
+    subtitle: "Setup your budget for each category so you'r in control",
   },
 ];
 
 const Home = () => {
-  return (
-    <div
-      style={{
-        maxWidth: "1200px",
-        width: "100%",
-        height: "auto",
-        margin: "3rem auto 0 auto",
-      }}
-    >
-      <HomeSlideItem slideItem={slideItem} />
-    </div>
-  );
+  return <HomeSliderItem slideItem={slideItem} />;
 };
 
 export default Home;

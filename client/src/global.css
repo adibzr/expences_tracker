@@ -73,22 +73,18 @@ html {
 }
 /* min body height */
 body {
+  font-family: Arial, Helvetica, sans-serif;
+  width: 100vw;
   height: 100%;
   margin: 0;
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
-body {
-  height: 100%;
-  margin: 0;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-}
+
 /* responsive images/videos */
 img,
 picture,
 svg,
 video {
   display: block;
-  max-width: 100%;
 }
