@@ -15,7 +15,7 @@ const slideItem: SlideItemProps[] = [
     subtitle: "Become your own money manager and make every cent count",
   },
   {
-    img: "https://res.cloudinary.com/dfgfylbvn/image/upload/v1713014343/Paper_with_money_ycyfmd.png",
+    img: "https://res.cloudinary.com/dfgfylbvn/image/upload/v1713822549/Paper_with_money_ycyfmd_c_crop_w_306_h_229_x_0_y_0_wiibzg.png",
     alt: "Home 2",
     title: "Know where you money goes",
     subtitle:

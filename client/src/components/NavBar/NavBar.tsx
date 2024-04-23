@@ -7,6 +7,9 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import * as React from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
+import { ButtonComponentSmall } from "../ButtonComponent";
+import { LogIn } from "../authentication/Login";
+import { Register } from "../authentication/Register";
 import DrawerComponent from "./Drawer";
 import style from "./navBarStyles.module.css";
 
@@ -20,6 +23,9 @@ const pages = [
 
 const NavBar = () => {
   const [open, setOpen] = React.useState(false);
+  const [logInHide, setLoginHide] = React.useState(true);
+  const [RegisterHide, setRegisterHide] = React.useState(true);
+  const loggedIn = false;
 
   const handleOpenNavMenu = () => {
     setOpen(true);
@@ -31,6 +37,9 @@ const NavBar = () => {
 
   const handleClickProfile = () => {
     null;
+  };
+  const handleLogin = () => {
+    setLoginHide(!logInHide);
   };
 
   const pagesSidebar: Array<{ path: string; name: string }> = [
@@ -85,24 +94,41 @@ const NavBar = () => {
               ))}
               <li>
                 <Box>
-                  <Tooltip title="Profile">
-                    <IconButton
-                      className={style.profile}
-                      onClick={handleClickProfile}
-                      sx={{ p: 0 }}
-                    >
-                      <Avatar
-                        alt="Remy Sharp"
-                        src="/static/images/avatar/2.jpg"
-                      />
-                    </IconButton>
-                  </Tooltip>
+                  {loggedIn ? (
+                    <Tooltip title="Profile">
+                      <IconButton
+                        className={style.profile}
+                        onClick={handleClickProfile}
+                        sx={{ p: 0 }}
+                      >
+                        <Avatar
+                          alt="Remy Sharp"
+                          src="/static/images/avatar/2.jpg"
+                        />
+                      </IconButton>
+                    </Tooltip>
+                  ) : (
+                    <ButtonComponentSmall
+                      text="LOGIN"
+                      handleClick={handleLogin}
+                    />
+                  )}
                 </Box>
               </li>
             </ul>
           </nav>
         </Container>
       </AppBar>
+      <LogIn
+        logInHide={logInHide}
+        setLoginHide={setLoginHide}
+        setRegisterHide={setRegisterHide}
+      />
+      <Register
+        RegisterHide={RegisterHide}
+        setLoginHide={setLoginHide}
+        setRegisterHide={setRegisterHide}
+      />
       <main>
         <Outlet />
       </main>
