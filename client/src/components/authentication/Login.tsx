@@ -5,8 +5,9 @@ import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import * as Yup from "yup";
 // import { useAppDispatch } from "../../hooks/reduxHooks";
 import style from "./auth.module.css";
+import { ButtonComponentSmall } from "../ButtonComponent";
 
-interface FormData {
+interface userData {
   username: string;
   password: string;
 }
@@ -25,7 +26,7 @@ export const LogIn = ({
   const [usernameAvailability, setUsernameAvailability] =
     useState<boolean>(false);
   // const { username } = useAppSelector((state) => state.auth);
-  const validationSchema: Yup.ObjectSchema<FormData> = Yup.object().shape({
+  const validationSchema: Yup.ObjectSchema<userData> = Yup.object().shape({
     username: Yup.string().required("Username is required"),
     password: Yup.string().required("Insert password"),
   });
@@ -39,10 +40,17 @@ export const LogIn = ({
     event: MouseEvent<HTMLDivElement> | MouseEvent<HTMLButtonElement>
   ) => {
     const target = event.target as HTMLElement;
-    if (target.id === "hideLogin" || target.id === "close")
+    if (target.id === "login" || target.id === "close") {
       setRegisterHide(true);
+      setLoginHide(true);
+      reset();
+    }
   };
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: userData) => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+
     //TODO validate username.
     //TODO validate password. If exist return false. else return token
     // username === "banned" || username === "invalid"
@@ -63,7 +71,7 @@ export const LogIn = ({
     reset,
     formState,
     formState: { isSubmitSuccessful },
-  } = useForm<FormData>({
+  } = useForm<userData>({
     resolver: yupResolver(validationSchema),
     defaultValues: {
       username: "",
@@ -99,16 +107,13 @@ export const LogIn = ({
   ]);
 
   return logInHide ? null : (
-    <div
-      id="hideLogin"
-      className={style.wrapper}
-      onClick={(e) => handleClose(e)}
-    >
+    <div id="login" className={style.wrapper} onClick={(e) => handleClose(e)}>
       <form onSubmit={handleSubmit(onSubmit)} className={style.form}>
         <h3>LOG IN</h3>
         <button
-          id="hideLogin"
+          id="close"
           onClick={(e) => handleClose(e)}
+          type="button"
           style={{
             position: "absolute",
             margin: "4px",
@@ -119,7 +124,7 @@ export const LogIn = ({
         >
           x
         </button>
-        <div className={style.inputs}>
+        <div className={style.inputWrapper}>
           <div className={style.username}>
             <input
               {...register("username")}
@@ -141,16 +146,14 @@ export const LogIn = ({
             {errors.password && <span>{errors.password.message}</span>}
             {showPassword ? (
               <FaRegEye
-                onClick={() => handleTogglePassword()}
+                onClick={handleTogglePassword}
                 size={25}
-                color="#006367"
                 className={style.icon}
               />
             ) : (
               <FaRegEyeSlash
-                onClick={() => handleTogglePassword()}
+                onClick={handleTogglePassword}
                 size={25}
-                color="#006367"
                 className={style.icon}
               />
             )}
@@ -158,19 +161,18 @@ export const LogIn = ({
             {/* TODO make this work with backend */}
             <button className={style.forgotCredentials}>Forgot Password</button>
           </div>
-          <div className="flex justify-between">
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
             <button
+              type="button"
               id="hideLogin"
-              onClick={() => handleRegister()}
-              className="w-fit text-secondary"
+              onClick={handleRegister}
+              style={{ width: "fit-content", color: "var(--color-violet-500)" }}
             >
               CREATE ACCOUNT
             </button>
-            <button
-              type="submit"
-              className="bg-secondary rounded-lg text-white px-8 min-h-full pt-1 pb-2 text-lg text-center hover:bg-primary-600"
-            >
-              Log In
+            <button type="submit">
+              submit
+              {/* <ButtonComponentSmall text="Log In" className={style.loginBtn} /> */}
             </button>
           </div>
         </div>

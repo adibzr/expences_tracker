@@ -1,9 +1,10 @@
-import { Button } from "@mui/material";
+import { Button, ButtonProps } from "@mui/material";
 import style from "./button.module.css";
 
-interface button {
-  text: string;
-  handleClick: () => void;
+interface ButtonComponentProps extends ButtonProps {
+  text?: string;
+  handleClick?: () => void;
+  className?: string;
 }
 export const ButtonComponentLarge = ({ text }: { text: string }) => {
   return (
@@ -18,18 +19,21 @@ export const ButtonComponentLarge = ({ text }: { text: string }) => {
     </Button>
   );
 };
-export const ButtonComponentSmall: React.FC<button> = ({
-  text,
+export const ButtonComponentSmall: React.FC<ButtonComponentProps> = ({
+  text = "button",
   handleClick,
+  className,
+  ...props
 }) => {
   return (
     <Button
       onClick={handleClick}
-      className={style.buttonSmall}
+      className={style.buttonSmall + " " + className}
       variant="contained"
       disableElevation
       disableRipple
       disableFocusRipple
+      {...props}
     >
       {text}
     </Button>
