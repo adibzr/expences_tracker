@@ -1,10 +1,14 @@
 import { Button } from "@mui/material";
-import sttyle from "./button.module.css";
+import style from "./ButtonComponent.module.css";
 
+interface button {
+  text: string;
+  handleClick: () => void;
+}
 export const ButtonComponentLarge = ({ text }: { text: string }) => {
   return (
     <Button
-      className={sttyle.buttonLarge}
+      className={style.buttonLarge}
       variant="contained"
       disableElevation
       disableRipple
@@ -14,10 +18,14 @@ export const ButtonComponentLarge = ({ text }: { text: string }) => {
     </Button>
   );
 };
-export const ButtonComponentSmall = ({ text }: { text: string }) => {
+export const ButtonComponentSmall: React.FC<button> = ({
+  text,
+  handleClick,
+}) => {
   return (
     <Button
-      className={sttyle.buttonSmall}
+      onClick={handleClick}
+      className={style.buttonSmall}
       variant="contained"
       disableElevation
       disableRipple
