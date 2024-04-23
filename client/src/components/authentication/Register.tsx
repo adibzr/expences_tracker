@@ -68,6 +68,7 @@ export const Register = ({
       setSuccess(true);
       reset();
     }
+    console.log(data);
     // dispatch(registerUser(data));
     scrollToTop();
   };

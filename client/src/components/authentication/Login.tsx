@@ -1,9 +1,10 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect, useState } from "react";
+import { useEffect, useState, MouseEvent } from "react";
 import { useForm } from "react-hook-form";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import * as Yup from "yup";
 // import { useAppDispatch } from "../../hooks/reduxHooks";
+import style from "./auth.module.css";
 
 interface FormData {
   username: string;
@@ -34,8 +35,12 @@ export const LogIn = ({
     setRegisterHide(false);
     setLoginHide(true);
   };
-  const handleClose = (event: any) => {
-    if (event.target.id === "hideLogin") setLoginHide(true);
+  const handleClose = (
+    event: MouseEvent<HTMLDivElement> | MouseEvent<HTMLButtonElement>
+  ) => {
+    const target = event.target as HTMLElement;
+    if (target.id === "hideLogin" || target.id === "close")
+      setRegisterHide(true);
   };
   const onSubmit = (data: FormData) => {
     //TODO validate username.
@@ -44,6 +49,7 @@ export const LogIn = ({
     //   ? setUsernameAvailability(false)
     //   : setUsernameAvailability(true);
     // if (usernameAvailability) console.log(data);
+    console.log(data);
   };
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
@@ -95,71 +101,62 @@ export const LogIn = ({
   return logInHide ? null : (
     <div
       id="hideLogin"
-      className="fixed inset-0 bg-white !z-[10000] bg-opacity-50 backdrop-blur-sm flex justify-center items-center md:p-8"
+      className={style.wrapper}
       onClick={(e) => handleClose(e)}
     >
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="relative flex flex-col h-full max-h-[900px] justify-center items-center bg-white w-full md:max-w-[600px] border-2 border-black md:rounded-[20px]"
-      >
-        <h3 className="text-secondary text-4xl py-16">LOG IN</h3>
+      <form onSubmit={handleSubmit(onSubmit)} className={style.form}>
+        <h3>LOG IN</h3>
         <button
           id="hideLogin"
           onClick={(e) => handleClose(e)}
-          className="absolute m-4 text-secondary right-0 top-0"
+          style={{
+            position: "absolute",
+            margin: "4px",
+            color: "black",
+            top: 0,
+            right: 0,
+          }}
         >
           x
         </button>
-        <div className="flex w-full xsm:p-20 p-0 justify-center flex-col gap-16 pb-16">
-          <div className="flex flex-col relative focus-within:after:content-['username'] after:absolute after: after:text-secondary after:px-2 after:ml-4 after:top-[-12px] after:bg-white">
+        <div className={style.inputs}>
+          <div className={style.username}>
             <input
               {...register("username")}
               type="text"
               onChange={() => setUsernameAvailability(false)}
               placeholder="USERNAME"
-              className="w-full border border-[#C4C4C4] h-[58px] pl-4 focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary focus:placeholder-transparent"
             />
-            {errors.username && (
-              <span className="text-red-500">{errors.username.message}</span>
-            )}
-            {usernameAvailability && (
-              <span className="text-red-500">Username doesn't exist</span>
-            )}
+            {errors.username && <span>{errors.username.message}</span>}
+            {usernameAvailability && <span>Username doesn't exist</span>}
             {/* TODO make this work with backend */}
-            <button className="w-fit ml-4 text-secondary">
-              Forgot Username
-            </button>
+            <button className={style.forgotCredentials}>Forgot Username</button>
           </div>
-          <div className="flex flex-col relative focus-within:after:content-['password'] after:absolute after: after:text-secondary after:px-2 after:ml-4 after:top-[-12px] after:bg-white">
+          <div className={style.username}>
             <input
               {...register("password")}
               type={showPassword ? "text" : "password"}
               placeholder="PASSWORD"
-              className="w-full border border-[#C4C4C4] h-[58px] pl-4 box-border focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary focus:placeholder-transparent"
             />
-            {errors.password && (
-              <span className="text-red-500">{errors.password.message}</span>
-            )}
+            {errors.password && <span>{errors.password.message}</span>}
             {showPassword ? (
               <FaRegEye
                 onClick={() => handleTogglePassword()}
                 size={25}
                 color="#006367"
-                className="absolute right-4 top-4"
+                className={style.icon}
               />
             ) : (
               <FaRegEyeSlash
                 onClick={() => handleTogglePassword()}
                 size={25}
                 color="#006367"
-                className="absolute right-4 top-4"
+                className={style.icon}
               />
             )}
 
             {/* TODO make this work with backend */}
-            <button className="w-fit ml-4 text-secondary">
-              Forgot Password
-            </button>
+            <button className={style.forgotCredentials}>Forgot Password</button>
           </div>
           <div className="flex justify-between">
             <button

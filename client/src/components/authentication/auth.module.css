@@ -1,0 +1,127 @@
+.wrapper {
+  display: flex;
+  position: fixed;
+  inset: 0;
+  background-color: #fff;
+  z-index: 10000;
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(0.125rem);
+  justify-content: center;
+  align-items: center;
+  @media (min-width: 768px) {
+    padding: 2rem;
+  }
+}
+
+.form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 900px;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  width: 100%;
+  border: 2px solid black;
+  @media (min-width: 768px) {
+    max-width: 600px;
+    border-radius: 20px;
+  }
+  h3 {
+    text-align: center;
+    color: var(--color-violet-400);
+    font-size: var(--fs-700);
+    padding-bottom: 1rem;
+  }
+}
+
+.input {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0;
+  @media (min-width: 640px) {
+    padding: 20px;
+  }
+}
+
+.username {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  &:focus-within:after {
+    content: "username";
+  }
+  &:after {
+    position: absolute;
+    text-align: left;
+    color: var(--color-violet-400);
+    padding-inline: 2px;
+    margin-inline: 4px;
+    top: -12px;
+    background-color: white;
+  }
+  & input {
+    width: 100%;
+    border: 1px solid #c4c4c4;
+    height: 58px;
+    padding-left: 4px;
+    &:focus {
+      outline: none;
+      border-color: var(--color-violet-400);
+      box-shadow: 0 0 0 3px var(--color-violet-100);
+    }
+  }
+  & span {
+    color: red;
+  }
+}
+/*focus:placeholder-transparent" */
+
+.password {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  &:focus-within:after {
+    content: "password";
+  }
+  &:after {
+    position: absolute;
+    text-align: left;
+    color: var(--color-violet-400);
+    padding-inline: 2px;
+    margin-inline: 4px;
+    top: -12px;
+    background-color: white;
+  }
+  & input {
+    width: 100%;
+    border: 1px solid #c4c4c4;
+    height: 58px;
+    padding-left: 4px;
+    &:focus {
+      outline: none;
+      border-color: var(--color-violet-400);
+      box-shadow: 0 0 0 3px var(--color-violet-100);
+    }
+  }
+  & span {
+    color: red;
+  }
+}
+
+.icon {
+  cursor: pointer;
+  position: absolute;
+  right: 5px;
+  top: 20%;
+}
+
+.forgotCredentials {
+  width: fit-content;
+  margin-left: 1rem;
+  color: var(--color-violet-400);
+}

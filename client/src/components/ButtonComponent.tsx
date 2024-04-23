@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import style from "./ButtonComponent.module.css";
+import style from "./button.module.css";
 
 interface button {
   text: string;
