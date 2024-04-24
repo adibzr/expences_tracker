@@ -1,8 +1,15 @@
 .wrapper {
-  height: calc(100vh - 5rem);
   margin-inline: auto;
   margin-top: 10%;
+  padding-bottom: 10%;
+
   justify-content: center;
+  @media (max-width: 1200px) {
+    margin-top: 15%;
+  }
+  @media (max-width: 900px) {
+    margin-top: 20%;
+  }
 }
 
 .balance {
@@ -11,7 +18,7 @@
 
   & h3 {
     margin-inline: auto;
-    font-size: var(--fs-500);
+    font-size: var(--fs-400);
     font-weight: var(--fw-400);
     color: var(--color-light-200);
   }
@@ -22,37 +29,88 @@
   }
 }
 
-.buttons {
+.info {
+  height: 80px;
+
   margin-block: 5rem;
   margin-inline: 10rem;
   display: flex;
   justify-content: space-evenly;
+}
+.income {
+  background-color: var(--color-green);
+  outline: 1px solid var(--color-green);
+}
+.expense {
+  background-color: var(--color-red);
+  outline: 1px solid var(--color-red);
+}
 
-  button {
-    padding: 1.5rem 6rem;
-  }
-  button:nth-of-type(1) {
-    color: var(--color-light-400);
-    font-weight: var(--fw-700);
-    background-color: var(--color-green);
-  }
-  button:nth-of-type(2) {
-    color: var(--color-light-400);
-    font-weight: var(--fw-700);
-    background-color: var(--color-red);
+.income,
+.expense {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  align-items: center;
+  border-radius: 28px;
+  color: var(--color-light-500);
+  gap: 3rem;
+  img {
+    margin-left: 2rem;
+    padding: 0.5rem 2rem;
+    outline: 1px solid var(--color-green);
+    border-radius: 16px;
+    background-color: var(--color-light-500);
   }
 }
 
 .transactionsWrapper {
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  padding: 1rem 3rem;
   max-width: 800px;
-  gap: 3rem;
-  div:nth-of-type(even) {
+}
+.header {
+  margin: 3rem 0;
+  display: flex;
+  justify-content: space-between;
+  button {
+    font-size: var(--fs-100);
+    padding: 5px;
+    border-radius: 40px;
+    background-color: var(--color-violet-200);
+    color: var(--color-violet-500);
     justify-self: right;
   }
-  button {
-    justify-self: right;
+}
+
+.transactions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+
+.transactionTitle {
+  height: 60px;
+  display: grid;
+  grid-template-columns: 0.3fr 1fr;
+  align-items: center;
+  img {
+    min-width: 50px;
+    min-height: 50px;
+    justify-self: center;
+    background-color: hsl(60, 100%, 80%);
+    grid-row: span 2;
+    padding: 10px;
+    border-radius: 16px;
+  }
+}
+
+.transactionAmount {
+  align-content: center;
+  align-items: center;
+  justify-self: right;
+  text-align: right;
+  div:nth-child(1) {
+    font-weight: var(--fw-700);
+    font-size: var(--fs-500);
   }
 }
