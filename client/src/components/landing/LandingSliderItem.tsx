@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { SlideItemProps } from "./Home";
-import style from "./slider.module.css";
+import { SlideItemProps } from "./Landing";
+import style from "./landing.module.css";
 
 interface sliderPorps {
   slideItem: SlideItemProps[];
 }
 
-const HomeSlideItem: React.FC<sliderPorps> = ({ slideItem }) => {
+const LandingSlideItem: React.FC<sliderPorps> = ({ slideItem }) => {
   const timerRef = useRef(0);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -45,4 +45,4 @@ const HomeSlideItem: React.FC<sliderPorps> = ({ slideItem }) => {
   );
 };
 
-export default HomeSlideItem;
+export default LandingSlideItem;

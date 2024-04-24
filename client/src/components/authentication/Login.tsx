@@ -1,11 +1,11 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect, useState, MouseEvent } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import * as Yup from "yup";
 // import { useAppDispatch } from "../../hooks/reduxHooks";
-import style from "./auth.module.css";
 import { ButtonComponentSmall } from "../ButtonComponent";
+import style from "./auth.module.css";
 
 interface userData {
   username: string;
@@ -125,9 +125,10 @@ export const LogIn = ({
           x
         </button>
         <div className={style.inputWrapper}>
-          <div className={style.username}>
+          <div className={style.input}>
             <input
               {...register("username")}
+              autoFocus
               type="text"
               onChange={() => setUsernameAvailability(false)}
               placeholder="USERNAME"
@@ -137,7 +138,7 @@ export const LogIn = ({
             {/* TODO make this work with backend */}
             <button className={style.forgotCredentials}>Forgot Username</button>
           </div>
-          <div className={style.username}>
+          <div className={style.input}>
             <input
               {...register("password")}
               type={showPassword ? "text" : "password"}
@@ -170,10 +171,11 @@ export const LogIn = ({
             >
               CREATE ACCOUNT
             </button>
-            <button type="submit">
-              submit
-              {/* <ButtonComponentSmall text="Log In" className={style.loginBtn} /> */}
-            </button>
+            <ButtonComponentSmall
+              type="submit"
+              text="Log In"
+              className={style.loginBtn}
+            />
           </div>
         </div>
       </form>
