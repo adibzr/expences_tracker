@@ -2,7 +2,6 @@
   margin-inline: auto;
   margin-top: 10%;
   padding-bottom: 10%;
-
   justify-content: center;
   @media (max-width: 1200px) {
     margin-top: 15%;
@@ -66,7 +65,7 @@
 .transactionsWrapper {
   margin: 0 auto;
   padding: 1rem 3rem;
-  max-width: 800px;
+  max-width: 900px;
 }
 .header {
   margin: 3rem 0;
@@ -83,9 +82,28 @@
 }
 
 .transactions {
+  cursor: pointer;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 3rem;
+  padding-inline: 2rem;
+  border-radius: 1rem;
+
+  &:hover {
+    svg {
+      border-radius: 20px;
+      background-color: var(--color-light-500);
+    }
+  }
+}
+.description {
+  color: var(--color-light-200);
+}
+
+.transactionIcon {
+  min-width: 50px;
+  min-height: 50px;
+  grid-row: span 2;
 }
 
 .transactionTitle {
@@ -93,15 +111,6 @@
   display: grid;
   grid-template-columns: 0.3fr 1fr;
   align-items: center;
-  img {
-    min-width: 50px;
-    min-height: 50px;
-    justify-self: center;
-    background-color: hsl(60, 100%, 80%);
-    grid-row: span 2;
-    padding: 10px;
-    border-radius: 16px;
-  }
 }
 
 .transactionAmount {
