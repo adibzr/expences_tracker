@@ -6,7 +6,7 @@ export interface IUser extends mongoose.Document {
   username: string;
   email: string;
   password: string;
-  expenses: { [key: string]: any };
+  expense: { [key: string]: any };
   budget: { [key: string]: any };
   funds: { [key: string]: any };
   created_at: Date;
@@ -20,7 +20,7 @@ const userSchema = new Schema<IUser>(
     username: { type: String, required: true },
     email: { type: String, required: true, lowercase: true, unique: true },
     password: { type: String, required: true },
-    expenses: [{ type: Schema.Types.ObjectId, ref: "Expense" }],
+    expense: [{ type: Schema.Types.ObjectId, ref: "Expense" }],
     budget: { type: Schema.Types.ObjectId, ref: "Budget" },
     funds: {
       wallet: [{ type: Schema.Types.ObjectId, ref: "Wallet" }],

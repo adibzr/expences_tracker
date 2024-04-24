@@ -37,9 +37,8 @@ router.post("/register", async (req, res) => {
     // res.cookie("jwt", token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 });
 
     res.status(200).json({ token, savedUser });
-  } catch (err: any) {
+  } catch (err) {
     res.status(500).json({ err });
-    console.log(err.message);
   }
 });
 

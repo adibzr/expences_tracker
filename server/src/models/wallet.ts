@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-interface IWallet extends mongoose.Document {
+export interface IWallet extends mongoose.Document {
   wallet_id: string;
   title: string;
   amount: number;

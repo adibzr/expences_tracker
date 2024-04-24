@@ -1,23 +1,21 @@
 import mongoose from "mongoose";
 
-interface IExpense extends mongoose.Document {
-  expenses_id: string;
+export interface IExpense extends mongoose.Document {
   date: Date;
   amount: number;
-  category: { [key: string]: any };
+  category: { [key: string]: string };
   description: string;
   attachment: string;
-  user: { [key: string]: any };
-  funds: { [key: string]: any };
+  userId: string;
 }
 
 const expenseSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now() },
   amount: { type: Number, default: 0 },
   description: { type: String, default: "" },
-  category: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
+  category: { type: String, default: "" },
   attachment: { type: String, default: "" },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  userId: { type: String, required: true },
 });
 
 const Expense = mongoose.model<IExpense>("Expense", expenseSchema);

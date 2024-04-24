@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-interface Budget extends mongoose.Document {
+export interface Budget extends mongoose.Document {
   category: { [key: string]: any };
   amount: number;
   date: Date;
