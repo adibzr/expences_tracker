@@ -9,7 +9,6 @@ const router = Router();
 
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  console.log(req.body);
   try {
     const userFound = await User.findOne({ email: email });
     if (!userFound) {
@@ -22,7 +21,6 @@ router.post("/login", async (req, res) => {
       res.status(400).send("Wrong password");
       return;
     }
-    console.log(process.env.JWT_SECRET);
     const token = jwt.sign({ id: userFound._id }, process.env.JWT_SECRET, {
       expiresIn: 60 * 60 * 24,
     });

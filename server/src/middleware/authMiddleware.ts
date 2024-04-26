@@ -7,17 +7,21 @@ dotenv.config();
 const auth = (req: Request, res: Response, next: () => void) => {
   try {
     const token = req.headers["token"] as string;
-    if (!token) {
-      return res.status(401).send("No token provided");
-    }
+    // if (!token) {
+    //   return res.status(401).send("No token provided");
+    // }
 
-    const data = jwt.verify(token, process.env.JWT_SECRET);
+    jwt.verify(token, process.env.JWT_SECRET, function (err, decoded) {
+      if (err) {
+        return res.status(401).json({ error: err.message });
+      }
+      req.user = decoded;
+      next();
+    });
 
-    if (!data) {
-      return res.status(401).send("Unauthorized");
-    }
-    req.user = data;
-    next();
+    // if (!data) {
+    //   return res.status(401).send("Unauthorized");
+    // }
   } catch (error) {}
 };
 
