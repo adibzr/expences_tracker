@@ -37,7 +37,7 @@ router.post("/addexpense", async (req: Request, res: Response) => {
     userFound.expense.push(savedExpense._id);
     await userFound.save();
 
-    res.status(201).json({ expense: savedExpense });
+    res.status(201).json({ success: true, expense: savedExpense });
   } catch (err) {
     res.status(500).json({ err });
   }

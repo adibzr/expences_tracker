@@ -7,6 +7,8 @@ export interface IExpense extends mongoose.Document {
   description: string;
   attachment: string;
   userId: string;
+  created_at: Date;
+  updated_at: Date;
 }
 
 const expenseSchema = new mongoose.Schema({
@@ -16,6 +18,8 @@ const expenseSchema = new mongoose.Schema({
   categoryId: { type: String, default: "" },
   attachment: { type: String, default: "" },
   userId: { type: String, required: true },
+  created_at: { type: Date, default: Date.now(), unmutable: true },
+  updated_at: { type: Date, default: Date.now() },
 });
 
 const Expense = mongoose.model<IExpense>("Expense", expenseSchema);
