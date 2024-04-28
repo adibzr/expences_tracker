@@ -1,5 +1,5 @@
-import expenseSVG from "../../../public/expense.svg";
-import incomeSVG from "../../../public/income.svg";
+import expenseSVG from "../../assets/expense.svg";
+import incomeSVG from "../../assets/income.svg";
 import style from "./home.module.css";
 
 const Home = () => {

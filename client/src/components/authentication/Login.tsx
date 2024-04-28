@@ -3,12 +3,13 @@ import { MouseEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import * as Yup from "yup";
-// import { useAppDispatch } from "../../hooks/reduxHooks";
+import { useAppDispatch } from "../../hooks/reduxHooks";
+import { loginUser } from "../../redux/slices/userAuthSlice";
 import { ButtonComponentSmall } from "../ButtonComponent";
 import style from "./auth.module.css";
 
 interface userData {
-  username: string;
+  email: string;
   password: string;
 }
 
@@ -18,16 +19,15 @@ export const LogIn = ({
   setRegisterHide,
 }: {
   logInHide: boolean;
-  setLoginHide: (arg0: boolean) => void;
-  setRegisterHide: (arg0: boolean) => void;
+  setLoginHide: (logInHide: boolean) => void;
+  setRegisterHide: (RegisterHide: boolean) => void;
 }) => {
-  //   const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
   const [showPassword, setShowPassword] = useState(false);
-  const [usernameAvailability, setUsernameAvailability] =
-    useState<boolean>(false);
-  // const { username } = useAppSelector((state) => state.auth);
+  const [emailAvailability, setEmailAvailability] = useState<boolean>(false);
+  // const { email } = useAppSelector((state) => state.auth);
   const validationSchema: Yup.ObjectSchema<userData> = Yup.object().shape({
-    username: Yup.string().required("Username is required"),
+    email: Yup.string().required("Email is required"),
     password: Yup.string().required("Insert password"),
   });
 
@@ -47,17 +47,10 @@ export const LogIn = ({
     }
   };
   const onSubmit = (data: userData) => {
+    dispatch(loginUser(data));
     if (isSubmitSuccessful) {
       reset();
     }
-
-    //TODO validate username.
-    //TODO validate password. If exist return false. else return token
-    // username === "banned" || username === "invalid"
-    //   ? setUsernameAvailability(false)
-    //   : setUsernameAvailability(true);
-    // if (usernameAvailability) console.log(data);
-    console.log(data);
   };
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
@@ -74,7 +67,7 @@ export const LogIn = ({
   } = useForm<userData>({
     resolver: yupResolver(validationSchema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
@@ -84,7 +77,7 @@ export const LogIn = ({
     if (!logInHide) {
       document.body.style.overflow = "hidden";
     }
-    if (isSubmitSuccessful && usernameAvailability) {
+    if (isSubmitSuccessful && emailAvailability) {
       reset();
     }
     const handleEsc = (event: { key: string }) => {
@@ -103,7 +96,7 @@ export const LogIn = ({
     logInHide,
     reset,
     setLoginHide,
-    usernameAvailability,
+    emailAvailability,
   ]);
 
   return logInHide ? null : (
@@ -114,31 +107,23 @@ export const LogIn = ({
           id="close"
           onClick={(e) => handleClose(e)}
           type="button"
-          style={{
-            position: "absolute",
-            margin: "4px",
-            color: "black",
-            top: 0,
-            right: 0,
-          }}
+          className={style.closeButton}
         >
           x
         </button>
         <div className={style.inputWrapper}>
-          <div className={style.input}>
+          <div className={style.email}>
             <input
-              {...register("username")}
+              {...register("email")}
               autoFocus
               type="text"
-              onChange={() => setUsernameAvailability(false)}
-              placeholder="USERNAME"
+              onChange={() => setEmailAvailability(false)}
+              placeholder="Email"
             />
-            {errors.username && <span>{errors.username.message}</span>}
-            {usernameAvailability && <span>Username doesn't exist</span>}
-            {/* TODO make this work with backend */}
-            <button className={style.forgotCredentials}>Forgot Username</button>
+            {errors.email && <span>{errors.email.message}</span>}
+            {emailAvailability && <span>Email doesn't exist</span>}
           </div>
-          <div className={style.input}>
+          <div className={style.password}>
             <input
               {...register("password")}
               type={showPassword ? "text" : "password"}
@@ -174,7 +159,7 @@ export const LogIn = ({
             <ButtonComponentSmall
               type="submit"
               text="Log In"
-              className={style.loginBtn}
+              className={style.button}
             />
           </div>
         </div>

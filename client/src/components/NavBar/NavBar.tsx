@@ -7,6 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import * as React from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
+import logo from "../../assets/expences_logo.png";
 import { ButtonComponentSmall } from "../ButtonComponent";
 import { LogIn } from "../authentication/Login";
 import { Register } from "../authentication/Register";
@@ -53,10 +54,7 @@ const NavBar = () => {
       <AppBar className={style.header}>
         <Container className={style.container} maxWidth={false}>
           <Link to="/">
-            <Box
-              className={style.logo}
-              sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
-            ></Box>
+            <img className={style.logo} src={logo} alt="logo" />
           </Link>
           {/* sidebar */}
           <Box className={style.sidebar}>
@@ -72,18 +70,13 @@ const NavBar = () => {
             </IconButton>
           </Box>
           <DrawerComponent open={open} setOpen={setOpen} pages={pagesSidebar} />
-
-          <Box
-            className={style.logo}
-            sx={{ display: { xs: "flex", md: "none" } }}
-          ></Box>
+          <img className={style.logoResponsive} src={logo} alt="logo" />
           {/* navbar */}
           <nav className={style.nav_container}>
             <ul className={style.nav_list}>
               {pages.map((page) => (
-                <li>
+                <li key={page.name}>
                   <NavLink
-                    key={page.name}
                     className={({ isActive }) => (isActive ? style.active : "")}
                     onClick={handleCloseNavMenu}
                     to={page.path}

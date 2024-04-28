@@ -1,7 +1,10 @@
 import { Action, ThunkAction, configureStore } from "@reduxjs/toolkit";
+import userAuthSlice from "./slices/userAuthSlice";
 
-export const store = configureStore({
-  reducer: {},
+const store = configureStore({
+  reducer: {
+    userAuth: userAuthSlice,
+  },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
@@ -14,3 +17,4 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   Action<string>
 >;
+export default store;

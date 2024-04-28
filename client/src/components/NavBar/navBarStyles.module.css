@@ -51,12 +51,18 @@
 }
 
 .logo {
-  background-image: url("https://res.cloudinary.com/dfgfylbvn/image/upload/v1713317341/expences_logo_s0abtf.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  height: 46px;
-  min-width: 46px;
-  margin: 1rem;
+  height: 60px;
+  @media (width < 900px) {
+    display: none;
+  }
+}
+.logoResponsive {
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  @media (width > 900px) {
+    display: none;
+  }
 }
 
 .sidebar {

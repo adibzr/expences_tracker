@@ -30,7 +30,7 @@ const DrawerComponent: React.FC<DrawerProps> = ({ open, setOpen, pages }) => {
       </Box>
       <List>
         {pages.map((page) => (
-          <ListItem key={page.name} disablePadding>
+          <ListItem key={page.name + "sidebar"} disablePadding>
             <ListItemButton className={style.sidebar_link} disableRipple>
               <Link to={page.path}>
                 <ListItemText primary={page.name} />

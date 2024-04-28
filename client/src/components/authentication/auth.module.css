@@ -50,13 +50,20 @@
     padding: 20px;
   }
 }
+.closeButton {
+  position: absolute;
+  margin: 4px;
+  color: black;
+  top: 5px;
+  right: 5px;
+}
 
-.input {
+.fullname {
   display: flex;
   flex-direction: column;
   position: relative;
   &:focus-within:after {
-    content: "username";
+    content: "fullname";
   }
   &:after {
     position: absolute;
@@ -82,7 +89,37 @@
     color: red;
   }
 }
-/*focus:placeholder-transparent" */
+.email {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  &:focus-within:after {
+    content: "email";
+  }
+  &:after {
+    position: absolute;
+    text-align: left;
+    color: var(--color-violet-500);
+    padding-inline: 2px;
+    margin-inline: 4px;
+    top: -12px;
+    background-color: white;
+  }
+  & input {
+    width: 100%;
+    border: 1px solid #c4c4c4;
+    height: 58px;
+    padding-left: 4px;
+    &:focus {
+      outline: none;
+      border-color: var(--color-violet-500);
+      box-shadow: 0 0 0 3px var(--color-violet-100);
+    }
+  }
+  & span {
+    color: red;
+  }
+}
 
 .password {
   display: flex;
@@ -121,7 +158,7 @@
   cursor: pointer;
   position: absolute;
   right: 5px;
-  top: 20%;
+  top: 25%;
 }
 
 .forgotCredentials {
@@ -129,7 +166,7 @@
   margin-left: 1rem;
   color: var(--color-violet-500);
 }
-.loginBtn {
+.button {
   background-color: var(--color-violet-500);
   border-radius: 0.5rem;
   color: white;
@@ -138,6 +175,22 @@
   &:hover {
     color: white;
     background-color: var(--color-violet-300);
+  }
+}
+
+.modal {
+  overflow: auto;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
+  width: 100%;
+  max-width: 600px;
+  height: 100%;
+  padding: 8rem;
+  @media (max-width: 768px) {
+    padding: 4rem;
   }
 }
 
