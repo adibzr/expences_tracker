@@ -11,14 +11,14 @@ router.post("/addexpense", async (req: Request, res: Response) => {
     const { amount, categoryId, description, attachment, userId }: IExpense =
       req.body;
     if (!mongoose.Types.ObjectId.isValid(userId)) {
-      return res.status(400).json({ error: "invalid user id" });
+      return res.status(400).json({ error:true, message: "invalid user id" });
     }
     if (!mongoose.Types.ObjectId.isValid(categoryId)) {
-      return res.status(400).json({ error: "invalid category id" });
+      return res.status(400).json({ error:true, message: "invalid category id" });
     }
     const userFound = await User.findById(userId);
     if (!userFound) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ error:true, message: "User not found" });
     }
 
     let foundCategory = await Category.findById(categoryId);
@@ -38,8 +38,8 @@ router.post("/addexpense", async (req: Request, res: Response) => {
     await userFound.save();
 
     res.status(201).json({ success: true, expense: savedExpense });
-  } catch (err) {
-    res.status(500).json({ err });
+  } catch (err:any) {
+    res.status(500).json({ error:true, message:err.message });
   }
 });
 

@@ -7,18 +7,18 @@ dotenv.config();
 const router = Router();
 
 router.post("/register", async (req, res) => {
-  const { name, username, email, password, expenses, budget, funds } = req.body;
+  const { fullname, username, email, password, expenses, budget, funds } =
+    req.body;
 
   try {
     const userFound: any = await User.findOne({ email: email });
     if (userFound) {
-      res.status(400).send("User already exists");
+      res.status(400).json({ error: true, message: "User already exists" });
       return;
     }
 
     const user = new User({
-      name: name,
-      username: username,
+      fullname: fullname,
       email: email,
       password: password,
       expenses: expenses,
@@ -36,9 +36,9 @@ router.post("/register", async (req, res) => {
     );
     // res.cookie("jwt", token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 });
 
-    res.status(200).json({ token, savedUser });
-  } catch (err) {
-    res.status(500).json({ err });
+    res.status(200).json({ success: true, token, savedUser });
+  } catch (err: any) {
+    res.status(500).json({ error: true, message: err.message });
   }
 });
 
