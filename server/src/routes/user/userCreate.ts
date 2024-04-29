@@ -34,7 +34,7 @@ router.post("/register", async (req, res) => {
         expiresIn: 60 * 60 * 24,
       }
     );
-    // res.cookie("jwt", token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 });
+    res.cookie("jwt", token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 });
 
     res.status(200).json({ success: true, token, savedUser });
   } catch (err: any) {

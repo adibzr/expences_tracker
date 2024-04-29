@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export interface Budget extends mongoose.Document {
+export interface IBudget extends mongoose.Document {
   category: { [key: string]: any };
   amount: number;
   date: Date;
@@ -20,4 +20,4 @@ const budgetSchema = new mongoose.Schema({
   updated_at: { type: Date, default: Date.now() },
 });
 
-export default mongoose.model<Budget>("Budget", budgetSchema);
+export default mongoose.model<IBudget>("Budget", budgetSchema);
