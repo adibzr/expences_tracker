@@ -1,13 +1,14 @@
 import { Router } from "express";
 import mongoose from "mongoose";
-import User, { IUser } from "../../models/user";
 import auth from "../../middleware/authMiddleware";
+import User, { IUser } from "../../models/user";
 
 const rauter = Router();
 
 rauter.get("/userbalance", auth, async (req, res) => {
   try {
-    const { userId } = req.body;
+    const userId = req.headers["userid"] as string;
+
     if (!mongoose.Types.ObjectId.isValid(userId)) {
       return res.status(400).json({ error: true, message: "invalid id" });
     }
@@ -39,7 +40,6 @@ rauter.get("/userbalance", auth, async (req, res) => {
 
     res.status(200).json({
       success: true,
-      user,
       balance: totalBalance,
     });
   } catch (error: any) {

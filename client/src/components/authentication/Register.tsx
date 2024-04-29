@@ -1,7 +1,7 @@
-import { MouseEvent, useEffect, useRef, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import { useAppDispatch } from "../../hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { registerUser } from "../../redux/slices/userAuthSlice";
 import { ButtonComponentSmall } from "../ButtonComponent";
 import style from "./auth.module.css";
@@ -13,6 +13,14 @@ export interface userData {
   confirmPassword?: string;
 }
 
+/**
+ * Register component for user registration.
+ *
+ * @param {boolean} props.RegisterHide - Indicates if the register component is hidden.
+ * @param {function} props.setRegisterHide - Function to set the visibility of the register component.
+ * @param {function} props.setLoginHide - Function to set the visibility of the login component.
+ * @returns {JSX.Element} The Register component.
+ */
 export const Register = ({
   RegisterHide,
   setRegisterHide,
@@ -22,21 +30,18 @@ export const Register = ({
   setLoginHide: (arg0: boolean) => void;
   setRegisterHide: (arg0: boolean) => void;
 }) => {
+  // State to toggle the visibility of the password
   const [showPassword, setShowPassword] = useState(false);
-  // const [success, setSuccess] = useState(false);
+
+  // Redux store dispatch function
   const dispatch = useAppDispatch();
-  // const emailNotAvilable = useAppSelector((state) => state.auth.error);
-  const submitionRef = useRef<null | HTMLDivElement>(null);
-  const scrollToTop = () => {
-    submitionRef.current?.scrollTo(0, 0);
-  };
-
-  //=========UTIL======================
-
+  const { success } = useAppSelector((state) => state.userAuth);
+  const { error } = useAppSelector((state) => state.userAuth);
+  // Hook to access form state, errors, and isSubmitSuccessful
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors },
     reset,
     watch,
   } = useForm<userData>({
@@ -49,32 +54,36 @@ export const Register = ({
     },
   });
 
-  //=========HADLERS======================
+  // Function to handle login button click
   const handleLogin = () => {
     setRegisterHide(true);
     setLoginHide(false);
   };
+
+  // Function to handle modal close click
   const handleClose = (
     event: MouseEvent<HTMLDivElement> | MouseEvent<HTMLButtonElement>
   ) => {
     const target = event.target as HTMLElement;
-    if (target.id === "register" || target.id === "close")
+    if (target.id === "register" || target.id === "close") {
       setRegisterHide(true);
-  };
-  const onSubmit = (data: userData) => {
-    if (isSubmitSuccessful) {
-      // setSuccess(true);
       reset();
     }
-    dispatch(registerUser(data));
-    scrollToTop();
   };
+
+  // Function to handle form submit
+  const onSubmit = (data: userData) => {
+    dispatch(registerUser(data));
+    reset();
+  };
+
+  // Function to toggle the visibility of the password
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
   };
-
+  if (success) setRegisterHide(true);
+  // Effect to disable background scrolling and handle escape key to close the modal
   useEffect(() => {
-    // Disables Background Scrolling whilst the Modal is open
     if (!RegisterHide) {
       document.body.style.overflow = "hidden";
     }
@@ -107,11 +116,10 @@ export const Register = ({
           x
         </button>
         <div className={style.inputWrapper}>
-          {/* {success ? (
-              <span style={{ color: "green" }}>Successfuly created user</span>
-            ) : (
-              <span style={{ color: "red" }}>Email already exist</span>
-            )} */}
+          {error && <div style={{ color: "red" }}>{error}</div>}
+          {success && (
+            <div style={{ color: "green" }}>Successfuly created user</div>
+          )}
 
           <div className={style.fullname}>
             <input

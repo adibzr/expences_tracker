@@ -1,5 +1,6 @@
 import expenseSVG from "../../assets/expense.svg";
 import incomeSVG from "../../assets/income.svg";
+// import { useAppSelector } from "../../hooks/reduxHooks";
 import style from "./home.module.css";
 
 const Home = () => {
@@ -12,14 +13,14 @@ const Home = () => {
   const lightness = iconColorArray[1].split(",")[2].split("%")[0];
   const lightnessAdjustment = 30;
   const newLightness = parseInt(lightness) + lightnessAdjustment;
-
+  // const balance = useAppSelector((state) => state.userAuth.user?.balance);
   const newHslColor = `hsl(${hue}, ${saturation}%, ${newLightness}%`;
 
   return (
     <div className={style.wrapper}>
       <div className={style.balance}>
         <h3>Account Balance</h3>
-        <h1>$9000</h1>
+        <h1>${9000}</h1>
       </div>
       <div className={style.info}>
         <div className={style.income}>

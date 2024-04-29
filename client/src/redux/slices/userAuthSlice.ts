@@ -11,7 +11,7 @@ export interface UserState {
   loading: boolean;
   user: user | null;
   userToken: string | undefined;
-  error: string | undefined;
+  error: string;
   success: boolean;
 }
 
@@ -19,7 +19,7 @@ const initialState: UserState = {
   loading: false,
   user: null,
   userToken: undefined,
-  error: undefined,
+  error: "",
   success: false,
 };
 
@@ -31,11 +31,16 @@ const userAuthSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(loginUser.pending, (state) => {
       state.loading = true;
+      state.user = null;
+      state.userToken = undefined;
+      state.error = "";
+      state.success = false;
     });
     builder.addCase(
       loginUser.fulfilled,
       (state, action: PayloadAction<user>) => {
         state.loading = false;
+        state.success = true;
         state.user = action.payload;
       }
     );
@@ -46,11 +51,16 @@ const userAuthSlice = createSlice({
     });
     builder.addCase(registerUser.pending, (state) => {
       state.loading = true;
+      state.user = null;
+      state.userToken = undefined;
+      state.error = "";
+      state.success = false;
     });
     builder.addCase(
       registerUser.fulfilled,
       (state, action: PayloadAction<user>) => {
         state.loading = false;
+        state.success = true;
         state.user = action.payload;
       }
     );
