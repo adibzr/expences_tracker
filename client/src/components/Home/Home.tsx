@@ -1,11 +1,8 @@
 import expenseSVG from "../../assets/expense.svg";
 import incomeSVG from "../../assets/income.svg";
-// import { useAppSelector } from "../../hooks/reduxHooks";
 import style from "./home.module.css";
 
 const Home = () => {
-  const transactionColor = "red";
-
   const iconColor = "hsl(39, 98%, 53%)";
   const iconColorArray = iconColor.split("hsl(");
   const hue = iconColorArray[1].split(",")[0];
@@ -70,7 +67,7 @@ const Home = () => {
           <div className={style.transactionAmount}>
             <div
               style={{
-                color: `${transactionColor}`,
+                color: "var(--color-red)",
               }}
             >
               $120

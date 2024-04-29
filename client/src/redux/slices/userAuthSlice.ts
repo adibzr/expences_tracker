@@ -1,6 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  Dispatch,
+  PayloadAction,
+  createAsyncThunk,
+  createSlice,
+} from "@reduxjs/toolkit";
 import axios from "axios";
+import { AppThunk } from "../store";
 
 type user = {
   fullname: string;
@@ -10,6 +16,7 @@ type user = {
 export interface UserState {
   loading: boolean;
   user: user | null;
+  userId?: string;
   userToken: string | undefined;
   error: string;
   success: boolean;
@@ -18,6 +25,7 @@ export interface UserState {
 const initialState: UserState = {
   loading: false,
   user: null,
+  userId: "",
   userToken: undefined,
   error: "",
   success: false,
@@ -27,7 +35,21 @@ const initialState: UserState = {
 const userAuthSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      state.user = null;
+      state.userToken = undefined;
+      state.success = false;
+      state.error = "";
+      state.loading = false;
+      localStorage.removeItem("jwtToken");
+      window.location.reload();
+    },
+    guest: (state, action) => {
+      state.userId = action.payload.userId;
+      state.userToken = action.payload.token;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(loginUser.pending, (state) => {
       state.loading = true;
@@ -137,5 +159,27 @@ export const registerUser = createAsyncThunk(
     }
   }
 );
+export const setGuestCredentials = (
+  userId: string,
+  token: string
+): AppThunk => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const response = await axios.post("http://localhost:5000/user/guest");
+      dispatch(guest({ userId, token }));
+      if (response.data.token) {
+        localStorage.setItem("jwtToken", response.data.token);
+      }
+      if (response.data._id) {
+        localStorage.setItem("userId", response.data._id);
+      }
+      return response.data;
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+};
+
+export const { logout, guest } = userAuthSlice.actions;
 
 export default userAuthSlice.reducer;
