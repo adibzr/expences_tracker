@@ -1,5 +1,8 @@
+import { useEffect } from "react";
 import expenseSVG from "../../assets/expense.svg";
 import incomeSVG from "../../assets/income.svg";
+import { useAppDispatch } from "../../hooks/reduxHooks";
+import { setGuestCredentials } from "../../redux/slices/userAuthSlice";
 import style from "./home.module.css";
 
 const Home = () => {
@@ -12,6 +15,10 @@ const Home = () => {
   const newLightness = parseInt(lightness) + lightnessAdjustment;
   // const balance = useAppSelector((state) => state.userAuth.user?.balance);
   const newHslColor = `hsl(${hue}, ${saturation}%, ${newLightness}%`;
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(setGuestCredentials());
+  }, [dispatch]);
 
   return (
     <div className={style.wrapper}>

@@ -16,7 +16,7 @@ type user = {
 export interface UserState {
   loading: boolean;
   user: user | null;
-  userId?: string;
+  userId: string;
   userToken: string | undefined;
   error: string;
   success: boolean;
@@ -48,6 +48,8 @@ const userAuthSlice = createSlice({
     guest: (state, action) => {
       state.userId = action.payload.userId;
       state.userToken = action.payload.token;
+      localStorage.setItem("userId", action.payload.userId);
+      localStorage.setItem("jwtToken", action.payload.token);
     },
   },
   extraReducers: (builder) => {
@@ -159,14 +161,18 @@ export const registerUser = createAsyncThunk(
     }
   }
 );
-export const setGuestCredentials = (
-  userId: string,
-  token: string
-): AppThunk => {
+export const setGuestCredentials = (): AppThunk => {
   return async (dispatch: Dispatch) => {
     try {
-      const response = await axios.post("http://localhost:5000/user/guest");
-      dispatch(guest({ userId, token }));
+      const token = localStorage.getItem("jwtToken");
+      const userId = localStorage.getItem("userId");
+      let response;
+      if (!token || !userId) {
+        response = await axios.post("http://localhost:5000/user/guest");
+      } else {
+        response = { data: { userId, token } };
+      }
+      dispatch(guest(response.data));
       if (response.data.token) {
         localStorage.setItem("jwtToken", response.data.token);
       }
