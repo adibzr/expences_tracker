@@ -1,8 +1,13 @@
+import { CircularProgress } from "@mui/material";
 import { useEffect } from "react";
 import expenseSVG from "../../assets/expense.svg";
 import incomeSVG from "../../assets/income.svg";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { getGuestBalance } from "../../redux/slices/financialSlice";
+import {
+  getGuestBalance,
+  getGuestExpense,
+} from "../../redux/slices/financialSlice";
+import { getGuestFunds } from "../../redux/slices/fundsSlice";
 import { setGuestCredentials } from "../../redux/slices/userAuthSlice";
 import style from "./home.module.css";
 
@@ -10,14 +15,21 @@ const Home = () => {
   const iconColor = "hsl(39, 100%, 50%)";
   const iconColorSplit = "hsl(39, 98%, 53%)".split(")");
   const iconBgColor = iconColorSplit[0].concat(", 0.2)");
-  const balance = useAppSelector((state) => state.financials.balance);
+  const balance = useAppSelector((state) => state.financials);
+  const expenses = useAppSelector((state) => state.financials);
+  const funds = useAppSelector((state) => state.funds);
   const dispatch = useAppDispatch();
   useEffect(() => {
     const guestId = localStorage.getItem("guestId");
     const token = localStorage.getItem("jwtToken");
     dispatch(setGuestCredentials());
-    guestId && token && dispatch(getGuestBalance({ guestId, token }));
+    if (guestId && token) {
+      dispatch(getGuestBalance({ guestId, token }));
+      dispatch(getGuestExpense({ guestId, token }));
+      dispatch(getGuestFunds({ guestId, token }));
+    }
   }, [dispatch]);
+
   useEffect(() => {
     document.documentElement.style.setProperty("--iconBgColor", iconBgColor);
   }, [iconBgColor]);
@@ -26,21 +38,62 @@ const Home = () => {
     <div className={style.wrapper}>
       <div className={style.balance}>
         <h3>Account Balance</h3>
-        <h1>${balance}</h1>
+        <h1>
+          $
+          {balance.loading ? (
+            <CircularProgress
+              size={28}
+              style={{
+                marginTop: "10px",
+                marginLeft: "10px",
+              }}
+              color="inherit"
+            />
+          ) : (
+            balance.balance
+          )}
+        </h1>
       </div>
       <div className={style.info}>
         <div className={style.income}>
           <img src={incomeSVG} alt="income SVG" />
           <div>
             <span>income</span>
-            <p>5000</p>
+            <p>
+              {funds.loading ? (
+                <CircularProgress
+                  size={28}
+                  style={{
+                    marginTop: "10px",
+                    marginLeft: "10px",
+                  }}
+                  color="inherit"
+                />
+              ) : (
+                funds.totalFunds
+              )}
+            </p>
           </div>
         </div>
         <div className={style.expense}>
           <img src={expenseSVG} alt="expense SVG" />
           <div>
             <span>expense</span>
-            <p>200</p>
+
+            <p>
+              {funds.loading ? (
+                <CircularProgress
+                  size={28}
+                  style={{
+                    marginTop: "10px",
+                    marginLeft: "10px",
+                  }}
+                  color="inherit"
+                />
+              ) : (
+                expenses.totalExpense
+              )}
+            </p>
           </div>
         </div>
       </div>

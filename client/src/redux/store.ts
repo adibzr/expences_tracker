@@ -1,11 +1,13 @@
 import { Action, ThunkAction, configureStore } from "@reduxjs/toolkit";
 import userAuthSlice from "./slices/userAuthSlice";
 import financialSlice from "./slices/financialSlice";
+import fundsSlice from "./slices/fundsSlice";
 
 const store = configureStore({
   reducer: {
     userAuth: userAuthSlice,
     financials: financialSlice,
+    funds: fundsSlice,
   },
 });
 
