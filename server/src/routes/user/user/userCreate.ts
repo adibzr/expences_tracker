@@ -1,7 +1,7 @@
 import * as dotenv from "dotenv";
 import { Router } from "express";
 import jwt from "jsonwebtoken";
-import User from "../../models/user";
+import User from "../../../models/user";
 dotenv.config();
 
 const router = Router();

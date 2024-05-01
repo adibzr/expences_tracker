@@ -1,7 +1,7 @@
 import { Router } from "express";
 import mongoose from "mongoose";
-import auth from "../../middleware/authMiddleware";
-import User, { IUser } from "../../models/user";
+import auth from "../../../middleware/authMiddleware";
+import User, { IUser } from "../../../models/user";
 
 const rauter = Router();
 

@@ -1,14 +1,10 @@
 import mongoose, { Schema } from "mongoose";
-import { IExpense } from "./expense";
 
 export interface IGuest extends mongoose.Document {
   expense: { [key: string]: any };
   budget: { [key: string]: any };
   funds: {
-    [key: string]: {
-      Wallet: { [key: string]: any };
-      Bank: { [key: string]: any };
-    };
+    [key: string]: any;
   };
   created_at: Date;
   updated_at: Date;

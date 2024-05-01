@@ -1,30 +1,32 @@
 import { useEffect } from "react";
 import expenseSVG from "../../assets/expense.svg";
 import incomeSVG from "../../assets/income.svg";
-import { useAppDispatch } from "../../hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import { getGuestBalance } from "../../redux/slices/financialSlice";
 import { setGuestCredentials } from "../../redux/slices/userAuthSlice";
 import style from "./home.module.css";
 
 const Home = () => {
-  const iconColor = "hsl(39, 98%, 53%)";
-  const iconColorArray = iconColor.split("hsl(");
-  const hue = iconColorArray[1].split(",")[0];
-  const saturation = iconColorArray[1].split(",")[1].split("%")[0];
-  const lightness = iconColorArray[1].split(",")[2].split("%")[0];
-  const lightnessAdjustment = 30;
-  const newLightness = parseInt(lightness) + lightnessAdjustment;
-  // const balance = useAppSelector((state) => state.userAuth.user?.balance);
-  const newHslColor = `hsl(${hue}, ${saturation}%, ${newLightness}%`;
+  const iconColor = "hsl(39, 100%, 50%)";
+  const iconColorSplit = "hsl(39, 98%, 53%)".split(")");
+  const iconBgColor = iconColorSplit[0].concat(", 0.2)");
+  const balance = useAppSelector((state) => state.financials.balance);
   const dispatch = useAppDispatch();
   useEffect(() => {
+    const guestId = localStorage.getItem("guestId");
+    const token = localStorage.getItem("jwtToken");
     dispatch(setGuestCredentials());
+    guestId && token && dispatch(getGuestBalance({ guestId, token }));
   }, [dispatch]);
+  useEffect(() => {
+    document.documentElement.style.setProperty("--iconBgColor", iconBgColor);
+  }, [iconBgColor]);
 
   return (
     <div className={style.wrapper}>
       <div className={style.balance}>
         <h3>Account Balance</h3>
-        <h1>${9000}</h1>
+        <h1>${balance}</h1>
       </div>
       <div className={style.info}>
         <div className={style.income}>
@@ -48,15 +50,7 @@ const Home = () => {
           <button>View All</button>
         </div>
 
-        <div
-          className={style.transactions}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = newHslColor)
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.backgroundColor = "transparent")
-          }
-        >
+        <div className={style.transactions}>
           <div className={style.transactionTitle}>
             <svg
               width="32"

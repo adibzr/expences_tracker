@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
-import mongoose, { Error } from "mongoose";
-import Wallet from "../../models/wallet";
-import User from "../../models/user";
+import mongoose from "mongoose";
+import User from "../../../models/user";
+import Wallet from "../../../models/wallet";
 
 const router = Router();
 
@@ -9,15 +9,14 @@ router.post("/addwalletfund", async (req: Request, res: Response) => {
   try {
     const { userId, amount, logo, title } = req.body;
     if (!mongoose.Types.ObjectId.isValid(userId)) {
-      return res.status(400).json({ error:true, message: "invalid id" });
+      return res.status(400).json({ error: true, message: "invalid id" });
     }
     const userFound = await User.findById(userId);
     if (!userFound) {
-      return res.status(404).json({ error:true, message: "User not found" });
+      return res.status(404).json({ error: true, message: "User not found" });
     }
 
     const walletFund = new Wallet({
-  
       amount: amount,
       title: title,
     });

@@ -1,19 +1,28 @@
 import { Router } from "express";
-import getOneUserExpense from "./expenses/getOneUserExpense";
-import postExpense from "./expenses/postExpense";
-import postBankFund from "./funds/postBankFund";
-import postWalletFund from "./funds/postWalletFund";
-import guestUser from "./user/guestUser";
-import userBalance from "./user/userBalance";
-import userCreate from "./user/userCreate";
-import login from "./user/userLogin";
+//===============guests================
+import getGuestExpense from "./guests/expenses/getGuestExpense";
+import postGuestExpense from "./guests/expenses/postGuestExpense";
+import guestBalance from "./guests/guest/guestBalance";
+import guestUser from "./guests/guest/guestUser";
+//===============user================
+import getOneUserExpense from "./user/expenses/getUserExpense";
+import postExpense from "./user/expenses/postExpense";
+import postBankFund from "./user/funds/postBankFund";
+import postWalletFund from "./user/funds/postWalletFund";
+import userBalance from "./user/user/userBalance";
+import userCreate from "./user/user/userCreate";
+import login from "./user/user/userLogin";
 const router = Router();
 
 router.use("/user", userCreate);
 router.use("/user", login);
 router.use("/user", userBalance);
-router.use("/user", guestUser);
 
+router.use("/guest", guestUser);
+router.use("/guest", guestBalance);
+
+router.use("/expense", postGuestExpense);
+router.use("/expense", getGuestExpense);
 router.use("/expense", getOneUserExpense);
 router.use("/expense", postExpense);
 

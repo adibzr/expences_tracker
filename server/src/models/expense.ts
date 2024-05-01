@@ -17,7 +17,6 @@ const expenseSchema = new mongoose.Schema({
   description: { type: String, default: "" },
   categoryId: { type: String, default: "" },
   attachment: { type: String, default: "" },
-  userId: { type: String, required: true },
   created_at: { type: Date, default: Date.now(), unmutable: true },
   updated_at: { type: Date, default: Date.now() },
 });

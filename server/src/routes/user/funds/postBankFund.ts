@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
-import mongoose, { Error } from "mongoose";
-import Bank from "../../models/bank";
-import User from "../../models/user";
+import mongoose from "mongoose";
+import Bank from "../../../models/bank";
+import User from "../../../models/user";
 
 const router = Router();
 
