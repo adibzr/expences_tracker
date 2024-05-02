@@ -1,6 +1,7 @@
 // import React, { useState } from "react";
 import dayjs from "dayjs";
-import { ReactElement, useState } from "react";
+import { useState } from "react";
+import useGetBanks from "../../hooks/useGetBanks";
 import useGetCategories from "../../hooks/useGetCategories";
 import { ButtonComponentLarge } from "../ButtonComponent";
 import AmountComponent from "./AmountComponent";
@@ -8,6 +9,8 @@ import DatePickerComponent from "./DatePickerComponent";
 import DescriptionTextfield from "./DescriptionTextfield";
 import SelectComponent from "./SelectComponent";
 import style from "./expense.module.css";
+import { useAppDispatch } from "../../hooks/reduxHooks";
+import { postGuestExpense } from "../../redux/slices/financialSlice";
 
 export interface expenseDataState {
   category: string;
@@ -17,9 +20,17 @@ export interface expenseDataState {
   wallet: string;
 }
 
+export interface expenseDataError {
+  category: boolean;
+  date: boolean;
+  wallet: boolean;
+}
+
 const Expenses = () => {
   const categories = useGetCategories();
-  const wallets = ["Wallet", "Bank"];
+  const banks = useGetBanks();
+  banks.unshift("wallet");
+  const dispatch = useAppDispatch();
 
   const [inputs, setInputs] = useState({
     category: "",
@@ -28,9 +39,30 @@ const Expenses = () => {
     amount: 0,
     wallet: "",
   });
+
+  const [errors, setError] = useState({
+    category: false,
+    wallet: false,
+    date: false,
+  });
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    console.log(inputs);
+    if (inputs.category === "" || inputs.wallet === "") {
+      setError({
+        ...errors,
+        category: true,
+        wallet: true,
+      });
+    } else {
+      setInputs({
+        category: "",
+        date: dayjs().format("DD-MM-YYYY"),
+        description: "",
+        amount: 0,
+        wallet: "",
+      });
+      dispatch(postGuestExpense(inputs));
+    }
   };
 
   return (
@@ -41,18 +73,30 @@ const Expenses = () => {
           label="Category"
           items={categories}
           input={inputs}
+          errors={errors}
           setInput={setInputs}
+          setError={setError}
         />
-        <DatePickerComponent input={inputs} setInput={setInputs} />
+        <DatePickerComponent
+          input={inputs}
+          errors={errors}
+          setInput={setInputs}
+          setError={setError}
+        />
         <DescriptionTextfield input={inputs} setInput={setInputs} />
         <SelectComponent
           label="Wallet/Bank"
-          items={wallets}
+          items={banks}
           input={inputs}
+          errors={errors}
           setInput={setInputs}
+          setError={setError}
         />
       </div>
       <ButtonComponentLarge
+        disabled={
+          errors?.category || errors?.date || errors?.wallet ? true : false
+        }
         type="submit"
         className={style.button}
         text="Continue"

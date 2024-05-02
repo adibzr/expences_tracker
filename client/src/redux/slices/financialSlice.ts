@@ -2,6 +2,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { UserState } from "./userAuthSlice";
+import { expenseDataState } from "../../components/expenses/Expenses";
 
 interface expense {
   date: Date;
@@ -65,11 +66,23 @@ const financialSlice = createSlice({
     builder.addCase(getGuestExpense.pending, (state) => {
       state.loading = true;
     });
+    builder.addCase(postGuestExpense.fulfilled, (state) => {
+      state.loading = false;
+      state.success = true;
+    });
+    builder.addCase(postGuestExpense.rejected, (state, action) => {
+      state.error = action.payload as string;
+      state.loading = false;
+      state.success = false;
+    });
+    builder.addCase(postGuestExpense.pending, (state) => {
+      state.loading = true;
+    });
   },
 });
 
 export const getGuestBalance = createAsyncThunk(
-  "expense/guestBalance",
+  "guest/guestBalance",
   async (_, { getState }) => {
     const { guestId, token } = (getState() as { userAuth: UserState }).userAuth;
     const response = await axios.get(
@@ -85,7 +98,7 @@ export const getGuestBalance = createAsyncThunk(
   }
 );
 export const getGuestExpense = createAsyncThunk(
-  "expense/guestExpense",
+  "guest/guestExpense",
   async (_, { getState }) => {
     const { guestId, token } = (getState() as { userAuth: UserState }).userAuth;
     const response = await axios.get(
@@ -93,6 +106,23 @@ export const getGuestExpense = createAsyncThunk(
       {
         headers: {
           guestId,
+          token,
+        },
+      }
+    );
+    return response.data;
+  }
+);
+
+export const postGuestExpense = createAsyncThunk(
+  "guest/postExpense",
+  async (data:expenseDataState, { getState }) => {
+    const { token } = (getState() as { userAuth: UserState }).userAuth;
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASEURL}/expense/addGuestExpense`,
+      {
+        data,
+        headers: {
           token,
         },
       }

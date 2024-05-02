@@ -1,8 +1,8 @@
 import { Request, Response, Router } from "express";
 import mongoose from "mongoose";
+import auth from "../../../middleware/authMiddleware";
 import Bank from "../../../models/bank";
 import Guest from "../../../models/guest";
-import auth from "../../../middleware/authMiddleware";
 
 const router = Router();
 
@@ -27,6 +27,7 @@ router.post("/addguestbankfund", auth, async (req: Request, res: Response) => {
     await guestFound.save();
     res.status(200).json({ success: true, bank: savedBankFund });
   } catch (error: any) {
+    console.log(error.message);
     res.status(500).json({ error: true, message: error.message });
   }
 });

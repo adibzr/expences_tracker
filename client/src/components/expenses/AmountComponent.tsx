@@ -9,11 +9,13 @@ const AmountComponent = ({
   setInput: (arg0: expenseDataState) => void;
 }) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(event.target.value);
-    setInput({
-      ...input,
-      amount: value,
-    });
+    if (!isNaN(Number(event.target.value))) {
+      const value = Number(event.target.value);
+      setInput({
+        ...input,
+        amount: value,
+      });
+    }
   };
   return (
     <div className={style.inputComp}>
@@ -24,6 +26,7 @@ const AmountComponent = ({
         value={input.amount === 0 ? "" : input.amount}
         onChange={handleChange}
         placeholder="0"
+        maxLength={20}
       />
     </div>
   );

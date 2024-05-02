@@ -5,7 +5,7 @@ import { UserState } from "./userAuthSlice";
 
 interface bank {
   title: string;
-  logo: string;
+  logo?: string;
   amount: number;
   created_at: string;
 }
@@ -15,7 +15,7 @@ interface wallet {
 }
 
 interface initialState {
-  bankIncome: bank[];
+  bank: bank[];
   walletIncome: wallet[];
   loading: boolean;
   success: boolean;
@@ -23,7 +23,7 @@ interface initialState {
 }
 
 const initialState: initialState = {
-  bankIncome: [],
+  bank: [],
   walletIncome: [],
   loading: false,
   success: false,
@@ -36,7 +36,7 @@ const financialSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getGuestBank.fulfilled, (state, action) => {
-      state.bankIncome = action.payload.bankFund;
+      state.bank = action.payload.bankFund;
       state.loading = false;
       state.success = true;
     });
@@ -48,7 +48,7 @@ const financialSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(getGuestWallet.fulfilled, (state, action) => {
-      state.bankIncome = action.payload.walletFund;
+      state.bank = action.payload.walletFund;
       state.loading = false;
       state.success = true;
     });
@@ -90,7 +90,6 @@ export const getGuestBank = createAsyncThunk(
           },
         }
       );
-      console.log(response.data);
       return response.data;
     } catch (error: any) {
       if (error.response.data.error) {

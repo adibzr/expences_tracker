@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { getGuestBank } from "../redux/slices/fundsSlice";
 import { useAppDispatch, useAppSelector } from "./reduxHooks";
 
-const useGetCategories = () => {
+const useGetBanks = () => {
   const dispatch = useAppDispatch();
   const { guestId, token } = useAppSelector((state) => state.userAuth);
   useEffect(() => {
@@ -14,8 +14,12 @@ const useGetCategories = () => {
     }
     return;
   }, []);
-  const bank = useAppSelector((state) => state.funds);
-  return;
+  const { bank } = useAppSelector((state) => state.funds);
+  const bankTitles = bank.reduce((acc: string[], curr: { title: string }) => {
+    acc.push(curr.title);
+    return acc;
+  }, []);
+  return bankTitles;
 };
 
-export default useGetCategories;
+export default useGetBanks;
