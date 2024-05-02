@@ -7,9 +7,9 @@ import {
   getGuestBalance,
   getGuestExpense,
 } from "../../redux/slices/financialSlice";
-import { getGuestFunds } from "../../redux/slices/fundsSlice";
-import { setGuestCredentials } from "../../redux/slices/userAuthSlice";
+import { registerGuest } from "../../redux/slices/userAuthSlice";
 import style from "./home.module.css";
+import { getGuestFunds } from "../../redux/slices/fundsSlice";
 
 const Home = () => {
   const iconColor = "hsl(39, 100%, 50%)";
@@ -18,17 +18,18 @@ const Home = () => {
   const balance = useAppSelector((state) => state.financials);
   const expenses = useAppSelector((state) => state.financials);
   const funds = useAppSelector((state) => state.funds);
+  const { guestId, token } = useAppSelector((state) => state.userAuth);
+
   const dispatch = useAppDispatch();
   useEffect(() => {
-    const guestId = localStorage.getItem("guestId");
-    const token = localStorage.getItem("jwtToken");
-    dispatch(setGuestCredentials());
-    if (guestId && token) {
-      dispatch(getGuestBalance({ guestId, token }));
-      dispatch(getGuestExpense({ guestId, token }));
-      dispatch(getGuestFunds({ guestId, token }));
+    if (!guestId || !token) {
+      dispatch(registerGuest()).then(() => {
+        dispatch(getGuestExpense());
+        dispatch(getGuestFunds());
+        dispatch(getGuestBalance());
+      });
     }
-  }, [dispatch]);
+  }, [dispatch, guestId, token]);
 
   useEffect(() => {
     document.documentElement.style.setProperty("--iconBgColor", iconBgColor);

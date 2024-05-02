@@ -1,12 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  Dispatch,
-  PayloadAction,
-  createAsyncThunk,
-  createSlice,
-} from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { AppThunk } from "../store";
 
 type user = {
   fullname: string;
@@ -17,7 +11,8 @@ export interface UserState {
   loading: boolean;
   user: user | null;
   userId: string;
-  userToken: string | undefined;
+  guestId: string;
+  token: string | undefined;
   error: string;
   success: boolean;
 }
@@ -26,7 +21,8 @@ const initialState: UserState = {
   loading: false,
   user: null,
   userId: "",
-  userToken: undefined,
+  guestId: "",
+  token: undefined,
   error: "",
   success: false,
 };
@@ -38,7 +34,7 @@ const userAuthSlice = createSlice({
   reducers: {
     logout: (state) => {
       state.user = null;
-      state.userToken = undefined;
+      state.token = undefined;
       state.success = false;
       state.error = "";
       state.loading = false;
@@ -47,14 +43,14 @@ const userAuthSlice = createSlice({
     },
     guest: (state, action) => {
       state.userId = action.payload.userId;
-      state.userToken = action.payload.token;
+      state.token = action.payload.token;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(loginUser.pending, (state) => {
       state.loading = true;
       state.user = null;
-      state.userToken = undefined;
+      state.token = undefined;
       state.error = "";
       state.success = false;
     });
@@ -74,7 +70,7 @@ const userAuthSlice = createSlice({
     builder.addCase(registerUser.pending, (state) => {
       state.loading = true;
       state.user = null;
-      state.userToken = undefined;
+      state.token = undefined;
       state.error = "";
       state.success = false;
     });
@@ -91,6 +87,13 @@ const userAuthSlice = createSlice({
       const errorMessage = action.payload as string;
       state.error = errorMessage;
     });
+    builder.addCase(
+      registerGuest.fulfilled,
+      (state, action: PayloadAction<{ guestId: string; token: string }>) => {
+        state.guestId = action.payload.guestId;
+        state.token = action.payload.token;
+      }
+    );
   },
 });
 
@@ -159,32 +162,9 @@ export const registerUser = createAsyncThunk(
     }
   }
 );
-export const setGuestCredentials = (): AppThunk => {
-  return async (dispatch: Dispatch) => {
-    try {
-      const token = localStorage.getItem("jwtToken");
-      const guestId = localStorage.getItem("guestId");
-      let response;
-      if (!token || !guestId) {
-        response = await axios.post("http://localhost:5000/guest/guest");
-      } else {
-        response = { data: { guestId, token } };
-      }
-      dispatch(guest(response.data));
-      if (response.data.token) {
-        localStorage.setItem("jwtToken", response.data.token);
-      }
-
-      if (response.data.guestId) {
-        localStorage.setItem("guestId", response.data.guestId);
-      }
-      return response.data;
-    } catch (error: any) {
-      console.log(error);
-    }
-  };
-};
-
-export const { logout, guest } = userAuthSlice.actions;
+export const registerGuest = createAsyncThunk("guest/postGuest", async () => {
+  const response = await axios.post("http://localhost:5000/guest/guest");
+  return response.data;
+});
 
 export default userAuthSlice.reducer;

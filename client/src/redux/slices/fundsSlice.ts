@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { UserState } from "./userAuthSlice";
 
 interface bank {
   title: string;
@@ -127,28 +128,15 @@ export const getGuestWallet = createAsyncThunk(
 );
 export const getGuestFunds = createAsyncThunk(
   "funds/guestFunds",
-  async (
-    { guestId, token }: { guestId: string; token: string },
-    { rejectWithValue }
-  ) => {
-    try {
-      const response = await axios.get(
-        "http://localhost:5000/funds/guestfund",
-        {
-          headers: {
-            guestId,
-            token: token,
-          },
-        }
-      );
-      return response.data;
-    } catch (error: any) {
-      if (error.response.data.error) {
-        return rejectWithValue(error.response.data.message);
-      } else {
-        return rejectWithValue(error.message);
-      }
-    }
+  async (_, { getState }) => {
+    const { guestId, token } = (getState() as { userAuth: UserState }).userAuth;
+    const response = await axios.get("http://localhost:5000/funds/guestfund", {
+      headers: {
+        guestId,
+        token,
+      },
+    });
+    return response.data;
   }
 );
 
