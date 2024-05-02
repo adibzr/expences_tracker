@@ -162,11 +162,17 @@ export const registerUser = createAsyncThunk(
     }
   }
 );
-export const registerGuest = createAsyncThunk("guest/postGuest", async () => {
-  const response = await axios.post(
-    `${import.meta.env.VITE_BASEURL}/guest/guest`
-  );
-  return response.data;
-});
+export const registerGuest = createAsyncThunk(
+  "guest/postGuest",
+  async (_, { signal }) => {
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASEURL}/guest/guest`,
+      {
+        signal,
+      }
+    );
+    return response.data;
+  }
+);
 
 export default userAuthSlice.reducer;

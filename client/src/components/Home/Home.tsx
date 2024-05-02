@@ -18,22 +18,30 @@ const Home = () => {
   const balance = useAppSelector((state) => state.financials);
   const expenses = useAppSelector((state) => state.financials);
   const funds = useAppSelector((state) => state.funds);
-  const { guestId, token } = useAppSelector((state) => state.userAuth);
+  //const { guestId, token } = useAppSelector((state) => state.userAuth);
 
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    if (!guestId || !token) {
-      dispatch(registerGuest()).then(() => {
-        dispatch(getGuestExpense());
-        dispatch(getGuestFunds());
-        dispatch(getGuestBalance());
-      });
-    } else {
-      dispatch(getGuestExpense());
-      dispatch(getGuestFunds());
-      dispatch(getGuestBalance());
+  const controller = new AbortController();
+  const loadData = async () => {
+    try {
+      // Dispatch your actions here
+
+      await dispatch(registerGuest());
+      await dispatch(getGuestExpense());
+      await dispatch(getGuestFunds());
+      await dispatch(getGuestBalance());
+    } catch (error) {
+      // Handle errors
     }
-  }, [dispatch, guestId, token]);
+  };
+  useEffect(() => {
+    loadData();
+
+    return () => {
+      // Cleanup function: cancel all requests when the component unmounts
+      controller.abort();
+    };
+  }, [dispatch]);
 
   useEffect(() => {
     document.documentElement.style.setProperty("--iconBgColor", iconBgColor);
