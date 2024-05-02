@@ -82,7 +82,7 @@ export const getGuestBank = createAsyncThunk(
   ) => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/funds/guestbankfund",
+        `${import.meta.env.VITE_BASEURL}/funds/guestbankfund`,
         {
           headers: {
             guestId,
@@ -108,7 +108,7 @@ export const getGuestWallet = createAsyncThunk(
   ) => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/funds/guestwalletfund",
+        `${import.meta.env.VITE_BASEURL}/funds/guestwalletfund`,
         {
           headers: {
             guestId,
@@ -130,7 +130,7 @@ export const getGuestFunds = createAsyncThunk(
   "funds/guestFunds",
   async (_, { getState }) => {
     const { guestId, token } = (getState() as { userAuth: UserState }).userAuth;
-    const response = await axios.get("http://localhost:5000/funds/guestfund", {
+    const response = await axios.get(`${import.meta.env.VITE_BASEURL}/funds/guestfund` , {
       headers: {
         guestId,
         token,

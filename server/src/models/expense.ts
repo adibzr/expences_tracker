@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
+import category from "./category";
 
 export interface IExpense extends mongoose.Document {
   date: Date;
@@ -15,7 +16,7 @@ const expenseSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now() },
   amount: { type: Number, default: 0 },
   description: { type: String, default: "" },
-  categoryId: { type: String, default: "" },
+  category: { type: Schema.Types.ObjectId, ref: "Category" },
   attachment: { type: String, default: "" },
   created_at: { type: Date, default: Date.now(), unmutable: true },
   updated_at: { type: Date, default: Date.now() },

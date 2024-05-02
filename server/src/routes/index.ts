@@ -17,6 +17,7 @@ import postGuestWalletFund from "./guests/funds/postGuestWalletFund";
 import getGuestBankFund from "./guests/funds/getGuestBankFund";
 import getGuestWalletFund from "./guests/funds/getGuestWalletFund";
 import getGuestFund from "./guests/funds/getGuestFund";
+import postCategory from "./categories/postCategory";
 
 const router = Router();
 
@@ -39,5 +40,7 @@ router.use("/funds", postGuestWalletFund);
 router.use("/funds", getGuestWalletFund);
 router.use("/funds", getGuestBankFund);
 router.use("/funds", getGuestFund);
+
+router.use("/category", postCategory);
 
 export default router;

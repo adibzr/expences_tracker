@@ -111,7 +111,7 @@ export const loginUser = createAsyncThunk(
         },
       };
       const response = await axios.post(
-        "http://localhost:5000/user/login",
+        `${import.meta.env.VITE_BASEURL}/user/login`,
         {
           email,
           password,
@@ -141,7 +141,7 @@ export const registerUser = createAsyncThunk(
         },
       };
       const response = await axios.post(
-        "http://localhost:5000/user/register",
+        `${import.meta.env.VITE_BASEURL}/user/register`,
         {
           email,
           fullname,
@@ -163,7 +163,9 @@ export const registerUser = createAsyncThunk(
   }
 );
 export const registerGuest = createAsyncThunk("guest/postGuest", async () => {
-  const response = await axios.post("http://localhost:5000/guest/guest");
+  const response = await axios.post(
+    `${import.meta.env.VITE_BASEURL}/guest/guest`
+  );
   return response.data;
 });
 

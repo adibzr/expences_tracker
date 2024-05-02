@@ -8,29 +8,34 @@ const router = Router();
 
 router.post("/addGuestExpense", async (req: Request, res: Response) => {
   try {
-    const { amount, categoryId, description, attachment, guestId } = req.body;
+    const { amount, categoryId, description, attachment, guestId, date } =
+      req.body;
+    const guestFound = await Guest.findById(guestId);
+    const category = await Category.findById(categoryId);
+
     if (!mongoose.Types.ObjectId.isValid(guestId)) {
       return res.status(400).json({ error: true, message: "invalid guest id" });
     }
-    // if (!mongoose.Types.ObjectId.isValid(categoryId)) {
-    //   return res
-    //     .status(400)
-    //     .json({ error: true, message: "invalid category id" });
-    // }
-    const guestFound = await Guest.findById(guestId);
+    if (!mongoose.Types.ObjectId.isValid(categoryId)) {
+      return res
+        .status(400)
+        .json({ error: true, message: "invalid category id" });
+    }
     if (!guestFound) {
       return res.status(404).json({ error: true, message: "Guest not found" });
     }
+    if (!category) {
+      return res
+        .status(404)
+        .json({ error: true, message: "Category not found" });
+    }
 
-    let foundCategory = await Category.findById(categoryId);
-    // if (!foundCategory) {
-    //   return res.status(404).json({ message: "Category not found" });
-    // }
     const newExpense = new Expense({
-      amount: amount,
-      category: foundCategory ? foundCategory : "",
-      description: description,
-      attachment: attachment,
+      date,
+      amount,
+      category,
+      description,
+      attachment,
     });
     const savedExpense = await newExpense.save();
 

@@ -73,7 +73,7 @@ export const getGuestBalance = createAsyncThunk(
   async (_, { getState }) => {
     const { guestId, token } = (getState() as { userAuth: UserState }).userAuth;
     const response = await axios.get(
-      "http://localhost:5000/guest/guestbalance",
+      `${import.meta.env.VITE_BASEURL}/guest/guestbalance`,
       {
         headers: {
           guestId,
@@ -89,7 +89,7 @@ export const getGuestExpense = createAsyncThunk(
   async (_, { getState }) => {
     const { guestId, token } = (getState() as { userAuth: UserState }).userAuth;
     const response = await axios.get(
-      "http://localhost:5000/expense/guestexpense",
+      `${import.meta.env.VITE_BASEURL}/expense/guestexpense`,
       {
         headers: {
           guestId,
