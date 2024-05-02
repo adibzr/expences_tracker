@@ -7,9 +7,9 @@ import {
   getGuestBalance,
   getGuestExpense,
 } from "../../redux/slices/financialSlice";
+import { getGuestFunds } from "../../redux/slices/fundsSlice";
 import { registerGuest } from "../../redux/slices/userAuthSlice";
 import style from "./home.module.css";
-import { getGuestFunds } from "../../redux/slices/fundsSlice";
 
 const Home = () => {
   const iconColor = "hsl(39, 100%, 50%)";
@@ -28,6 +28,10 @@ const Home = () => {
         dispatch(getGuestFunds());
         dispatch(getGuestBalance());
       });
+    } else {
+      dispatch(getGuestExpense());
+      dispatch(getGuestFunds());
+      dispatch(getGuestBalance());
     }
   }, [dispatch, guestId, token]);
 

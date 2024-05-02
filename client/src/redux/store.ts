@@ -1,14 +1,24 @@
 import { Action, ThunkAction, configureStore } from "@reduxjs/toolkit";
-import userAuthSlice from "./slices/userAuthSlice";
+import { persistReducer, persistStore } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 import financialSlice from "./slices/financialSlice";
 import fundsSlice from "./slices/fundsSlice";
+import userAuthSlice from "./slices/userAuthSlice";
 
+const persistConfig = {
+  key: "root",
+  storage,
+  whitelist: ["guestId", "token"], // only persist the 'user' state
+};
+const persistedReducer = persistReducer(persistConfig, userAuthSlice);
 const store = configureStore({
   reducer: {
-    userAuth: userAuthSlice,
+    userAuth: persistedReducer,
     financials: financialSlice,
     funds: fundsSlice,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ serializableCheck: false }),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
@@ -21,4 +31,6 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   Action<string>
 >;
+
+export const persistor = persistStore(store);
 export default store;
