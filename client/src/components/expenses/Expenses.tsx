@@ -1,7 +1,10 @@
 // import React, { useState } from "react";
+import { ButtonComponentLarge } from "../ButtonComponent";
+import DatePickerComponent from "./DatePickerComponent";
 import DescriptionTextfield from "./DescriptionTextfield";
 import SelectComponent from "./SelectComponent";
 
+import style from "./expense.module.css";
 export interface expenseDataState {
   category: string;
   date: Date;
@@ -10,28 +13,24 @@ export interface expenseDataState {
 }
 
 const Expenses = () => {
-  // const [expenseData, setExpenseData] = useState<expenseDataState>({
-  //   category: "",
-  //   date: new Date(),
-  //   description: "",
-  //   amount: 0,
-  // });
-  // const selectOptions = ["Documentation", "Components", "Features"];
+  const categories = ["Food", "Clothes", "Entertainment"];
+  const wallets = ["Wallet", "Bank"];
 
   return (
-    <>
-      <div>amount</div>
-      <div>
+    <div className={style.wrapper}>
+      <div className={style.amount}>0</div>
+      <div className={style.inputs}>
         {/* category */}
-        <SelectComponent />
+        <SelectComponent label="Category" items={categories} />
+        {/* date */}
+        <DatePickerComponent />
         {/* description */}
         <DescriptionTextfield />
-        {/* date */}
-
         {/* wallet/bank */}
-        <SelectComponent />
+        <SelectComponent label="Wallet/Bank" items={wallets} />
       </div>
-    </>
+      <ButtonComponentLarge className={style.button} text="Continue" />
+    </div>
   );
 };
 

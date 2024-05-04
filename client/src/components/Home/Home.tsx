@@ -12,40 +12,15 @@ import { registerGuest } from "../../redux/slices/userAuthSlice";
 import style from "./home.module.css";
 
 const Home = () => {
-  const iconColor = "hsl(39, 100%, 50%)";
+  const iconColor = "hsl(39, 98%, 53%)";
   const iconColorSplit = "hsl(39, 98%, 53%)".split(")");
-  const iconBgColor = iconColorSplit[0].concat(", 0.2)");
-  const balance = useAppSelector((state) => state.financials);
-  const expenses = useAppSelector((state) => state.financials);
+  const lighterIconColor = iconColorSplit[0] + ", 0.2)";
+  const { balance, loading, totalExpense } = useAppSelector(
+    (state) => state.financials
+  );
   const funds = useAppSelector((state) => state.funds);
-  //const { guestId, token } = useAppSelector((state) => state.userAuth);
 
-  const dispatch = useAppDispatch();
-  const controller = new AbortController();
-  const loadData = async () => {
-    try {
-      // Dispatch your actions here
-
-      await dispatch(registerGuest());
-      await dispatch(getGuestExpense());
-      await dispatch(getGuestFunds());
-      await dispatch(getGuestBalance());
-    } catch (error) {
-      // Handle errors
-    }
-  };
-  useEffect(() => {
-    loadData();
-
-    return () => {
-      // Cleanup function: cancel all requests when the component unmounts
-      controller.abort();
-    };
-  }, [dispatch]);
-
-  useEffect(() => {
-    document.documentElement.style.setProperty("--iconBgColor", iconBgColor);
-  }, [iconBgColor]);
+  useGetGuestInfo();
 
   return (
     <div className={style.wrapper}>
@@ -53,7 +28,7 @@ const Home = () => {
         <h3>Account Balance</h3>
         <h1>
           $
-          {balance.loading ? (
+          {loading ? (
             <CircularProgress
               size={28}
               style={{
@@ -63,7 +38,7 @@ const Home = () => {
               color="inherit"
             />
           ) : (
-            balance.balance
+            balance
           )}
         </h1>
       </div>
@@ -104,7 +79,7 @@ const Home = () => {
                   color="inherit"
                 />
               ) : (
-                expenses.totalExpense
+                totalExpense
               )}
             </p>
           </div>
@@ -116,7 +91,12 @@ const Home = () => {
           <button>View All</button>
         </div>
 
-        <div className={style.transactions}>
+        <div
+          className={style.transactions}
+          style={
+            { "--iconBgColor": `${lighterIconColor}` } as React.CSSProperties
+          }
+        >
           <div className={style.transactionTitle}>
             <svg
               width="32"
@@ -146,5 +126,23 @@ const Home = () => {
     </div>
   );
 };
+
+const useGetGuestInfo = () => {
+  const { guestId, token } = useAppSelector((state) => state.userAuth);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    const loadData = async () => {
+      if (!guestId && !token) {
+        await dispatch(registerGuest());
+      }
+      dispatch(getGuestExpense());
+      dispatch(getGuestFunds());
+      dispatch(getGuestBalance());
+    };
+    loadData();
+  }, []);
+};
+
+const useSetitemBgColor = (iconColor: string) => {};
 
 export default Home;

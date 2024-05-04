@@ -2,16 +2,17 @@ import { TextField } from "@mui/material";
 import React from "react";
 
 const DescriptionTextfield = () => {
-  const [name, setName] = React.useState("");
-  console.log(name);
+  const [name, setDescription] = React.useState("");
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDescription(event.target.value);
+  };
   return (
     <>
       <TextField
-        id="outlined-controlled"
-        label="Controlled"
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          setName(event.target.value);
-        }}
+        rows={4}
+        multiline={true}
+        label="Description"
+        onChange={handleChange}
       />
     </>
   );

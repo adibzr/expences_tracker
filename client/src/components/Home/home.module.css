@@ -88,7 +88,7 @@
   gap: 3rem;
   padding-inline: 2rem;
   border-radius: 1rem;
-
+  --iconBgColor: white;
   &:hover {
     background-color: var(--iconBgColor);
     svg {

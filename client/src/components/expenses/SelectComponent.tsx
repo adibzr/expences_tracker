@@ -1,10 +1,16 @@
-import * as React from "react";
+import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import * as React from "react";
 
-const SelectComponent = () => {
+const SelectComponent = ({
+  label,
+  items,
+}: {
+  label: string;
+  items: string[];
+}) => {
   const [age, setAge] = React.useState("");
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -13,21 +19,14 @@ const SelectComponent = () => {
 
   return (
     <>
-      <FormControl sx={{ m: 10, minWidth: 120 }}>
-        <InputLabel id="demo-simple-select-helper-label">Age</InputLabel>
-        <Select
-          labelId="demo-simple-select-helper-label"
-          id="demo-simple-select-helper"
-          value={age}
-          label="Age"
-          onChange={handleChange}
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+      <FormControl>
+        <InputLabel style={{ backgroundColor: "white" }}>{label}</InputLabel>
+        <Select value={age} onChange={handleChange}>
+          {items.map((item) => (
+            <MenuItem key={item} value={item}>
+              {item}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
     </>

@@ -12,7 +12,7 @@ interface expense {
 }
 
 interface initialState {
-  balance: number | null;
+  balance: number;
   loading: boolean;
   error: string;
   success: boolean;
@@ -21,7 +21,7 @@ interface initialState {
 }
 
 const initialState: initialState = {
-  balance: null,
+  balance: 0,
   loading: false,
   error: "",
   success: false,

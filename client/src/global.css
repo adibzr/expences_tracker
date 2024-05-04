@@ -1,8 +1,6 @@
 /* variables */
 
 :root {
-  --iconBgColor: yellow;
-
   --font-family: Inter;
   --color-violet-500: hsl(260, 100%, 62%);
   --color-violet-400: hsl(260, 100%, 67%);
