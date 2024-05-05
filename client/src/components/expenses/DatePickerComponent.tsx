@@ -5,8 +5,14 @@ import { DateValidationError } from "@mui/x-date-pickers/models/validation";
 import dayjs, { Dayjs } from "dayjs";
 
 import * as React from "react";
-//https://mui.com/x/react-date-pickers/date-picker/#basic-usage
-const DatePickerComponent = () => {
+import { expenseDataState } from "./Expenses";
+const DatePickerComponent = ({
+  input,
+  setInput,
+}: {
+  input: expenseDataState;
+  setInput: (arg0: expenseDataState) => void;
+}) => {
   const [value, setValue] = React.useState<Dayjs | null>(dayjs());
 
   const handleError = (error: DateValidationError) => {
@@ -20,7 +26,11 @@ const DatePickerComponent = () => {
         label="Date"
         value={value}
         disableFuture //disable future date
-        onChange={(newValue) => setValue(newValue)}
+        onChange={(newValue) =>
+          newValue
+            ? setInput({ ...input, date: newValue.format("DD-MM-YYYY") })
+            : setInput({ ...input, date: dayjs().format("DD-MM-YYYY") })
+        }
       />
     </LocalizationProvider>
   );

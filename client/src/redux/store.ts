@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage";
 import financialSlice from "./slices/financialSlice";
 import fundsSlice from "./slices/fundsSlice";
 import userAuthSlice from "./slices/userAuthSlice";
+import categoriesSlice from "./slices/categoriesSlice";
 
 const persistConfig = {
   key: "root",
@@ -16,6 +17,7 @@ const store = configureStore({
     userAuth: persistedReducer,
     financials: financialSlice,
     funds: fundsSlice,
+    categories: categoriesSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }),

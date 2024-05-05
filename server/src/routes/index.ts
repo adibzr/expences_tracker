@@ -18,6 +18,7 @@ import getGuestBankFund from "./guests/funds/getGuestBankFund";
 import getGuestWalletFund from "./guests/funds/getGuestWalletFund";
 import getGuestFund from "./guests/funds/getGuestFund";
 import postCategory from "./categories/postCategory";
+import getCategory from "./categories/getCategory";
 
 const router = Router();
 
@@ -42,5 +43,6 @@ router.use("/funds", getGuestBankFund);
 router.use("/funds", getGuestFund);
 
 router.use("/category", postCategory);
+router.use("/category", getCategory);
 
 export default router;
