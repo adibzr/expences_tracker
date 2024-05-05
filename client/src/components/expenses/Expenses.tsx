@@ -1,11 +1,11 @@
 // import React, { useState } from "react";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { ReactElement, useState } from "react";
 import useGetCategories from "../../hooks/useGetCategories";
 import { ButtonComponentLarge } from "../ButtonComponent";
+import AmountComponent from "./AmountComponent";
 import DatePickerComponent from "./DatePickerComponent";
 import DescriptionTextfield from "./DescriptionTextfield";
-import InputComponent from "./InputComponent";
 import SelectComponent from "./SelectComponent";
 import style from "./expense.module.css";
 
@@ -28,10 +28,14 @@ const Expenses = () => {
     amount: 0,
     wallet: "",
   });
+  const handleSubmit = (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+    console.log(inputs);
+  };
 
   return (
-    <form className={style.wrapper}>
-      <InputComponent />
+    <form className={style.wrapper} onSubmit={handleSubmit}>
+      <AmountComponent input={inputs} setInput={setInputs} />
       <div className={style.inputs}>
         <SelectComponent
           label="Category"
@@ -40,7 +44,7 @@ const Expenses = () => {
           setInput={setInputs}
         />
         <DatePickerComponent input={inputs} setInput={setInputs} />
-        <DescriptionTextfield />
+        <DescriptionTextfield input={inputs} setInput={setInputs} />
         <SelectComponent
           label="Wallet/Bank"
           items={wallets}

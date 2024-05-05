@@ -90,6 +90,7 @@ export const getGuestBank = createAsyncThunk(
           },
         }
       );
+      console.log(response.data);
       return response.data;
     } catch (error: any) {
       if (error.response.data.error) {
@@ -130,12 +131,15 @@ export const getGuestFunds = createAsyncThunk(
   "funds/guestFunds",
   async (_, { getState }) => {
     const { guestId, token } = (getState() as { userAuth: UserState }).userAuth;
-    const response = await axios.get(`${import.meta.env.VITE_BASEURL}/funds/guestfund` , {
-      headers: {
-        guestId,
-        token,
-      },
-    });
+    const response = await axios.get(
+      `${import.meta.env.VITE_BASEURL}/funds/guestfund`,
+      {
+        headers: {
+          guestId,
+          token,
+        },
+      }
+    );
     return response.data;
   }
 );
