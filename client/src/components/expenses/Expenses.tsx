@@ -9,7 +9,7 @@ import DatePickerComponent from "./DatePickerComponent";
 import DescriptionTextfield from "./DescriptionTextfield";
 import SelectComponent from "./SelectComponent";
 import style from "./expense.module.css";
-import { useAppDispatch } from "../../hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { postGuestExpense } from "../../redux/slices/financialSlice";
 
 export interface expenseDataState {
@@ -25,9 +25,23 @@ export interface expenseDataError {
   date: boolean;
   wallet: boolean;
 }
+export interface dataType extends expenseDataState {
+  foundCategory: {
+    _id: string;
+    title: string;
+    __v: number;
+  };
+}
 
 const Expenses = () => {
   const categories = useGetCategories();
+  const categoryTitles = categories.reduce(
+    (acc: string[], curr: { title: string }) => {
+      acc.push(curr.title);
+      return acc;
+    },
+    []
+  );
   const banks = useGetBanks();
   banks.unshift("wallet");
   const dispatch = useAppDispatch();
@@ -45,6 +59,7 @@ const Expenses = () => {
     wallet: false,
     date: false,
   });
+
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
     if (inputs.category === "" || inputs.wallet === "") {
@@ -61,7 +76,19 @@ const Expenses = () => {
         amount: 0,
         wallet: "",
       });
-      dispatch(postGuestExpense(inputs));
+      const foundCategory = categories.find(
+        (cat) => cat.title === inputs.category
+      );
+
+      if (foundCategory) {
+        const data: dataType = { foundCategory, ...inputs };
+        dispatch(postGuestExpense(data));
+      } else {
+        setError({
+          ...errors,
+          category: true,
+        });
+      }
     }
   };
 
@@ -71,7 +98,7 @@ const Expenses = () => {
       <div className={style.inputs}>
         <SelectComponent
           label="Category"
-          items={categories}
+          items={categoryTitles}
           input={inputs}
           errors={errors}
           setInput={setInputs}

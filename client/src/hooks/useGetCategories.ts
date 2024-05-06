@@ -13,14 +13,8 @@ const useGetCategories = () => {
   }, []);
 
   const { categories } = useAppSelector((state) => state.categories);
-  const categoryTitles = categories.reduce(
-    (acc: string[], curr: { title: string }) => {
-      acc.push(curr.title);
-      return acc;
-    },
-    []
-  );
-  return categoryTitles;
+
+  return categories;
 };
 
 export default useGetCategories;

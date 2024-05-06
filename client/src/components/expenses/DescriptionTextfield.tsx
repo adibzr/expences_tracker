@@ -19,9 +19,11 @@ const DescriptionTextfield = ({
   return (
     <>
       <TextField
-        rows={4}
-        multiline={true}
+        aria-label="Description"
         label="Description"
+        multiline={true}
+        rows={4}
+        value={input.description}
         onChange={handleChange}
       />
     </>

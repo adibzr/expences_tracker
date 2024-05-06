@@ -2,7 +2,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { UserState } from "./userAuthSlice";
-import { expenseDataState } from "../../components/expenses/Expenses";
+import data, { dataType } from "./../../components/expenses/Expenses";
 
 interface expense {
   date: Date;
@@ -71,7 +71,7 @@ const financialSlice = createSlice({
       state.success = true;
     });
     builder.addCase(postGuestExpense.rejected, (state, action) => {
-      state.error = action.payload as string;
+      state.error = action.error as string;
       state.loading = false;
       state.success = false;
     });
@@ -116,12 +116,21 @@ export const getGuestExpense = createAsyncThunk(
 
 export const postGuestExpense = createAsyncThunk(
   "guest/postExpense",
-  async (data:expenseDataState, { getState }) => {
+  async (data: dataType, { getState }) => {
     const { token } = (getState() as { userAuth: UserState }).userAuth;
+    const { guestId } = (getState() as { userAuth: UserState }).userAuth;
+    const { foundCategory, date, description, amount, wallet } = data;
     const response = await axios.post(
       `${import.meta.env.VITE_BASEURL}/expense/addGuestExpense`,
       {
-        data,
+        guestId,
+        categoryId: foundCategory._id,
+        date,
+        description,
+        amount,
+        wallet,
+      },
+      {
         headers: {
           token,
         },
