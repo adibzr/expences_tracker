@@ -2,12 +2,20 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+export interface Icon {
+  data: Buffer;
+  iconColor: string;
+  title: string;
+  contentType: string;
+}
 interface initialState {
-  categories: { _id: string; title: string; __v: number }[];
+  categories: { _id: string; title: string; icon: Icon }[];
+  loading: boolean;
 }
 
 const initialState: initialState = {
   categories: [],
+  loading: true,
 };
 
 const categoriesSlice = createSlice({
@@ -17,6 +25,7 @@ const categoriesSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getCategories.fulfilled, (state, action) => {
       state.categories = action.payload;
+      state.loading = false;
     });
   },
 });

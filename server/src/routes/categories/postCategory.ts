@@ -19,6 +19,7 @@ router.post("/postCategory", upload.single("icon"), async (req, res, next) => {
     newIcon = new Icon({
       data: fs.readFileSync(req.file.path),
       title: iconTitle,
+      iconColor,
       contentType: "image/svg+xml",
     });
     await newIcon.save();

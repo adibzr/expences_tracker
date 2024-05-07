@@ -5,7 +5,7 @@ const router = Router();
 
 router.get("/getcategory", async (req, res) => {
   try {
-    const categories = await Category.find({});
+    const categories = await Category.find({}).populate("icon");
     res.status(200).json(categories);
   } catch (error: any) {
     res.status(500).json({ error: true, message: error.message });

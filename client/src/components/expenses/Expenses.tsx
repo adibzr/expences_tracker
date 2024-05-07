@@ -2,7 +2,6 @@
 import dayjs from "dayjs";
 import { useState } from "react";
 import useGetBanks from "../../hooks/useGetBanks";
-import useGetCategories from "../../hooks/useGetCategories";
 import { ButtonComponentLarge } from "../ButtonComponent";
 import AmountComponent from "./AmountComponent";
 import DatePickerComponent from "./DatePickerComponent";
@@ -11,6 +10,7 @@ import SelectComponent from "./SelectComponent";
 import style from "./expense.module.css";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { postGuestExpense } from "../../redux/slices/financialSlice";
+import { Icon } from "../../redux/slices/categoriesSlice";
 
 export interface expenseDataState {
   category: string;
@@ -29,12 +29,12 @@ export interface dataType extends expenseDataState {
   foundCategory: {
     _id: string;
     title: string;
-    __v: number;
+    icon: Icon;
   };
 }
 
 const Expenses = () => {
-  const categories = useGetCategories();
+  const { categories } = useAppSelector((state) => state.categories);
   const categoryTitles = categories.reduce(
     (acc: string[], curr: { title: string }) => {
       acc.push(curr.title);
