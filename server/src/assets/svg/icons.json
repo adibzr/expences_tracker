@@ -1,0 +1,64 @@
+{
+  "categories": [
+    {
+      "title": "Housing",
+      "iconColor": "hsl(68, 100%, 50%)"
+    },
+    {
+      "title": "Utilities",
+      "iconColor": "hsl(187, 100%, 50%)"
+    },
+    {
+      "title": "Transportation",
+      "iconColor": "hsl(333, 100%, 50%)"
+    },
+    {
+      "title": "Groceries",
+      "iconColor": "hsl(198, 100%, 50%)"
+    },
+    {
+      "title": "Dining out",
+      "iconColor": "hsl(35, 100%, 50%)"
+    },
+    {
+      "title": "Health care",
+      "iconColor": "hsl(168, 100%, 50%)"
+    },
+    {
+      "title": "Insurance",
+      "iconColor": "hsl(91, 100%, 50%)"
+    },
+    {
+      "title": "Debt payments",
+      "iconColor": "hsl(192, 100%, 50%)"
+    },
+    {
+      "title": "Entertainment",
+      "iconColor": "hsl(157, 100%, 50%)"
+    },
+    {
+      "title": "Clothing and personal care",
+      "iconColor": "hsl(328, 100%, 50%)"
+    },
+    {
+      "title": "Education",
+      "iconColor": "hsl(17, 100%, 50%)"
+    },
+    {
+      "title": "Savings and investments",
+      "iconColor": "hsl(308, 100%, 50%)"
+    },
+    {
+      "title": "Travel",
+      "iconColor": "hsl(261, 100%, 50%)"
+    },
+    {
+      "title": "Gifts and donations",
+      "iconColor": "hsl(147, 100%, 50%)"
+    },
+    {
+      "title": "Miscellaneous",
+      "iconColor": "hsl(224, 100%, 50%)"
+    }
+  ]
+}
