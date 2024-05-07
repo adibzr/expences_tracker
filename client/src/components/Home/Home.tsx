@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import expenseSVG from "../../assets/expense.svg";
 import incomeSVG from "../../assets/income.svg";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import { getCategories } from "../../redux/slices/categoriesSlice";
 import {
   getGuestBalance,
   getGuestExpense,
@@ -10,7 +11,6 @@ import {
 import { getGuestFunds } from "../../redux/slices/fundsSlice";
 import { registerGuest } from "../../redux/slices/userAuthSlice";
 import style from "./home.module.css";
-import { getCategories } from "../../redux/slices/categoriesSlice";
 
 const Home = () => {
   useGetGuestInfo();
@@ -20,10 +20,10 @@ const Home = () => {
   let iconColor;
   let itemBgColor;
   if (!categories.loading) {
-    console.log("entra");
     iconColor = categories.categories[0].icon.iconColor;
     itemBgColor = useSetitemBgColor(iconColor);
     const svg = categories.categories[0].icon.data.toString("utf-8");
+    console.log(svg);
   }
   console.log(categories);
 
@@ -156,26 +156,17 @@ const useGetGuestInfo = () => {
         promise.abort();
       };
     }
-    return;
   }, [dispatch]);
   useEffect(() => {
-    const promise = dispatch(getGuestExpense());
+    const expensePromise = dispatch(getGuestExpense());
+    const fundsPromise = dispatch(getGuestFunds());
+    const balancePromise = dispatch(getGuestBalance());
     return () => {
-      promise.abort();
+      fundsPromise.abort();
+      expensePromise.abort();
+      balancePromise.abort();
     };
-  }, [dispatch]);
-  useEffect(() => {
-    const promise = dispatch(getGuestFunds());
-    return () => {
-      promise.abort();
-    };
-  }, [dispatch]);
-  useEffect(() => {
-    const promise = dispatch(getGuestBalance());
-    return () => {
-      promise.abort();
-    };
-  }, [dispatch]);
+  }, [guestId]);
 };
 
 const useSetitemBgColor = (iconColor: string) => {
