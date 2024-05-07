@@ -1,18 +1,20 @@
-import mongoose from "mongoose";
+import { Schema, model, Document } from "mongoose";
 
-export interface ICategory extends mongoose.Document {
+export interface ICategory extends Document {
   title: string;
+  icon: { [key: string]: any };
+  iconColor: string;
 }
 
-const categorySchema = new mongoose.Schema(
+const categorySchema = new Schema(
   {
     title: { type: String, required: true, unique: true },
-    icon: { type: String, default: "" },
-    iconColor: { type: String, default: "" },
+    icon: { type: Schema.Types.ObjectId, ref: "Icon", required: true },
+    iconColor: { type: String, default: "", required: true },
   },
   {
     versionKey: false,
   }
 );
 
-export default mongoose.model<ICategory>("Category", categorySchema);
+export default model<ICategory>("Category", categorySchema);

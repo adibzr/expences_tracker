@@ -15,14 +15,14 @@ app.use(express.json());
 
 app.use(bodyParser.urlencoded({ extended: false, limit: "50mb" }));
 app.use(bodyParser.json({ limit: "50mb" }));
-app.use(
-  fileUpload({
-    limits: { fileSize: 50 * 1024 * 1024 },
-    useTempFiles: true,
-    tempFileDir: "/uploads/",
-    createParentPath: true,
-  })
-);
+// app.use(
+//   fileUpload({
+//     limits: { fileSize: 50 * 1024 * 1024 },
+//     useTempFiles: true,
+//     tempFileDir: "/uploads/",
+//     createParentPath: true,
+//   })
+// );
 
 app.use(morgan("dev"));
 app.use((_req, res, next) => {
