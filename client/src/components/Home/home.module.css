@@ -96,15 +96,16 @@
       background-color: var(--color-light-500);
     }
   }
+  svg {
+    width: 60px;
+    height: 60px;
+    border-radius: 20px;
+    grid-row: span 2;
+    fill: var(--icon-color);
+  }
 }
 .description {
   color: var(--color-light-200);
-}
-
-.transactionIcon {
-  min-width: 50px;
-  min-height: 50px;
-  grid-row: span 2;
 }
 
 .transactionTitle {

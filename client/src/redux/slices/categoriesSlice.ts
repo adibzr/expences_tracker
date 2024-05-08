@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export interface Icon {
-  data: Buffer;
+  data: { data: number[] };
   iconColor: string;
   title: string;
   contentType: string;
