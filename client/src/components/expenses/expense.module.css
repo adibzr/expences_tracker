@@ -28,29 +28,6 @@
   gap: 2rem;
 }
 
-.inputComp {
-  margin-inline: auto;
-
-  input {
-    font-size: var(--fs-900);
-    font-weight: var(--fw-700);
-    color: var(--color-red);
-    display: block;
-    box-sizing: border-box;
-    flex-basis: 100%;
-    border: none;
-    outline: none;
-
-    &::placeholder {
-      color: var(--color-red);
-    }
-    &:focus {
-      outline: none;
-      border: none;
-    }
-  }
-}
-
 .button {
   margin-inline: auto;
   margin-bottom: 2rem;

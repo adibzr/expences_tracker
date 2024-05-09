@@ -1,10 +1,11 @@
 import { Action, ThunkAction, configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import financialSlice from "./slices/financialSlice";
+import balanceSlice from "./slices/balanceSlice";
+import categoriesSlice from "./slices/categoriesSlice";
+import expenseSlice from "./slices/expenseSlice";
 import fundsSlice from "./slices/fundsSlice";
 import userAuthSlice from "./slices/userAuthSlice";
-import categoriesSlice from "./slices/categoriesSlice";
 
 const persistConfig = {
   key: "root",
@@ -15,7 +16,8 @@ const persistedReducer = persistReducer(persistConfig, userAuthSlice);
 const store = configureStore({
   reducer: {
     userAuth: persistedReducer,
-    financials: financialSlice,
+    balance: balanceSlice,
+    expense: expenseSlice,
     funds: fundsSlice,
     categories: categoriesSlice,
   },

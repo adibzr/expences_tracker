@@ -3,18 +3,17 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs, { Dayjs } from "dayjs";
 
-import * as React from "react";
-import { expenseDataError, expenseDataState } from "./Expenses";
+import { inputsDataError, inputsDataState } from "./types";
 const DatePickerComponent = ({
   input,
   errors,
   setInput,
   setError,
 }: {
-  input: expenseDataState;
-  errors: expenseDataError;
-  setInput: (arg0: expenseDataState) => void;
-  setError: (arg0: expenseDataError) => void;
+  input: inputsDataState;
+  errors: inputsDataError;
+  setInput: (arg0: inputsDataState) => void;
+  setError: (arg0: inputsDataError) => void;
 }) => {
   const handleChange = (newValue: Dayjs | null) => {
     if (newValue) {

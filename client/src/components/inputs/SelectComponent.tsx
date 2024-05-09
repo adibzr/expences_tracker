@@ -2,7 +2,7 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { expenseDataError, expenseDataState } from "./Expenses";
+import { inputsDataError, inputsDataState } from "./types";
 
 const SelectComponent = ({
   label,
@@ -14,10 +14,10 @@ const SelectComponent = ({
 }: {
   label: string;
   items: string[];
-  errors: expenseDataError;
-  input: expenseDataState;
-  setInput: (arg0: expenseDataState) => void;
-  setError: (arg0: expenseDataError) => void;
+  errors: inputsDataError;
+  input: inputsDataState;
+  setInput: (arg0: inputsDataState) => void;
+  setError: (arg0: inputsDataError) => void;
 }) => {
   const handleChange = (event: SelectChangeEvent) => {
     const value = event.target.value as string;

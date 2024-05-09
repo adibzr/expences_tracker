@@ -86,6 +86,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 3rem;
+  padding-block: 1rem;
   padding-inline: 2rem;
   border-radius: 1rem;
   --iconBgColor: white;
@@ -97,6 +98,7 @@
     }
   }
   svg {
+    background-color: var(--iconBgColor);
     width: 60px;
     height: 60px;
     border-radius: 20px;
@@ -106,6 +108,9 @@
 }
 .description {
   color: var(--color-light-200);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .transactionTitle {
@@ -116,10 +121,11 @@
 }
 
 .transactionAmount {
-  align-content: center;
-  align-items: center;
-  justify-self: right;
-  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  justify-content: center;
   div:nth-child(1) {
     font-weight: var(--fw-700);
     font-size: var(--fs-500);

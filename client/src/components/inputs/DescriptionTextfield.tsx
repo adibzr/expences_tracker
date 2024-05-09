@@ -1,13 +1,13 @@
 import { TextField } from "@mui/material";
 import React from "react";
-import { expenseDataState } from "./Expenses";
+import { inputsDataState } from "./types";
 
 const DescriptionTextfield = ({
   input,
   setInput,
 }: {
-  input: expenseDataState;
-  setInput: (arg0: expenseDataState) => void;
+  input: inputsDataState;
+  setInput: (arg0: inputsDataState) => void;
 }) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value as string;

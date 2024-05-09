@@ -3,35 +3,23 @@ import { useEffect } from "react";
 import expenseSVG from "../../assets/expense.svg";
 import incomeSVG from "../../assets/income.svg";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { getCategories } from "../../redux/slices/categoriesSlice";
-import {
-  getGuestBalance,
-  getGuestExpense,
-} from "../../redux/slices/financialSlice";
+import { getGuestBalance } from "../../redux/slices/balanceSlice";
+import { Icon, getCategories } from "../../redux/slices/categoriesSlice";
+import { getGuestExpense } from "../../redux/slices/expenseSlice";
 import { getGuestFunds } from "../../redux/slices/fundsSlice";
 import { registerGuest } from "../../redux/slices/userAuthSlice";
 import style from "./home.module.css";
 
+type cat = { _id: string; title: string; icon: Icon };
+
 const Home = () => {
   useGetGuestInfo();
-  useGetCategories();
+  const categories = useGetCategories();
 
-  const categories = useAppSelector((state) => state.categories);
-  let iconColor;
-  let itemBgColor;
-  let svg = "";
-  if (!categories.loading) {
-    iconColor = categories.categories[0].icon.iconColor;
-    itemBgColor = useSetitemBgColor(iconColor);
-    svg = String.fromCharCode.apply(
-      null,
-      categories.categories[0].icon.data.data
-    );
-  }
-
-  const { balance, loading, totalExpense } = useAppSelector(
-    (state) => state.financials
+  const { loading, totalExpense, expense } = useAppSelector(
+    (state) => state.expense
   );
+  const balance = useAppSelector((state) => state.balance.balance);
   const funds = useAppSelector((state) => state.funds);
 
   return (
@@ -97,7 +85,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      {categories.loading ? (
+      {categories.loading && loading ? (
         <CircularProgress
           size={28}
           style={{
@@ -113,26 +101,56 @@ const Home = () => {
             <button>View All</button>
           </div>
 
-          <div
-            className={style.transactions}
-            style={{ "--iconBgColor": `${itemBgColor}` } as React.CSSProperties}
-          >
-            <div className={style.transactionTitle}>
-              <svg dangerouslySetInnerHTML={{ __html: svg }} />
-              <div>title</div>
-              <div className={style.description}>description</div>
-            </div>
-            <div className={style.transactionAmount}>
+          {expense.map((item) => {
+            console.log(categories.expenseCategories);
+            const category = categories.expenseCategories.find(
+              (cat) => cat._id === item.category
+            );
+            const { iconTitle, itemBgColor, svg } = useGetIcon(category);
+            const date = new Date(item.date);
+            const iconColor = category?.icon.iconColor;
+            return category ? (
               <div
-                style={{
-                  color: "var(--color-red)",
-                }}
+                className={style.transactions}
+                style={
+                  { "--iconBgColor": `${itemBgColor}` } as React.CSSProperties
+                }
               >
-                $120
+                <div className={style.transactionTitle}>
+                  <svg
+                    style={
+                      { "--icon-color": `${iconColor}` } as React.CSSProperties
+                    }
+                    dangerouslySetInnerHTML={{ __html: svg }}
+                  />
+                  <div>{iconTitle}</div>
+                  <div className={style.description}>
+                    {item.description}
+                    <span className={style.descriptionTooltip}>hola</span>
+                  </div>
+                </div>
+                <div className={style.transactionAmount}>
+                  <div
+                    style={{
+                      color: "var(--color-red)",
+                    }}
+                  >
+                    ${item.amount}
+                  </div>
+                  <div style={{ color: "var(--color-light-200)" }}>
+                    {date.toLocaleDateString()}
+                  </div>
+                </div>
               </div>
-              <div style={{ color: "var(--color-light-200)" }}>1/1/1900</div>
-            </div>
-          </div>
+            ) : (
+              <div
+                style={{ textAlign: "center" }}
+                className={style.description}
+              >
+                No items add incomes or expeses to see them here
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
@@ -163,9 +181,6 @@ const useGetGuestInfo = () => {
 };
 
 const useSetitemBgColor = (iconColor: string) => {
-  useEffect(() => {
-    document.documentElement.style.setProperty("--icon-color", iconColor);
-  }, [iconColor]);
   const iconColorSplit = iconColor.split(")");
   const lighterIconColor = iconColorSplit[0] + ", 0.2)";
   return lighterIconColor;
@@ -181,8 +196,23 @@ const useGetCategories = () => {
     };
   }, [dispatch]);
 
-  const { categories } = useAppSelector((state) => state.categories);
+  const categories = useAppSelector((state) => state.categories);
 
   return categories;
+};
+
+const useGetIcon = (categories: cat | undefined) => {
+  let itemBgColor;
+  let svg = "";
+
+  const iconTitle = categories?.title;
+
+  if (categories) {
+    const iconColor = categories.icon.iconColor;
+    itemBgColor = useSetitemBgColor(iconColor);
+    svg = String.fromCharCode.apply(null, categories.icon.data.data);
+  }
+
+  return { iconTitle, itemBgColor, svg };
 };
 export default Home;

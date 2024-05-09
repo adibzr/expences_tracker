@@ -1,0 +1,22 @@
+.inputComp {
+  margin-inline: auto;
+
+  input {
+    font-size: var(--fs-900);
+    font-weight: var(--fw-700);
+
+    display: block;
+    box-sizing: border-box;
+    flex-basis: 100%;
+    border: none;
+    outline: none;
+
+    &::placeholder {
+      color: inherit;
+    }
+    &:focus {
+      outline: none;
+      border: none;
+    }
+  }
+}

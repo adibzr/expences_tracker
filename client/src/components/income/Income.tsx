@@ -2,17 +2,21 @@
 import dayjs from "dayjs";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import useGetBanks from "../../hooks/useGetBanks";
 import { Icon } from "../../redux/slices/categoriesSlice";
-import { postGuestExpense } from "../../redux/slices/expenseSlice";
+import { postGuestBank } from "../../redux/slices/incomeSlice";
 import { ButtonComponentLarge } from "../ButtonComponent";
-import AmountComponent from "./../inputs/AmountComponent";
-import DatePickerComponent from "./../inputs/DatePickerComponent";
-import DescriptionTextfield from "./../inputs/DescriptionTextfield";
-import SelectComponent from "./../inputs/SelectComponent";
-import { inputsDataState } from "./../inputs/types";
-import style from "./expense.module.css";
+import AmountComponent from "../inputs/AmountComponent";
+import DatePickerComponent from "../inputs/DatePickerComponent";
+import DescriptionTextfield from "../inputs/DescriptionTextfield";
+import SelectComponent from "../inputs/SelectComponent";
+import { inputsDataState } from "../inputs/types";
+import style from "./income.module.css";
 
 export interface dataType extends inputsDataState {
+  logo?: string;
+  title: string;
+  bankId: string;
   foundCategory: {
     _id: string;
     title: string;
@@ -20,7 +24,7 @@ export interface dataType extends inputsDataState {
   };
 }
 
-const Expenses = () => {
+const Income = () => {
   const { categories } = useAppSelector((state) => state.categories);
   const categoryTitles = categories.reduce(
     (acc: string[], curr: { title: string }) => {
@@ -29,7 +33,8 @@ const Expenses = () => {
     },
     []
   );
-
+  const banks = useGetBanks();
+  banks.unshift("wallet");
   const dispatch = useAppDispatch();
 
   const [inputs, setInputs] = useState({
@@ -42,18 +47,33 @@ const Expenses = () => {
 
   const [errors, setError] = useState({
     category: false,
-    date: false,
     wallet: false,
+    date: false,
   });
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    if (inputs.category === "") {
+    if (inputs.category === "" || inputs.wallet === "") {
       setError({
         ...errors,
         category: true,
+        wallet: true,
       });
     } else {
+      const foundCategory = categories.find(
+        (cat) => cat.title === inputs.category
+      );
+
+      // if (foundCategory) {
+      //   const data: dataType = { foundCategory, ...inputs };
+      //   dispatch(postGuestBank(data));
+      // } else {
+      //   setError({
+      //     ...errors,
+      //     category: true,
+      //   });
+      // }
+
       setInputs({
         category: "",
         date: dayjs().format("DD-MM-YYYY"),
@@ -61,25 +81,12 @@ const Expenses = () => {
         amount: 0,
         wallet: "",
       });
-      const foundCategory = categories.find(
-        (cat) => cat.title === inputs.category
-      );
-
-      if (foundCategory) {
-        const data: dataType = { foundCategory, ...inputs };
-        dispatch(postGuestExpense(data));
-      } else {
-        setError({
-          ...errors,
-          category: true,
-        });
-      }
     }
   };
 
   return (
     <form className={style.wrapper} onSubmit={handleSubmit}>
-      <AmountComponent color="red" input={inputs} setInput={setInputs} />
+      <AmountComponent color="green" input={inputs} setInput={setInputs} />
       <div className={style.inputs}>
         <SelectComponent
           label="Category"
@@ -96,9 +103,19 @@ const Expenses = () => {
           setError={setError}
         />
         <DescriptionTextfield input={inputs} setInput={setInputs} />
+        <SelectComponent
+          label="Wallet/Bank"
+          items={banks}
+          input={inputs}
+          errors={errors}
+          setInput={setInputs}
+          setError={setError}
+        />
       </div>
       <ButtonComponentLarge
-        disabled={errors?.category || errors?.date ? true : false}
+        disabled={
+          errors?.category || errors?.date || errors?.wallet ? true : false
+        }
         type="submit"
         className={style.button}
         text="Continue"
@@ -107,4 +124,4 @@ const Expenses = () => {
   );
 };
 
-export default Expenses;
+export default Income;
