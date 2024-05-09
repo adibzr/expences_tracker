@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 import mongoose from "mongoose";
-import Category from "../../../models/category";
+import Category from "../../../models/expensesCategory";
 import Expense from "../../../models/expense";
 import Guest from "../../../models/guest";
 

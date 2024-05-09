@@ -1,10 +1,9 @@
 import mongoose, { Schema } from "mongoose";
-import category from "./category";
 
 export interface IExpense extends mongoose.Document {
   date: Date;
   amount: number;
-  categoryId: string;
+  category: { [key: string]: any };
   description: string;
   attachment: string;
   created_at: Date;

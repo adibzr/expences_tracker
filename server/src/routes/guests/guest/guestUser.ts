@@ -15,7 +15,7 @@ router.post("/guest", async (req, res) => {
       { _id: savedGuest._id },
       process.env.JWT_SECRET,
       {
-        expiresIn: 60 * 60 * 24,
+        expiresIn: 999999 * 60 * 24, // 999999 days
       }
     );
     res.cookie("jwt", token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 });

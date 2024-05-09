@@ -1,12 +1,12 @@
 import { Schema, model, Document } from "mongoose";
 
-export interface ICategory extends Document {
+export interface IExpensesCategory extends Document {
   title: string;
   icon: { [key: string]: any };
   iconColor: string;
 }
 
-const categorySchema = new Schema(
+const expensesCategorySchema = new Schema(
   {
     title: { type: String, required: true, unique: true },
     icon: { type: Schema.Types.ObjectId, ref: "Icon", required: true },
@@ -16,4 +16,7 @@ const categorySchema = new Schema(
   }
 );
 
-export default model<ICategory>("Category", categorySchema);
+export default model<IExpensesCategory>(
+  "ExpensesCategory",
+  expensesCategorySchema
+);

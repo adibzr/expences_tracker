@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
 import mongoose from "mongoose";
-import Category from "../../../models/category";
 import Expense from "../../../models/expense";
+import Category from "../../../models/expensesCategory";
 import User from "../../../models/user";
 
 const router = Router();
