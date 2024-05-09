@@ -2,7 +2,6 @@
 import dayjs from "dayjs";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { Icon } from "../../redux/slices/categoriesSlice";
 import { postGuestExpense } from "../../redux/slices/expenseSlice";
 import { ButtonComponentLarge } from "../ButtonComponent";
 import AmountComponent from "./../inputs/AmountComponent";
@@ -12,17 +11,9 @@ import SelectComponent from "./../inputs/SelectComponent";
 import { inputsDataState } from "./../inputs/types";
 import style from "./expense.module.css";
 
-export interface dataType extends inputsDataState {
-  foundCategory: {
-    _id: string;
-    title: string;
-    icon: Icon;
-  };
-}
-
 const Expenses = () => {
-  const { categories } = useAppSelector((state) => state.categories);
-  const categoryTitles = categories.reduce(
+  const categories = useAppSelector((state) => state.categories);
+  const categoryTitles = categories.expenseCategories.reduce(
     (acc: string[], curr: { title: string }) => {
       acc.push(curr.title);
       return acc;
@@ -61,12 +52,15 @@ const Expenses = () => {
         amount: 0,
         wallet: "",
       });
-      const foundCategory = categories.find(
+      const foundCategory = categories.expenseCategories.find(
         (cat) => cat.title === inputs.category
       );
 
       if (foundCategory) {
-        const data: dataType = { foundCategory, ...inputs };
+        const data: inputsDataState = {
+          ...inputs,
+          category: foundCategory._id,
+        };
         dispatch(postGuestExpense(data));
       } else {
         setError({

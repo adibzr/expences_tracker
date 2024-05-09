@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { dataType } from "../../components/expenses/Expenses";
 import { UserState } from "./userAuthSlice";
+import { inputsDataState } from "../../components/inputs/types";
 
 interface expense {
   date: Date;
@@ -84,15 +84,15 @@ export const getGuestExpense = createAsyncThunk(
 
 export const postGuestExpense = createAsyncThunk(
   "guest/postExpense",
-  async (data: dataType, { getState }) => {
+  async (data: inputsDataState, { getState }) => {
     const { token } = (getState() as { userAuth: UserState }).userAuth;
     const { guestId } = (getState() as { userAuth: UserState }).userAuth;
-    const { foundCategory, date, description, amount } = data;
+    const { category, date, description, amount } = data;
     const response = await axios.post(
       `${import.meta.env.VITE_BASEURL}/expense/addGuestExpense`,
       {
         guestId,
-        categoryId: foundCategory._id,
+        categoryId: category,
         date,
         description,
         amount,

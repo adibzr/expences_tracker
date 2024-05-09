@@ -6,6 +6,10 @@ export interface inputsDataState {
   wallet: string;
 }
 
+export interface walletBankInput extends inputsDataState {
+  bank: string;
+}
+
 export interface inputsDataError {
   category: boolean;
   date: boolean;

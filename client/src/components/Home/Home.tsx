@@ -102,7 +102,6 @@ const Home = () => {
           </div>
 
           {expense.map((item) => {
-            console.log(categories.expenseCategories);
             const category = categories.expenseCategories.find(
               (cat) => cat._id === item.category
             );
@@ -124,10 +123,7 @@ const Home = () => {
                     dangerouslySetInnerHTML={{ __html: svg }}
                   />
                   <div>{iconTitle}</div>
-                  <div className={style.description}>
-                    {item.description}
-                    <span className={style.descriptionTooltip}>hola</span>
-                  </div>
+                  <div className={style.description}>{item.description}</div>
                 </div>
                 <div className={style.transactionAmount}>
                   <div

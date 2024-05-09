@@ -2,25 +2,23 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { inputsDataError, inputsDataState } from "./types";
+import { inputsDataError, inputsDataState, walletBankInput } from "./types";
 
-interface selectComponentProps<T extends inputsDataState> {
-  label: string;
-  items: string[];
-  input: T;
-  errors: inputsDataError;
-  setInput: (arg0: T) => void;
-  setError: (arg0: inputsDataError) => void;
-}
-
-const SelectComponent = <T extends inputsDataState>({
+const WalletBankSelectComponent = ({
   label,
   items,
   input,
   errors,
   setInput,
   setError,
-}: selectComponentProps<T>) => {
+}: {
+  label: string;
+  items: string[];
+  errors: inputsDataError;
+  input: walletBankInput;
+  setInput: (arg0: walletBankInput) => void;
+  setError: (arg0: inputsDataError) => void;
+}) => {
   const handleChange = (event: SelectChangeEvent) => {
     const value = event.target.value as string;
     if (label === "Category") {
@@ -31,17 +29,10 @@ const SelectComponent = <T extends inputsDataState>({
       setError({ ...errors, category: false });
     }
     if (label === "Wallet/Bank") {
-      if (value === "wallet") {
-        setInput({
-          ...input,
-          wallet: value,
-        });
-      } else {
-        setInput({
-          ...input,
-          bank: value,
-        });
-      }
+      setInput({
+        ...input,
+        wallet: value,
+      });
       setError({ ...errors, wallet: false });
     }
   };
@@ -87,4 +78,4 @@ const SelectComponent = <T extends inputsDataState>({
   );
 };
 
-export default SelectComponent;
+export default WalletBankSelectComponent;

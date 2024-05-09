@@ -1,15 +1,17 @@
 import style from "./inputs.module.css";
 import { inputsDataState } from "./types";
 
-const AmountComponent = ({
+interface AmountComponentProps<T extends inputsDataState> {
+  color: string;
+  input: T;
+  setInput: (arg0: T) => void;
+}
+
+const AmountComponent = <T extends inputsDataState>({
   color,
   input,
   setInput,
-}: {
-  color: string;
-  input: inputsDataState;
-  setInput: (arg0: inputsDataState) => void;
-}) => {
+}: AmountComponentProps<T>) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!isNaN(Number(event.target.value))) {
       const value = Number(event.target.value);

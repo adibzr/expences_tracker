@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { dataType } from "../../components/income/Income";
 import { UserState } from "./userAuthSlice";
+import { walletBankInput } from "../../components/inputs/types";
 
 interface bank {
   title: string;
@@ -81,16 +81,16 @@ const incomeSlice = createSlice({
       state.loading = true;
     });
 
-    builder.addCase(postGuestBank.fulfilled, (state) => {
+    builder.addCase(postGuestWallet.fulfilled, (state) => {
       state.loading = false;
       state.success = true;
     });
-    builder.addCase(postGuestBank.rejected, (state, action) => {
+    builder.addCase(postGuestWallet.rejected, (state, action) => {
       state.error = action.error as string;
       state.loading = false;
       state.success = false;
     });
-    builder.addCase(postGuestBank.pending, (state) => {
+    builder.addCase(postGuestWallet.pending, (state) => {
       state.loading = true;
     });
   },
@@ -145,24 +145,20 @@ export const getGuestWallet = createAsyncThunk(
   }
 );
 
-export const postGuestBank = createAsyncThunk(
-  "guest/postincome",
-  async (data: dataType, { getState }) => {
+export const postGuestWallet = createAsyncThunk(
+  "guest/postwalletincome",
+  async (data: walletBankInput, { getState }) => {
     const { token } = (getState() as { userAuth: UserState }).userAuth;
     const { guestId } = (getState() as { userAuth: UserState }).userAuth;
-    const { foundCategory, bankId, description, date, amount, logo, title } =
-      data;
+    const { category, description, date, amount } = data;
     const response = await axios.post(
-      `${import.meta.env.VITE_BASEURL}/funds/addGuestincome`,
+      `${import.meta.env.VITE_BASEURL}/funds/addguestwalletfund`,
       {
-        category: foundCategory,
         guestId,
-        bankId,
+        category,
         description,
         date,
         amount,
-        logo,
-        title,
       },
       {
         headers: {

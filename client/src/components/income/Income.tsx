@@ -3,30 +3,18 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import useGetBanks from "../../hooks/useGetBanks";
-import { Icon } from "../../redux/slices/categoriesSlice";
-import { postGuestBank } from "../../redux/slices/incomeSlice";
+import { postGuestWallet } from "../../redux/slices/incomeSlice";
 import { ButtonComponentLarge } from "../ButtonComponent";
 import AmountComponent from "../inputs/AmountComponent";
 import DatePickerComponent from "../inputs/DatePickerComponent";
 import DescriptionTextfield from "../inputs/DescriptionTextfield";
 import SelectComponent from "../inputs/SelectComponent";
-import { inputsDataState } from "../inputs/types";
 import style from "./income.module.css";
-
-export interface dataType extends inputsDataState {
-  logo?: string;
-  title: string;
-  bankId: string;
-  foundCategory: {
-    _id: string;
-    title: string;
-    icon: Icon;
-  };
-}
+import { walletBankInput } from "../inputs/types";
 
 const Income = () => {
-  const { categories } = useAppSelector((state) => state.categories);
-  const categoryTitles = categories.reduce(
+  const categories = useAppSelector((state) => state.categories);
+  const categoryTitles = categories.fundCategories.reduce(
     (acc: string[], curr: { title: string }) => {
       acc.push(curr.title);
       return acc;
@@ -39,6 +27,7 @@ const Income = () => {
 
   const [inputs, setInputs] = useState({
     category: "",
+    bank: "",
     date: dayjs().format("DD-MM-YYYY"),
     description: "",
     amount: 0,
@@ -60,22 +49,28 @@ const Income = () => {
         wallet: true,
       });
     } else {
-      const foundCategory = categories.find(
+      const foundCategory = categories.fundCategories.find(
         (cat) => cat.title === inputs.category
       );
 
-      // if (foundCategory) {
-      //   const data: dataType = { foundCategory, ...inputs };
-      //   dispatch(postGuestBank(data));
-      // } else {
-      //   setError({
-      //     ...errors,
-      //     category: true,
-      //   });
-      // }
+      if (foundCategory) {
+        const data: walletBankInput = {
+          ...inputs,
+          category: foundCategory._id,
+        };
+        if (inputs.wallet === "wallet") {
+          dispatch(postGuestWallet(data));
+        }
+      } else {
+        setError({
+          ...errors,
+          category: true,
+        });
+      }
 
       setInputs({
         category: "",
+        bank: "",
         date: dayjs().format("DD-MM-YYYY"),
         description: "",
         amount: 0,

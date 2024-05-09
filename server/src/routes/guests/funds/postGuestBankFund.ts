@@ -8,16 +8,7 @@ const router = Router();
 
 router.post("/addguestbankfund", auth, async (req: Request, res: Response) => {
   try {
-    const {
-      category,
-      guestId,
-      bankId,
-      description,
-      date,
-      amount,
-      logo,
-      title,
-    } = req.body;
+    const { category, guestId, bankId, description, date, amount } = req.body;
     if (!mongoose.Types.ObjectId.isValid(guestId)) {
       return res.status(400).json({ error: true, message: "Invalid id" });
     }
@@ -26,17 +17,12 @@ router.post("/addguestbankfund", auth, async (req: Request, res: Response) => {
       return res.status(404).json({ error: true, message: "Guest not found" });
     }
 
-    let foundBank = await Bank.findById(bankId);
-    if (!foundBank) {
-      foundBank = new Bank({
-        category,
-        amount,
-        logo,
-        title,
-        date,
-        description,
-      });
-    }
+    const foundBank = new Bank({
+      category,
+      amount,
+      date,
+      description,
+    });
 
     const savedBankFund = await foundBank.save();
     guestFound.funds.bank.push(foundBank._id);
