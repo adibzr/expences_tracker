@@ -21,7 +21,7 @@ rauter.get("/guestbankfund", auth, async (req, res) => {
 
     res.status(200).json({
       success: true,
-      bankFund: guest.funds.bank,
+      bank: guest.funds.bank,
     });
   } catch (error: any) {
     res.status(500).send({ error: true, message: error.message });

@@ -7,12 +7,19 @@ import { walletBankInput } from "../../components/inputs/types";
 interface bank {
   title: string;
   logo: string;
+  date: Date;
+  category: string;
   amount: number;
+  description: string;
   created_at: Date;
 }
 
 interface wallet {
+  logo: string;
+  date: Date;
+  category: string;
   amount: number;
+  description: string;
   created_at: Date;
 }
 
@@ -21,7 +28,7 @@ interface initialState {
   error: string;
   success: boolean;
   bank: bank[];
-  wallet: bank[];
+  wallet: wallet[];
   totalincome: number | null;
 }
 
@@ -54,7 +61,7 @@ const incomeSlice = createSlice({
     });
 
     builder.addCase(getGuestWallet.fulfilled, (state, action) => {
-      state.wallet = action.payload.guestFund;
+      state.wallet = action.payload.wallet;
       state.loading = false;
       state.success = true;
     });
@@ -68,7 +75,7 @@ const incomeSlice = createSlice({
     });
 
     builder.addCase(getGuestBank.fulfilled, (state, action) => {
-      state.bank = action.payload.guestFund;
+      state.bank = action.payload.bank;
       state.loading = false;
       state.success = true;
     });

@@ -10,6 +10,7 @@ interface expense {
   description: string;
   category: string;
   attachment: string;
+  created_at: Date;
 }
 
 interface initialState {

@@ -6,7 +6,11 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { getGuestBalance } from "../../redux/slices/balanceSlice";
 import { Icon, getCategories } from "../../redux/slices/categoriesSlice";
 import { getGuestExpense } from "../../redux/slices/expenseSlice";
-import { getGuestFunds } from "../../redux/slices/fundsSlice";
+import {
+  getGuestincome,
+  getGuestBank,
+  getGuestWallet,
+} from "../../redux/slices/incomeSlice";
 import { registerGuest } from "../../redux/slices/userAuthSlice";
 import style from "./home.module.css";
 
@@ -20,7 +24,11 @@ const Home = () => {
     (state) => state.expense
   );
   const balance = useAppSelector((state) => state.balance.balance);
-  const funds = useAppSelector((state) => state.funds);
+  const income = useAppSelector((state) => state.income);
+  const transactions = [...income.bank, ...income.wallet, ...expense];
+  transactions.sort((a, b) => {
+    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+  });
 
   return (
     <div className={style.wrapper}>
@@ -48,7 +56,7 @@ const Home = () => {
           <div>
             <span>income</span>
             <p>
-              {funds.loading ? (
+              {income.loading ? (
                 <CircularProgress
                   size={28}
                   style={{
@@ -58,7 +66,7 @@ const Home = () => {
                   color="inherit"
                 />
               ) : (
-                funds.totalFunds
+                income.totalincome
               )}
             </p>
           </div>
@@ -69,7 +77,7 @@ const Home = () => {
             <span>expense</span>
 
             <p>
-              {funds.loading ? (
+              {income.loading ? (
                 <CircularProgress
                   size={28}
                   style={{
@@ -98,18 +106,24 @@ const Home = () => {
         <div className={style.transactionsWrapper}>
           <div className={style.header}>
             <span>Recent Transactions</span>
-            <button>View All</button>
+            {/* <button>View All</button> */}
           </div>
 
-          {expense.map((item) => {
-            const category = categories.expenseCategories.find(
+          {transactions.map((item) => {
+            const allCategories = [
+              ...categories.fundCategories,
+              ...categories.expenseCategories,
+            ];
+            const category = allCategories.find(
               (cat) => cat._id === item.category
             );
             const { iconTitle, itemBgColor, svg } = useGetIcon(category);
             const date = new Date(item.date);
             const iconColor = category?.icon.iconColor;
-            return category ? (
+
+            return (
               <div
+                key={item.created_at.toString()}
                 className={style.transactions}
                 style={
                   { "--iconBgColor": `${itemBgColor}` } as React.CSSProperties
@@ -138,16 +152,17 @@ const Home = () => {
                   </div>
                 </div>
               </div>
-            ) : (
-              <div
-                style={{ textAlign: "center" }}
-                className={style.description}
-              >
-                No items add incomes or expeses to see them here
-              </div>
             );
           })}
         </div>
+
+        //TODO: add a empty field message
+        //   <div
+        //     style={{ textAlign: "center" }}
+        //     className={style.description}
+        //   >
+        //     No items add incomes or expeses to see them here
+        //   </div>
       )}
     </div>
   );
@@ -166,10 +181,14 @@ const useGetGuestInfo = () => {
   }, [dispatch]);
   useEffect(() => {
     const expensePromise = dispatch(getGuestExpense());
-    const fundsPromise = dispatch(getGuestFunds());
+    const incomeBankPromise = dispatch(getGuestBank());
+    const incomeWalletPromise = dispatch(getGuestWallet());
+    const incomePrimise = dispatch(getGuestincome());
     const balancePromise = dispatch(getGuestBalance());
     return () => {
-      fundsPromise.abort();
+      incomeWalletPromise.abort();
+      incomeBankPromise.abort();
+      incomePrimise.abort();
       expensePromise.abort();
       balancePromise.abort();
     };
@@ -212,3 +231,6 @@ const useGetIcon = (categories: cat | undefined) => {
   return { iconTitle, itemBgColor, svg };
 };
 export default Home;
+function getGuestIncome(): any {
+  throw new Error("Function not implemented.");
+}

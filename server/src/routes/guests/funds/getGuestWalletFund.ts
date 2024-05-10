@@ -21,7 +21,7 @@ rauter.get("/guestwalletfund", auth, async (req, res) => {
 
     res.status(200).json({
       success: true,
-      walletFund: guest.funds.wallet,
+      wallet: guest.funds.wallet,
     });
   } catch (error: any) {
     res.status(500).send({ error: true, message: error.message });
