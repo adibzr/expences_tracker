@@ -9,8 +9,6 @@ import userCreate from "./user/user/userCreate";
 import login from "./user/user/userLogin";
 //===============guests================
 import getCategory from "./categories/getCategory";
-import postExpenseCategory from "./categories/postExpenseCategory";
-import postFundsCategory from "./categories/postFundsCategory";
 import getGuestExpense from "./guests/expenses/getGuestExpense";
 import postGuestExpense from "./guests/expenses/postGuestExpense";
 import getGuestBankFund from "./guests/funds/getGuestBankFund";
@@ -20,6 +18,7 @@ import postGuestBankFund from "./guests/funds/postGuestBankFund";
 import postGuestWalletFund from "./guests/funds/postGuestWalletFund";
 import guestBalance from "./guests/guest/guestBalance";
 import guestUser from "./guests/guest/guestUser";
+import postCategory from "./categories/postCategory";
 
 const router = Router();
 
@@ -43,8 +42,7 @@ router.use("/funds", getGuestWalletFund);
 router.use("/funds", getGuestBankFund);
 router.use("/funds", getGuestFund);
 
-router.use("/category", postExpenseCategory);
-router.use("/category", postFundsCategory);
+router.use("/category", postCategory);
 router.use("/category", getCategory);
 
 export default router;

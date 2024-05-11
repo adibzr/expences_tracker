@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { UserState } from "./userAuthSlice";
 import { inputsDataState } from "../../components/inputs/types";
+import { UserState } from "./userAuthSlice";
 
 interface expense {
   date: Date;

@@ -13,7 +13,7 @@ import style from "./expense.module.css";
 
 const Expenses = () => {
   const categories = useAppSelector((state) => state.categories);
-  const categoryTitles = categories.expenseCategories.reduce(
+  const categoryTitles = categories.categories.reduce(
     (acc: string[], curr: { title: string }) => {
       acc.push(curr.title);
       return acc;
@@ -52,7 +52,7 @@ const Expenses = () => {
         amount: 0,
         wallet: "",
       });
-      const foundCategory = categories.expenseCategories.find(
+      const foundCategory = categories.categories.find(
         (cat) => cat.title === inputs.category
       );
 

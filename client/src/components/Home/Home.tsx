@@ -4,17 +4,15 @@ import expenseSVG from "../../assets/expense.svg";
 import incomeSVG from "../../assets/income.svg";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { getGuestBalance } from "../../redux/slices/balanceSlice";
-import { Icon, getCategories } from "../../redux/slices/categoriesSlice";
+import { cat, getCategories } from "../../redux/slices/categoriesSlice";
 import { getGuestExpense } from "../../redux/slices/expenseSlice";
 import {
-  getGuestincome,
   getGuestBank,
   getGuestWallet,
+  getGuestincome,
 } from "../../redux/slices/incomeSlice";
 import { registerGuest } from "../../redux/slices/userAuthSlice";
 import style from "./home.module.css";
-
-type cat = { _id: string; title: string; icon: Icon };
 
 const Home = () => {
   useGetGuestInfo();
@@ -110,17 +108,19 @@ const Home = () => {
           </div>
 
           {transactions.map((item) => {
-            const allCategories = [
-              ...categories.fundCategories,
-              ...categories.expenseCategories,
-            ];
-            const category = allCategories.find(
+            const category = categories.categories.find(
               (cat) => cat._id === item.category
             );
             const { iconTitle, itemBgColor, svg } = useGetIcon(category);
-            const date = new Date(item.date);
+            const date = new Date(item.date).toLocaleDateString("es-AR");
             const iconColor = category?.icon.iconColor;
-
+            const amountColor =
+              category?.type === "expense"
+                ? "red"
+                : category?.type === "income"
+                ? "green"
+                : "blue";
+            if (!category) return null;
             return (
               <div
                 key={item.created_at.toString()}
@@ -141,15 +141,16 @@ const Home = () => {
                 </div>
                 <div className={style.transactionAmount}>
                   <div
-                    style={{
-                      color: "var(--color-red)",
-                    }}
+                    className={style.amount}
+                    style={
+                      {
+                        "--color-transaction": `${amountColor}`,
+                      } as React.CSSProperties
+                    }
                   >
                     ${item.amount}
                   </div>
-                  <div style={{ color: "var(--color-light-200)" }}>
-                    {date.toLocaleDateString()}
-                  </div>
+                  <div style={{ color: "var(--color-light-200)" }}>{date}</div>
                 </div>
               </div>
             );

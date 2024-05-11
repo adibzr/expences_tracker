@@ -14,7 +14,7 @@ import { walletBankInput } from "../inputs/types";
 
 const Income = () => {
   const categories = useAppSelector((state) => state.categories);
-  const categoryTitles = categories.fundCategories.reduce(
+  const categoryTitles = categories.categories.reduce(
     (acc: string[], curr: { title: string }) => {
       acc.push(curr.title);
       return acc;
@@ -49,7 +49,7 @@ const Income = () => {
         wallet: true,
       });
     } else {
-      const foundCategory = categories.fundCategories.find(
+      const foundCategory = categories.categories.find(
         (cat) => cat.title === inputs.category
       );
 

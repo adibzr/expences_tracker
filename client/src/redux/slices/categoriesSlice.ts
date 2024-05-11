@@ -8,15 +8,20 @@ export interface Icon {
   title: string;
   contentType: string;
 }
+
+export interface cat {
+  _id: string;
+  title: string;
+  icon: Icon;
+  type: string;
+}
 export interface catInitialState {
-  expenseCategories: { _id: string; title: string; icon: Icon }[];
-  fundCategories: { _id: string; title: string; icon: Icon }[];
+  categories: cat[];
   loading: boolean;
 }
 
 const initialState: catInitialState = {
-  expenseCategories: [],
-  fundCategories: [],
+  categories: [],
   loading: true,
 };
 
@@ -26,8 +31,7 @@ const categoriesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getCategories.fulfilled, (state, action) => {
-      state.expenseCategories = action.payload.expenseCategories;
-      state.fundCategories = action.payload.fundCategories;
+      state.categories = action.payload.categories;
       state.loading = false;
     });
   },

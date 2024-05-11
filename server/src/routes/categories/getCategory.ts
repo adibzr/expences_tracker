@@ -1,14 +1,12 @@
 import { Router } from "express";
-import ExpensesCategory from "../../models/expensesCategory";
-import FundsCategory from "../../models/fundsCategory";
+import { default as Category } from "../../models/category";
 
 const router = Router();
 
-router.get("/getcategory", async (req, res) => {
+router.get("/getcategory", async (_, res) => {
   try {
-    const expenseCategories = await ExpensesCategory.find({}).populate("icon");
-    const fundCategories = await FundsCategory.find({}).populate("icon");
-    res.status(200).json({ expenseCategories, fundCategories });
+    const categories = await Category.find({}).populate("icon");
+    res.status(200).json({ categories });
   } catch (error: any) {
     res.status(500).json({ error: true, message: error.message });
   }
