@@ -2,14 +2,16 @@ import * as dotenv from "dotenv";
 import { Router } from "express";
 import jwt from "jsonwebtoken";
 import Guest, { IGuest } from "../../../models/guest";
+import Wallet from "../../../models/wallet";
 dotenv.config();
 
 const router = Router();
 
 router.post("/guest", async (req, res) => {
   try {
-    const guest: IGuest = new Guest();
-
+    const newIcomeWallet = new Wallet();
+    const newExpenseWallet =new Wallet();
+    const guest: IGuest = new Guest({ expense.wallet:newWallet });
     const savedGuest = await guest.save();
     const token: string = jwt.sign(
       { _id: savedGuest._id },

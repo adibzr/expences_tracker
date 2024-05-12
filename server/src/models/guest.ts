@@ -1,20 +1,40 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { ObjectId, Schema } from "mongoose";
 
 export interface IGuest extends mongoose.Document {
-  expense: { [key: string]: any };
-  budget: { [key: string]: any };
-  funds: {
-    [key: string]: any;
+  expense: {
+    wallet: {
+      type: ObjectId;
+      ref: string;
+    }[];
+    bank: {
+      type: ObjectId;
+      ref: string;
+    }[];
+  };
+  budget: { type: ObjectId; ref: string };
+  income: {
+    wallet: {
+      type: ObjectId;
+      ref: string;
+    }[];
+    bank: {
+      type: ObjectId;
+      ref: string;
+    }[];
   };
   created_at: Date;
   updated_at: Date;
+  versionKey: false;
 }
 
 const userSchema = new Schema<IGuest>(
   {
-    expense: [{ type: Schema.Types.ObjectId, ref: "Expense" }],
+    expense: {
+      wallet: [{ type: Schema.Types.ObjectId, ref: "Wallet" }],
+      bank: [{ type: Schema.Types.ObjectId, ref: "Bank" }],
+    },
     budget: { type: Schema.Types.ObjectId, ref: "Budget" },
-    funds: {
+    income: {
       wallet: [{ type: Schema.Types.ObjectId, ref: "Wallet" }],
       bank: [{ type: Schema.Types.ObjectId, ref: "Bank" }],
     },

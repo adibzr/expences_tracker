@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
+import bank from "./bank";
 
-export interface IExpense extends mongoose.Document {
+export interface IIncome extends mongoose.Document {
   date: Date;
   bank: { [key: string]: any };
   wallet: { [key: string]: any };
@@ -10,22 +11,16 @@ export interface IExpense extends mongoose.Document {
   updated_at: Date;
 }
 
-const expenseSchema = new mongoose.Schema({
+const incomeSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now() },
-  paymentSource: {
-    kind: { type: String, enum: ["bank", "wallet"], required: true },
-    item: {
-      type: Schema.Types.ObjectId,
-      refPath: "paymentSource.kind",
-      required: true,
-    },
-  },
+  bank: { type: Schema.Types.ObjectId, ref: "Bank" },
+  wallet: { type: Schema.Types.ObjectId, ref: "Wallet" },
   description: { type: String, default: "" },
   category: { type: Schema.Types.ObjectId, ref: "Category" },
   created_at: { type: Date, default: Date.now(), unmutable: true },
   updated_at: { type: Date, default: Date.now() },
 });
 
-const Expense = mongoose.model<IExpense>("Expense", expenseSchema);
+const income = mongoose.model<IIncome>("Income", incomeSchema);
 
-export default Expense;
+export default income;

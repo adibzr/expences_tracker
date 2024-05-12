@@ -17,7 +17,7 @@ import getGuestWalletFund from "./guests/funds/getGuestWalletFund";
 import postGuestBankFund from "./guests/funds/postGuestBankFund";
 import postGuestWalletFund from "./guests/funds/postGuestWalletFund";
 import guestBalance from "./guests/guest/guestBalance";
-import guestUser from "./guests/guest/guestUser";
+import guestUser from "./guests/guest/postNewGuest";
 import postCategory from "./categories/postCategory";
 
 const router = Router();

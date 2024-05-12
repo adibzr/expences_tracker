@@ -8,11 +8,11 @@ const router = Router();
 
 router.post("/addguestexpense", async (req: Request, res: Response) => {
   try {
-    const { amount, categoryId, description, attachment, guestId } = req.body;
+    const { date, bank, wallet, category, description, guestId } = req.body;
     if (!mongoose.Types.ObjectId.isValid(guestId)) {
       return res.status(400).json({ error: true, message: "invalid user id" });
     }
-    if (!mongoose.Types.ObjectId.isValid(categoryId)) {
+    if (!mongoose.Types.ObjectId.isValid(category)) {
       return res
         .status(400)
         .json({ error: true, message: "invalid category id" });
@@ -22,16 +22,29 @@ router.post("/addguestexpense", async (req: Request, res: Response) => {
       return res.status(404).json({ error: true, message: "Guest not found" });
     }
 
-    const foundCategory = await Category.findById(categoryId);
+    const foundCategory = await Category.findById(category);
     if (!foundCategory) {
       return res.status(404).json({ message: "Category not found" });
     }
+
+    const foundBank = await bank.findById(bank);
+    const foundWallet = await wallet.findById(wallet);
+    let paymentSource;
+    if (foundBank) {
+      paymentSource = { kind: "bank", item: foundBank };
+    } else if (foundWallet) {
+      paymentSource = { kind: "wallet", item: foundWallet };
+    } else {
+      res
+        .status(404)
+        .json({ error: true, message: "Payment source not found" });
+    }
+
     const newExpense = new Expense({
-      amount: amount,
+      date,
+      paymentSource,
       category: foundCategory,
-      description: description,
-      attachment: attachment,
-      userId: guestId,
+      description,
     });
     const savedExpense = await newExpense.save();
 
