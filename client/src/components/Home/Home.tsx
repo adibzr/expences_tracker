@@ -1,5 +1,6 @@
 import { CircularProgress } from "@mui/material";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import expenseSVG from "../../assets/expense.svg";
 import incomeSVG from "../../assets/income.svg";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
@@ -122,7 +123,8 @@ const Home = () => {
                 : "blue";
             if (!category) return null;
             return (
-              <div
+              <Link
+                to={`detail?id=${item._id}`}
                 key={item.created_at.toString()}
                 className={style.transactions}
                 style={
@@ -152,7 +154,7 @@ const Home = () => {
                   </div>
                   <div style={{ color: "var(--color-light-200)" }}>{date}</div>
                 </div>
-              </div>
+              </Link>
             );
           })}
         </div>

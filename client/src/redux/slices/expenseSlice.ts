@@ -5,6 +5,7 @@ import { inputsDataState } from "../../components/inputs/types";
 import { UserState } from "./userAuthSlice";
 
 interface expense {
+  _id: string;
   date: Date;
   amount: number;
   description: string;

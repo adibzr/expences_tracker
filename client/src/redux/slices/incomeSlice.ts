@@ -5,6 +5,7 @@ import { walletBankInput } from "../../components/inputs/types";
 import { UserState } from "./userAuthSlice";
 
 interface bank {
+  _id: string;
   title: string;
   logo: string;
   date: Date;
@@ -15,6 +16,7 @@ interface bank {
 }
 
 interface wallet {
+  _id: string;
   logo: string;
   date: Date;
   category: string;
