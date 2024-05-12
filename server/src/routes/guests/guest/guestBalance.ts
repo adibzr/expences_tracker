@@ -22,6 +22,8 @@ rauter.get("/guestbalance", auth, async (req, res) => {
     }
     let totalBalance = 0;
 
+    /**
+     * 
     totalBalance = guest.funds.bank.reduce(
       (acc: number, curr: { amount: number }) => acc + curr.amount,
       0
@@ -36,6 +38,8 @@ rauter.get("/guestbalance", auth, async (req, res) => {
       (acc: number, curr: { amount: number }) => acc + curr.amount,
       0
     );
+     * 
+     */
 
     res.status(200).json({
       success: true,

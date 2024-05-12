@@ -22,7 +22,7 @@ router.post("/addbankfund", async (req: Request, res: Response) => {
       title: title,
     });
     const savedBankFund = await bankFund.save();
-    userFound.funds.bank.push(bankFund._id);
+    //userFound.funds.bank.push(bankFund._id);
     await userFound.save();
     res.status(200).json({ success: true, bank: savedBankFund });
   } catch (error: any) {

@@ -21,7 +21,7 @@ router.post("/addwalletfund", async (req: Request, res: Response) => {
       title: title,
     });
     const savedWalletFund = await walletFund.save();
-    userFound.funds.wallet.push(walletFund._id);
+    //userFound.funds.wallet.push(walletFund._id);
     await userFound.save();
     res.status(200).json({ success: true, wallet: savedWalletFund });
   } catch (error: any) {

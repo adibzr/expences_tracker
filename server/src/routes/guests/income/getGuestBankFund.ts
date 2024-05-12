@@ -18,11 +18,6 @@ rauter.get("/guestbankfund", auth, async (req, res) => {
     if (!guest) {
       return res.status(404).send({ error: true, message: "Guest not found" });
     }
-
-    res.status(200).json({
-      success: true,
-      bank: guest.funds.bank,
-    });
   } catch (error: any) {
     res.status(500).send({ error: true, message: error.message });
   }

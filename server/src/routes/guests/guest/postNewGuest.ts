@@ -9,9 +9,13 @@ const router = Router();
 
 router.post("/guest", async (req, res) => {
   try {
-    const newIcomeWallet = new Wallet();
-    const newExpenseWallet =new Wallet();
-    const guest: IGuest = new Guest({ expense.wallet:newWallet });
+    const newWallet = new Wallet();
+    const savedWallet = await newWallet.save();
+
+    const guest: IGuest = new Guest({
+      wallet: savedWallet._id,
+    });
+
     const savedGuest = await guest.save();
     const token: string = jwt.sign(
       { _id: savedGuest._id },
@@ -22,7 +26,7 @@ router.post("/guest", async (req, res) => {
     );
     res.cookie("jwt", token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 });
 
-    res.status(200).json({ success: true, token, guestId: savedGuest._id });
+    res.status(200).json({ success: true, token, guest: savedGuest });
   } catch (err: any) {
     res.status(500).json({ error: true, message: err.message });
   }

@@ -23,20 +23,7 @@ rauter.get("/userbalance", auth, async (req, res) => {
     }
     let totalBalance = 0;
 
-    totalBalance = user.funds.bank.reduce(
-      (acc: number, curr: { amount: number }) => acc + curr.amount,
-      0
-    );
-
-    totalBalance += user.funds.wallet.reduce(
-      (acc: number, curr: { amount: number }) => acc + curr.amount,
-      0
-    );
-
-    totalBalance -= user.expense.reduce(
-      (acc: number, curr: { amount: number }) => acc + curr.amount,
-      0
-    );
+    
 
     res.status(200).json({
       success: true,
