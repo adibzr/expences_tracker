@@ -70,12 +70,12 @@ const expenseSlice = createSlice({
 export const getGuestExpense = createAsyncThunk(
   "guest/guestExpense",
   async (_, { getState }) => {
-    const { guestId, token } = (getState() as { userAuth: UserState }).userAuth;
+    const { guest, token } = (getState() as { userAuth: UserState }).userAuth;
     const response = await axios.get(
       `${import.meta.env.VITE_BASEURL}/expense/guestexpense`,
       {
         headers: {
-          guestId,
+          guestId: guest?._id,
           token,
         },
       }
@@ -88,16 +88,18 @@ export const postGuestExpense = createAsyncThunk(
   "guest/postExpense",
   async (data: inputsDataState, { getState }) => {
     const { token } = (getState() as { userAuth: UserState }).userAuth;
-    const { guestId } = (getState() as { userAuth: UserState }).userAuth;
-    const { category, date, description, amount } = data;
+    const { guest } = (getState() as { userAuth: UserState }).userAuth;
+    const { category, date, description, amount, bank, wallet } = data;
     const response = await axios.post(
       `${import.meta.env.VITE_BASEURL}/expense/addGuestExpense`,
       {
-        guestId,
-        categoryId: category,
-        date,
-        description,
+        guestId: guest?._id,
+        category,
         amount,
+        date,
+        bank,
+        wallet,
+        description,
       },
       {
         headers: {

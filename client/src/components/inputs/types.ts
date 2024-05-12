@@ -3,7 +3,8 @@ export interface inputsDataState {
   date: string;
   description: string;
   amount: number;
-  wallet: string;
+  wallet?: string;
+  bank?: string;
 }
 
 export interface walletBankInput extends inputsDataState {

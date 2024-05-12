@@ -108,12 +108,12 @@ const incomeSlice = createSlice({
 export const getGuestincome = createAsyncThunk(
   "guest/guestincome",
   async (_, { getState }) => {
-    const { guestId, token } = (getState() as { userAuth: UserState }).userAuth;
+    const { guest, token } = (getState() as { userAuth: UserState }).userAuth;
     const response = await axios.get(
       `${import.meta.env.VITE_BASEURL}/funds/guestfund`,
       {
         headers: {
-          guestId,
+          guestId: guest?._id,
           token,
         },
       }
@@ -124,12 +124,12 @@ export const getGuestincome = createAsyncThunk(
 export const getGuestBank = createAsyncThunk(
   "guest/guestBank",
   async (_, { getState }) => {
-    const { guestId, token } = (getState() as { userAuth: UserState }).userAuth;
+    const { guest, token } = (getState() as { userAuth: UserState }).userAuth;
     const response = await axios.get(
       `${import.meta.env.VITE_BASEURL}/funds/guestbankfund`,
       {
         headers: {
-          guestId,
+          guestId: guest?._id,
           token,
         },
       }
@@ -140,12 +140,12 @@ export const getGuestBank = createAsyncThunk(
 export const getGuestWallet = createAsyncThunk(
   "guest/guestwallet",
   async (_, { getState }) => {
-    const { guestId, token } = (getState() as { userAuth: UserState }).userAuth;
+    const { guest, token } = (getState() as { userAuth: UserState }).userAuth;
     const response = await axios.get(
       `${import.meta.env.VITE_BASEURL}/funds/guestwalletfund`,
       {
         headers: {
-          guestId,
+          guestId: guest?._id,
           token,
         },
       }
@@ -158,12 +158,12 @@ export const postGuestWallet = createAsyncThunk(
   "guest/postwalletincome",
   async (data: walletBankInput, { getState }) => {
     const { token } = (getState() as { userAuth: UserState }).userAuth;
-    const { guestId } = (getState() as { userAuth: UserState }).userAuth;
+    const { guest } = (getState() as { userAuth: UserState }).userAuth;
     const { category, description, date, amount } = data;
     const response = await axios.post(
       `${import.meta.env.VITE_BASEURL}/funds/addguestwalletfund`,
       {
-        guestId,
+        guestId: guest?._id,
         category,
         description,
         date,

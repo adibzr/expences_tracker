@@ -7,11 +7,21 @@ type user = {
   email: string;
   password: string;
 };
+interface guestType {
+  _id: string;
+  bank: string[];
+  wallet: string;
+  expense: string[];
+  income: string[];
+  budget: string;
+  created_at?: Date;
+}
 export interface UserState {
   loading: boolean;
   user: user | null;
   userId: string;
   guestId: string;
+  guest: guestType | null;
   token: string | undefined;
   error: string;
   success: boolean;
@@ -22,6 +32,7 @@ const initialState: UserState = {
   user: null,
   userId: "",
   guestId: "",
+  guest: null,
   token: undefined,
   error: "",
   success: false,
@@ -89,8 +100,9 @@ const userAuthSlice = createSlice({
     });
     builder.addCase(
       registerGuest.fulfilled,
-      (state, action: PayloadAction<{ guestId: string; token: string }>) => {
-        state.guestId = action.payload.guestId;
+      (state, action: PayloadAction<{ guest: guestType; token: string }>) => {
+        state.guest = action.payload.guest;
+        state.guestId = action.payload.guest._id;
         state.token = action.payload.token;
       }
     );

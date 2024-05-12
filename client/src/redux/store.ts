@@ -4,13 +4,13 @@ import storage from "redux-persist/lib/storage";
 import balanceSlice from "./slices/balanceSlice";
 import categoriesSlice from "./slices/categoriesSlice";
 import expenseSlice from "./slices/expenseSlice";
-import userAuthSlice from "./slices/userAuthSlice";
 import incomeSlice from "./slices/incomeSlice";
+import userAuthSlice from "./slices/userAuthSlice";
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["guestId", "token"], // only persist the 'user' state
+  whitelist: ["guestId", "token"],
 };
 const persistedReducer = persistReducer(persistConfig, userAuthSlice);
 const store = configureStore({

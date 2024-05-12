@@ -3,6 +3,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { inputsDataError, inputsDataState } from "./types";
+import { useAppSelector } from "../../hooks/reduxHooks";
 
 interface selectComponentProps<T extends inputsDataState> {
   label: string;
@@ -32,9 +33,10 @@ const SelectComponent = <T extends inputsDataState>({
     }
     if (label === "Wallet/Bank") {
       if (value === "wallet") {
+        const wallet = useAppSelector((state) => state.userAuth.guest?.wallet);
         setInput({
           ...input,
-          wallet: value,
+          wallet: wallet,
         });
       } else {
         setInput({

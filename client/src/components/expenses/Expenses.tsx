@@ -10,6 +10,7 @@ import DescriptionTextfield from "./../inputs/DescriptionTextfield";
 import SelectComponent from "./../inputs/SelectComponent";
 import { inputsDataState } from "./../inputs/types";
 import style from "./expense.module.css";
+import useGetBanks from "../../hooks/useGetBanks";
 
 const Expenses = () => {
   const categories = useAppSelector((state) => state.categories);
@@ -20,7 +21,8 @@ const Expenses = () => {
     },
     []
   );
-
+  const banks = useGetBanks();
+  banks.unshift("wallet");
   const dispatch = useAppDispatch();
 
   const [inputs, setInputs] = useState({
@@ -90,6 +92,14 @@ const Expenses = () => {
           setError={setError}
         />
         <DescriptionTextfield input={inputs} setInput={setInputs} />
+        <SelectComponent
+          label="Wallet/Bank"
+          items={banks}
+          input={inputs}
+          errors={errors}
+          setInput={setInputs}
+          setError={setError}
+        />
       </div>
       <ButtonComponentLarge
         disabled={errors?.category || errors?.date ? true : false}
