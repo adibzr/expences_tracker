@@ -2,8 +2,7 @@
 import dayjs from "dayjs";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import useGetBanks from "../../hooks/useGetBanks";
-import { postGuestWallet } from "../../redux/slices/incomeSlice";
+import useGetBanks from "../../hooks/useGetBankTitles";
 import { ButtonComponentLarge } from "../ButtonComponent";
 import AmountComponent from "../inputs/AmountComponent";
 import DatePickerComponent from "../inputs/DatePickerComponent";
@@ -58,14 +57,12 @@ const Income = () => {
           ...inputs,
           category: foundCategory._id,
         };
-        if (inputs.wallet === "wallet") {
-          dispatch(postGuestWallet(data));
-        }
       } else {
         setError({
           ...errors,
           category: true,
         });
+        return;
       }
 
       setInputs({

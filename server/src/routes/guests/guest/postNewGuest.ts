@@ -7,7 +7,7 @@ dotenv.config();
 
 const router = Router();
 
-router.post("/guest", async (req, res) => {
+router.post("/guest", async (_, res) => {
   try {
     const newWallet = new Wallet();
     const savedWallet = await newWallet.save();

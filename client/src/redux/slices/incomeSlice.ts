@@ -1,46 +1,40 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { walletBankInput } from "../../components/inputs/types";
+import { inputsDataState } from "../../components/inputs/types";
 import { UserState } from "./userAuthSlice";
 
-interface bank {
-  _id: string;
-  title: string;
-  logo: string;
-  date: Date;
-  category: string;
-  amount: number;
-  description: string;
-  created_at: Date;
-}
-
-interface wallet {
-  _id: string;
-  logo: string;
-  date: Date;
-  category: string;
-  amount: number;
-  description: string;
-  created_at: Date;
+interface incomeType {
+  totalIncome: number;
+  success: boolean;
+  income: {
+    _id: string;
+    amount: number;
+    date: Date;
+    paymentSource: {
+      kind: "bank" | "wallet";
+      item: string;
+    };
+    category: string;
+    description: string;
+    created_at: Date;
+  }[];
 }
 
 interface initialState {
   loading: boolean;
-  error: string;
   success: boolean;
-  bank: bank[];
-  wallet: wallet[];
-  totalincome: number | null;
+  error: string;
+  income: incomeType["income"];
+  totalIncome: number;
 }
 
 const initialState: initialState = {
   loading: false,
-  error: "",
   success: false,
-  bank: [],
-  wallet: [],
-  totalincome: null,
+  error: "",
+  income: [],
+  totalIncome: 0,
 };
 
 const incomeSlice = createSlice({
@@ -48,72 +42,47 @@ const incomeSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getGuestincome.fulfilled, (state, action) => {
-      state.totalincome = action.payload.guestFund;
-      state.loading = false;
-      state.success = true;
-    });
-    builder.addCase(getGuestincome.rejected, (state, action) => {
+    builder.addCase(
+      getGuestIncome.fulfilled,
+      (state, action: PayloadAction<incomeType>) => {
+        state.totalIncome = action.payload.totalIncome;
+        state.income = action.payload.income;
+        state.loading = false;
+        state.success = true;
+      }
+    );
+    builder.addCase(getGuestIncome.rejected, (state, action) => {
       state.error = action.payload as string;
       state.loading = false;
       state.success = false;
     });
-    builder.addCase(getGuestincome.pending, (state) => {
+    builder.addCase(getGuestIncome.pending, (state) => {
       state.loading = true;
     });
-
-    builder.addCase(getGuestWallet.fulfilled, (state, action) => {
-      state.wallet = action.payload.wallet;
+    builder.addCase(postGuestIncome.fulfilled, (state) => {
       state.loading = false;
       state.success = true;
     });
-    builder.addCase(getGuestWallet.rejected, (state, action) => {
-      state.error = action.payload as string;
-      state.loading = false;
-      state.success = false;
-    });
-    builder.addCase(getGuestWallet.pending, (state) => {
-      state.loading = true;
-    });
-
-    builder.addCase(getGuestBank.fulfilled, (state, action) => {
-      state.bank = action.payload.bank;
-      state.loading = false;
-      state.success = true;
-    });
-    builder.addCase(getGuestBank.rejected, (state, action) => {
-      state.error = action.payload as string;
-      state.loading = false;
-      state.success = false;
-    });
-    builder.addCase(getGuestBank.pending, (state) => {
-      state.loading = true;
-    });
-
-    builder.addCase(postGuestWallet.fulfilled, (state) => {
-      state.loading = false;
-      state.success = true;
-    });
-    builder.addCase(postGuestWallet.rejected, (state, action) => {
+    builder.addCase(postGuestIncome.rejected, (state, action) => {
       state.error = action.error as string;
       state.loading = false;
       state.success = false;
     });
-    builder.addCase(postGuestWallet.pending, (state) => {
+    builder.addCase(postGuestIncome.pending, (state) => {
       state.loading = true;
     });
   },
 });
 
-export const getGuestincome = createAsyncThunk(
+export const getGuestIncome = createAsyncThunk(
   "guest/guestincome",
   async (_, { getState }) => {
-    const { guest, token } = (getState() as { userAuth: UserState }).userAuth;
+    const { guestId, token } = (getState() as { userAuth: UserState }).userAuth;
     const response = await axios.get(
-      `${import.meta.env.VITE_BASEURL}/funds/guestfund`,
+      `${import.meta.env.VITE_BASEURL}/income/guestincome`,
       {
         headers: {
-          guestId: guest?._id,
+          guestId,
           token,
         },
       }
@@ -121,53 +90,22 @@ export const getGuestincome = createAsyncThunk(
     return response.data;
   }
 );
-export const getGuestBank = createAsyncThunk(
-  "guest/guestBank",
-  async (_, { getState }) => {
-    const { guest, token } = (getState() as { userAuth: UserState }).userAuth;
-    const response = await axios.get(
-      `${import.meta.env.VITE_BASEURL}/funds/guestbankfund`,
-      {
-        headers: {
-          guestId: guest?._id,
-          token,
-        },
-      }
-    );
-    return response.data;
-  }
-);
-export const getGuestWallet = createAsyncThunk(
-  "guest/guestwallet",
-  async (_, { getState }) => {
-    const { guest, token } = (getState() as { userAuth: UserState }).userAuth;
-    const response = await axios.get(
-      `${import.meta.env.VITE_BASEURL}/funds/guestwalletfund`,
-      {
-        headers: {
-          guestId: guest?._id,
-          token,
-        },
-      }
-    );
-    return response.data;
-  }
-);
-
-export const postGuestWallet = createAsyncThunk(
-  "guest/postwalletincome",
-  async (data: walletBankInput, { getState }) => {
+export const postGuestIncome = createAsyncThunk(
+  "guest/postIcome",
+  async (data: inputsDataState, { getState }) => {
     const { token } = (getState() as { userAuth: UserState }).userAuth;
-    const { guest } = (getState() as { userAuth: UserState }).userAuth;
-    const { category, description, date, amount } = data;
+    const { guestId } = (getState() as { userAuth: UserState }).userAuth;
+    const { category, date, description, amount, bank, wallet } = data;
     const response = await axios.post(
-      `${import.meta.env.VITE_BASEURL}/funds/addguestwalletfund`,
+      `${import.meta.env.VITE_BASEURL}/income/addguestincome`,
       {
-        guestId: guest?._id,
+        guestId,
         category,
-        description,
-        date,
         amount,
+        date,
+        bank,
+        wallet,
+        description,
       },
       {
         headers: {
@@ -178,5 +116,6 @@ export const postGuestWallet = createAsyncThunk(
     return response.data;
   }
 );
+//TODO: implemet wallet in the backend
 
 export default incomeSlice.reducer;

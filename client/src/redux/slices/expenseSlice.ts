@@ -1,25 +1,32 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { inputsDataState } from "../../components/inputs/types";
 import { UserState } from "./userAuthSlice";
 
-interface expense {
-  _id: string;
-  date: Date;
-  amount: number;
-  description: string;
-  category: string;
-  attachment: string;
-  created_at: Date;
+interface expenseType {
+  totalExpense: number;
+  success: boolean;
+  expense: {
+    _id: string;
+    amount: number;
+    date: Date;
+    paymentSource: {
+      kind: "bank" | "wallet";
+      item: string;
+    };
+    category: string;
+    description: string;
+    created_at: Date;
+  }[];
 }
 
 interface initialState {
   loading: boolean;
-  error: string;
   success: boolean;
-  expense: expense[];
-  totalExpense: number | null;
+  error: string;
+  expense: expenseType["expense"];
+  totalExpense: number;
 }
 
 const initialState: initialState = {
@@ -27,7 +34,7 @@ const initialState: initialState = {
   error: "",
   success: false,
   expense: [],
-  totalExpense: null,
+  totalExpense: 0,
 };
 
 const expenseSlice = createSlice({
@@ -35,15 +42,15 @@ const expenseSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getGuestExpense.fulfilled, (state, action) => {
-      state.expense = action.payload.expense;
-      state.totalExpense = action.payload.expense.reduce(
-        (sum: number, curr: { amount: number }) => sum + curr.amount,
-        0
-      );
-      state.loading = false;
-      state.success = true;
-    });
+    builder.addCase(
+      getGuestExpense.fulfilled,
+      (state, action: PayloadAction<expenseType>) => {
+        state.totalExpense = action.payload.totalExpense;
+        state.expense = action.payload.expense;
+        state.loading = false;
+        state.success = true;
+      }
+    );
     builder.addCase(getGuestExpense.rejected, (state, action) => {
       state.error = action.payload as string;
       state.loading = false;
@@ -70,12 +77,12 @@ const expenseSlice = createSlice({
 export const getGuestExpense = createAsyncThunk(
   "guest/guestExpense",
   async (_, { getState }) => {
-    const { guest, token } = (getState() as { userAuth: UserState }).userAuth;
+    const { guestId, token } = (getState() as { userAuth: UserState }).userAuth;
     const response = await axios.get(
       `${import.meta.env.VITE_BASEURL}/expense/guestexpense`,
       {
         headers: {
-          guestId: guest?._id,
+          guestId,
           token,
         },
       }
@@ -88,12 +95,12 @@ export const postGuestExpense = createAsyncThunk(
   "guest/postExpense",
   async (data: inputsDataState, { getState }) => {
     const { token } = (getState() as { userAuth: UserState }).userAuth;
-    const { guest } = (getState() as { userAuth: UserState }).userAuth;
+    const { guestId } = (getState() as { userAuth: UserState }).userAuth;
     const { category, date, description, amount, bank, wallet } = data;
     const response = await axios.post(
-      `${import.meta.env.VITE_BASEURL}/expense/addGuestExpense`,
+      `${import.meta.env.VITE_BASEURL}/expense/addguestexpense`,
       {
-        guestId: guest?._id,
+        guestId,
         category,
         amount,
         date,

@@ -1,9 +1,5 @@
 import { Router } from "express";
 //===============user================
-import getOneUserExpense from "./user/expenses/getUserExpense";
-import postExpense from "./user/expenses/postExpense";
-import postBankFund from "./user/funds/postBankFund";
-import postWalletFund from "./user/funds/postWalletFund";
 import userBalance from "./user/user/userBalance";
 import userCreate from "./user/user/userCreate";
 import login from "./user/user/userLogin";
@@ -12,10 +8,11 @@ import getCategory from "./categories/getCategory";
 import postCategory from "./categories/postCategory";
 import getGuestExpense from "./guests/expenses/getGuestExpense";
 import postGuestExpense from "./guests/expenses/postGuestExpense";
-import guestBalance from "./guests/guest/guestBalance";
+import guestBalance from "./guests/guest/getGuestBalance";
 import postNewGuest from "./guests/guest/postNewGuest";
-import getGuestFund from "./guests/income/getGuestFund";
+import getGuestIncome from "./guests/income/getGuestIcome";
 import postGuestIncome from "./guests/income/postGuestIncome";
+import getGuestBank from "./guests/guest/getGuestBank";
 
 const router = Router();
 
@@ -25,14 +22,13 @@ router.use("/user", userBalance);
 
 router.use("/guest", postNewGuest);
 router.use("/guest", guestBalance);
+router.use("/guest", getGuestBank);
 
 router.use("/expense", postGuestExpense);
 router.use("/expense", getGuestExpense);
-router.use("/expense", getOneUserExpense);
-router.use("/expense", postExpense);
 
 router.use("/income", postGuestIncome);
-router.use("/income", getGuestFund);
+router.use("/income", getGuestIncome);
 
 router.use("/category", postCategory);
 router.use("/category", getCategory);

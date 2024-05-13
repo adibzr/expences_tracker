@@ -35,11 +35,9 @@ router.post("/addguestincome", auth, async (req: Request, res: Response) => {
 
     let paymentSource;
     if (foundBank) {
-      foundBank.amount = foundBank.amount + amount;
       const savedBank = await foundBank.save();
       paymentSource = { kind: "bank", item: savedBank };
     } else {
-      foundWallet.amount = foundWallet.amount + amount;
       const savedWallet = await foundWallet.save();
       paymentSource = { kind: "wallet", item: savedWallet };
     }
@@ -51,12 +49,11 @@ router.post("/addguestincome", auth, async (req: Request, res: Response) => {
       category: foundCategory,
       description,
     });
-
+    guestFound.income.push(newIncome._id);
     const savedIncome = await newIncome.save();
     await guestFound.save();
     res.status(201).json({ success: true, income: savedIncome });
   } catch (err: any) {
-    console.log(err.message);
     res.status(500).json({ error: true, message: err.message });
   }
 });

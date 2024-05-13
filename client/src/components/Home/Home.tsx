@@ -7,35 +7,29 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { getGuestBalance } from "../../redux/slices/balanceSlice";
 import { cat, getCategories } from "../../redux/slices/categoriesSlice";
 import { getGuestExpense } from "../../redux/slices/expenseSlice";
-import {
-  getGuestBank,
-  getGuestWallet,
-  getGuestincome,
-} from "../../redux/slices/incomeSlice";
+
 import { registerGuest } from "../../redux/slices/userAuthSlice";
 import style from "./home.module.css";
+import { getGuestIncome } from "../../redux/slices/incomeSlice";
 
 const Home = () => {
   useGetGuestInfo();
   const categories = useGetCategories();
 
-  const { loading, totalExpense, expense } = useAppSelector(
-    (state) => state.expense
-  );
-  const balance = useAppSelector((state) => state.balance.balance);
+  const expense = useAppSelector((state) => state.expense);
   const income = useAppSelector((state) => state.income);
-  const transactions = [...income.bank, ...income.wallet, ...expense];
+  const transactions = [...income.income, ...expense.expense];
   transactions.sort((a, b) => {
     return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
   });
-
+  const balance = income.totalIncome - expense.totalExpense;
   return (
     <div className={style.wrapper}>
       <div className={style.balance}>
         <h3>Account Balance</h3>
         <h1>
           $
-          {loading ? (
+          {expense.loading ? (
             <CircularProgress
               size={28}
               style={{
@@ -65,7 +59,7 @@ const Home = () => {
                   color="inherit"
                 />
               ) : (
-                income.totalincome
+                income.totalIncome
               )}
             </p>
           </div>
@@ -86,13 +80,13 @@ const Home = () => {
                   color="inherit"
                 />
               ) : (
-                totalExpense
+                expense.totalExpense
               )}
             </p>
           </div>
         </div>
       </div>
-      {categories.loading && loading ? (
+      {categories.loading && expense.loading ? (
         <CircularProgress
           size={28}
           style={{
@@ -125,7 +119,7 @@ const Home = () => {
             return (
               <Link
                 to={`detail?id=${item._id}`}
-                key={item.created_at.toString()}
+                key={item._id}
                 className={style.transactions}
                 style={
                   { "--iconBgColor": `${itemBgColor}` } as React.CSSProperties
@@ -184,16 +178,10 @@ const useGetGuestInfo = () => {
   }, [dispatch]);
   useEffect(() => {
     const expensePromise = dispatch(getGuestExpense());
-    const incomeBankPromise = dispatch(getGuestBank());
-    const incomeWalletPromise = dispatch(getGuestWallet());
-    const incomePrimise = dispatch(getGuestincome());
-    const balancePromise = dispatch(getGuestBalance());
+    const incomePrimise = dispatch(getGuestIncome());
     return () => {
-      incomeWalletPromise.abort();
-      incomeBankPromise.abort();
       incomePrimise.abort();
       expensePromise.abort();
-      balancePromise.abort();
     };
   }, [guestId]);
 };
@@ -234,6 +222,3 @@ const useGetIcon = (categories: cat | undefined) => {
   return { iconTitle, itemBgColor, svg };
 };
 export default Home;
-function getGuestIncome(): any {
-  throw new Error("Function not implemented.");
-}

@@ -9,8 +9,8 @@ import DatePickerComponent from "./../inputs/DatePickerComponent";
 import DescriptionTextfield from "./../inputs/DescriptionTextfield";
 import SelectComponent from "./../inputs/SelectComponent";
 import { inputsDataState } from "./../inputs/types";
+import useGetBankTitles from "../../hooks/useGetBankTitles";
 import style from "./expense.module.css";
-import useGetBanks from "../../hooks/useGetBanks";
 
 const Expenses = () => {
   const categories = useAppSelector((state) => state.categories);
@@ -21,7 +21,7 @@ const Expenses = () => {
     },
     []
   );
-  const banks = useGetBanks();
+  const banks = useGetBankTitles();
   banks.unshift("wallet");
   const dispatch = useAppDispatch();
 

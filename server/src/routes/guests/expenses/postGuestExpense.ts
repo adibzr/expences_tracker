@@ -11,7 +11,6 @@ const router = Router();
 
 router.post("/addguestexpense", auth, async (req: Request, res: Response) => {
   try {
-    console.log(req.body);
     const { guestId, category, amount, date, bank, wallet, description } =
       req.body;
     if (!mongoose.Types.ObjectId.isValid(guestId)) {
@@ -19,6 +18,7 @@ router.post("/addguestexpense", auth, async (req: Request, res: Response) => {
     }
     if (!mongoose.Types.ObjectId.isValid(category)) {
       return res
+
         .status(400)
         .json({ error: true, message: "invalid category id" });
     }
@@ -38,11 +38,9 @@ router.post("/addguestexpense", auth, async (req: Request, res: Response) => {
 
     let paymentSource;
     if (foundBank) {
-      foundBank.amount = foundBank.amount - amount;
       const savedBank = await foundBank.save();
       paymentSource = { kind: "bank", item: savedBank };
     } else {
-      foundWallet.amount = foundWallet.amount - amount;
       const savedWallet = await foundWallet.save();
       paymentSource = { kind: "wallet", item: savedWallet };
     }
@@ -53,12 +51,12 @@ router.post("/addguestexpense", auth, async (req: Request, res: Response) => {
       category: foundCategory,
       description,
     });
+    guestFound.expense.push(newExpense._id);
 
     const savedExpense = await newExpense.save();
     await guestFound.save();
     res.status(201).json({ success: true, expense: savedExpense });
   } catch (err: any) {
-    console.log(err.message);
     res.status(500).json({ error: true, message: err.message });
   }
 });

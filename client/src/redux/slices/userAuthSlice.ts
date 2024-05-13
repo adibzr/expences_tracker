@@ -2,7 +2,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-type user = {
+type userType = {
   fullname: string;
   email: string;
   password: string;
@@ -18,7 +18,7 @@ interface guestType {
 }
 export interface UserState {
   loading: boolean;
-  user: user | null;
+  user: userType | null;
   userId: string;
   guestId: string;
   guest: guestType | null;
@@ -67,7 +67,7 @@ const userAuthSlice = createSlice({
     });
     builder.addCase(
       loginUser.fulfilled,
-      (state, action: PayloadAction<user>) => {
+      (state, action: PayloadAction<userType>) => {
         state.loading = false;
         state.success = true;
         state.user = action.payload;
@@ -87,7 +87,7 @@ const userAuthSlice = createSlice({
     });
     builder.addCase(
       registerUser.fulfilled,
-      (state, action: PayloadAction<user>) => {
+      (state, action: PayloadAction<userType>) => {
         state.loading = false;
         state.success = true;
         state.user = action.payload;
@@ -145,7 +145,7 @@ export const loginUser = createAsyncThunk(
 );
 export const registerUser = createAsyncThunk(
   "user/register",
-  async ({ fullname, email, password }: user, { rejectWithValue }) => {
+  async ({ fullname, email, password }: userType, { rejectWithValue }) => {
     try {
       const config = {
         headers: {
