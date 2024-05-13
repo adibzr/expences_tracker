@@ -1,5 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { UserState } from "./userAuthSlice";
 
 interface payloadType {
   success: boolean;
@@ -7,7 +8,6 @@ interface payloadType {
     _id: string;
     title: string;
     logo: string;
-    amount: number;
     created_at: Date;
   }[];
 }
@@ -46,11 +46,22 @@ const bankSlice = createSlice({
   },
 });
 
-export const getGuestBank = createAsyncThunk("guest/getBank", async () => {
-  const response = await axios.get(
-    `${import.meta.env.VITE_BASEURL}/guest/guestbank`
-  );
-  return response.data;
-});
+export const getGuestBank = createAsyncThunk(
+  "guest/getBank",
+  async (_, { getState }) => {
+    const { guestId, token } = (getState() as { userAuth: UserState }).userAuth;
+
+    const response = await axios.get(
+      `${import.meta.env.VITE_BASEURL}/guest/getguestbank`,
+      {
+        headers: {
+          guestId,
+          token,
+        },
+      }
+    );
+    return response.data;
+  }
+);
 
 export default bankSlice.reducer;

@@ -106,6 +106,13 @@ const userAuthSlice = createSlice({
         state.token = action.payload.token;
       }
     );
+    builder.addCase(getGuest.fulfilled, (state, action) => {
+      state.guest = action.payload.guest;
+      state.loading = false;
+    });
+    builder.addCase(getGuest.pending, (state) => {
+      state.loading = true;
+    });
   },
 });
 
@@ -180,5 +187,22 @@ export const registerGuest = createAsyncThunk("guest/postGuest", async () => {
   );
   return response.data;
 });
+
+export const getGuest = createAsyncThunk(
+  "guest/getGuest",
+  async (_, { getState }) => {
+    const { guestId, token } = (getState() as { userAuth: UserState }).userAuth;
+    const response = await axios.get(
+      `${import.meta.env.VITE_BASEURL}/guest/getguest`,
+      {
+        headers: {
+          guestId,
+          token,
+        },
+      }
+    );
+    return response.data;
+  }
+);
 
 export default userAuthSlice.reducer;

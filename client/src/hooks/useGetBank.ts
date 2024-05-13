@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { getGuestBank } from "../redux/slices/bankSlice";
 import { useAppDispatch, useAppSelector } from "./reduxHooks";
 
-const useGetBankTitles = () => {
+const useGetBanks = () => {
   const dispatch = useAppDispatch();
   const { guestId, token } = useAppSelector((state) => state.userAuth);
   useEffect(() => {
@@ -15,11 +15,17 @@ const useGetBankTitles = () => {
     return;
   }, []);
   const { bank } = useAppSelector((state) => state.bank);
-  const bankTitles = bank.reduce((acc: string[], curr: { title: string }) => {
-    acc.push(curr.title);
-    return acc;
-  }, []);
-  return bankTitles;
+  const banks = bank.reduce(
+    (
+      acc: { title: string; id: string }[],
+      curr: { title: string; _id: string }
+    ) => {
+      acc.push({ title: curr.title, id: curr._id });
+      return acc;
+    },
+    []
+  );
+  return banks;
 };
 
-export default useGetBankTitles;
+export default useGetBanks;

@@ -8,7 +8,7 @@ import { getGuestBalance } from "../../redux/slices/balanceSlice";
 import { cat, getCategories } from "../../redux/slices/categoriesSlice";
 import { getGuestExpense } from "../../redux/slices/expenseSlice";
 
-import { registerGuest } from "../../redux/slices/userAuthSlice";
+import { getGuest, registerGuest } from "../../redux/slices/userAuthSlice";
 import style from "./home.module.css";
 import { getGuestIncome } from "../../redux/slices/incomeSlice";
 
@@ -175,6 +175,10 @@ const useGetGuestInfo = () => {
         promise.abort();
       };
     }
+    const guestPromise = dispatch(getGuest());
+    return () => {
+      guestPromise.abort();
+    };
   }, [dispatch]);
   useEffect(() => {
     const expensePromise = dispatch(getGuestExpense());

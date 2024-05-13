@@ -3,12 +3,8 @@ export interface inputsDataState {
   date: string;
   description: string;
   amount: number;
-  wallet?: string;
-  bank?: string;
-}
-
-export interface walletBankInput extends inputsDataState {
-  bank: string;
+  wallet?: { title: string; id: string };
+  bank?: { title: string; id: string };
 }
 
 export interface inputsDataError {

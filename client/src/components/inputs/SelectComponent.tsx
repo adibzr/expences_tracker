@@ -2,12 +2,15 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { inputsDataError, inputsDataState } from "./types";
 import { useAppSelector } from "../../hooks/reduxHooks";
+import { inputsDataError, inputsDataState } from "./types";
 
 interface selectComponentProps<T extends inputsDataState> {
   label: string;
-  items: string[];
+  items: {
+    title: string;
+    id: string;
+  }[];
   input: T;
   errors: inputsDataError;
   setInput: (arg0: T) => void;
@@ -22,8 +25,20 @@ const SelectComponent = <T extends inputsDataState>({
   setInput,
   setError,
 }: selectComponentProps<T>) => {
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
+
   const handleChange = (event: SelectChangeEvent) => {
     const value = event.target.value as string;
+    console.log(value);
     if (label === "Category") {
       setInput({
         ...input,
@@ -48,16 +63,18 @@ const SelectComponent = <T extends inputsDataState>({
     }
   };
 
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
-    },
+  const setValue = () => {
+    if (label === "Category") {
+      return input.category;
+    } else if (label === "Wallet/Bank") {
+      if (input.wallet) {
+        return "wallet";
+      } else {
+        return input.bank?.title;
+      }
+    } else return undefined;
   };
+
   const errorHandler: () => boolean = () => {
     if (label === "Category") {
       return errors.category;
@@ -73,14 +90,14 @@ const SelectComponent = <T extends inputsDataState>({
           {label}
         </InputLabel>
         <Select
-          value={label === "Category" ? input.category : input.wallet}
+          value={setValue()}
           onChange={handleChange}
           MenuProps={MenuProps}
           error={errorHandler()}
         >
           {items.map((item) => (
-            <MenuItem key={item} value={item}>
-              {item}
+            <MenuItem key={item.id} value={item.title}>
+              {item.title}
             </MenuItem>
           ))}
         </Select>
