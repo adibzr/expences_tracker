@@ -33,7 +33,7 @@ router.post("/addguestincome", auth, async (req: Request, res: Response) => {
     }
     const foundBank = await Bank.findById(bank);
     const foundWallet = await Wallet.findById(wallet);
-
+    console.log(foundBank);
     let paymentSource;
     if (foundBank) {
       const savedBank = await foundBank.save();

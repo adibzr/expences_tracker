@@ -11,11 +11,18 @@ import SelectComponent from "../inputs/SelectComponent";
 import { inputsDataState } from "../inputs/types";
 import style from "./income.module.css";
 import useGetCategories from "../../hooks/useGetCategories";
-import { title } from "process";
 import { postGuestIncome } from "../../redux/slices/incomeSlice";
+import { cat } from "../../redux/slices/categoriesSlice";
 
 const Income = () => {
   const categories = useGetCategories();
+  const incomeCategories = categories.reduce(
+    (acc: { title: string; id: string }[], curr: cat) => {
+      if (curr.type === "income") acc.push({ title: curr.title, id: curr._id });
+      return acc;
+    },
+    []
+  );
   const banks = useGetBanks();
 
   const dispatch = useAppDispatch();
@@ -36,7 +43,6 @@ const Income = () => {
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    console.log(errors);
     if (inputs.category === "") {
       setError({
         ...errors,
@@ -67,7 +73,7 @@ const Income = () => {
     const data: inputsDataState = {
       ...inputs,
       bank: foundBank.id,
-      category: foundCategory.id,
+      category: foundCategory._id,
     };
 
     dispatch(postGuestIncome(data));
@@ -86,7 +92,7 @@ const Income = () => {
       <div className={style.inputs}>
         <SelectComponent
           label="Category"
-          items={categories}
+          items={incomeCategories}
           input={inputs}
           errors={errors}
           setInput={setInputs}

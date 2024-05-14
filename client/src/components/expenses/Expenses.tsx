@@ -11,32 +11,34 @@ import DescriptionTextfield from "./../inputs/DescriptionTextfield";
 import SelectComponent from "./../inputs/SelectComponent";
 import { inputsDataState } from "./../inputs/types";
 import style from "./expense.module.css";
+import useGetBanks from "../../hooks/useGetBank";
+import { postGuestExpense } from "../../redux/slices/expenseSlice";
+import { cat } from "../../redux/slices/categoriesSlice";
 
 const Expenses = () => {
   const categories = useGetCategories();
-  const banks = useGetBankTitles();
-  const wallet = useAppSelector((state) => state.userAuth.guest?.wallet);
-  if (wallet) banks.unshift({ title: "wallet", id: wallet });
+  const expenseCategories = categories.reduce(
+    (acc: { title: string; id: string }[], curr: cat) => {
+      if (curr.type === "expense")
+        acc.push({ title: curr.title, id: curr._id });
+      return acc;
+    },
+    []
+  );
+  const banks = useGetBanks();
   const dispatch = useAppDispatch();
   const [inputs, setInputs] = useState({
     category: "",
-    bank: {
-      title: "",
-      id: "",
-    },
-    wallet: {
-      title: "",
-      id: "",
-    },
-    date: dayjs().format("DD-MM-YYYY"),
+    bank: "",
+    date: dayjs().format("MM-DD-YYYY"),
     description: "",
     amount: 0,
   });
 
   const [errors, setError] = useState({
     category: false,
+    bank: false,
     date: false,
-    wallet: false,
   });
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
@@ -48,28 +50,39 @@ const Expenses = () => {
       });
       return;
     }
-    if (inputs.wallet.id === "") {
+    if (inputs.bank === "") {
       setError({
         ...errors,
-        wallet: true,
+        bank: true,
       });
       return;
     }
     const foundCategory = categories.find(
       (cat) => cat.title === inputs.category
     );
-    if (!foundCategory) return;
+    if (!foundCategory) {
+      alert("category not found");
+      return;
+    }
+    const foundBank = banks.find((bank) => bank.title === inputs.bank);
+    if (!foundBank) {
+      alert("bank not found");
+      return;
+    }
+
     const data: inputsDataState = {
       ...inputs,
-      category: foundCategory.id,
+      bank: foundBank.id,
+      category: foundCategory._id,
     };
+
+    dispatch(postGuestExpense(data));
     setInputs({
       category: "",
-      bank: { title: "", id: "" },
-      date: dayjs().format("DD-MM-YYYY"),
+      bank: "",
+      date: dayjs().format("MM-DD-YYYY"),
       description: "",
       amount: 0,
-      wallet: { title: "", id: "" },
     });
   };
 
@@ -79,7 +92,7 @@ const Expenses = () => {
       <div className={style.inputs}>
         <SelectComponent
           label="Category"
-          items={categories}
+          items={expenseCategories}
           input={inputs}
           errors={errors}
           setInput={setInputs}
@@ -93,7 +106,7 @@ const Expenses = () => {
         />
         <DescriptionTextfield input={inputs} setInput={setInputs} />
         <SelectComponent
-          label="Wallet/Bank"
+          label="Bank"
           items={banks}
           input={inputs}
           errors={errors}

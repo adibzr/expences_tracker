@@ -14,17 +14,8 @@ const useGetCategories = () => {
     }
     return;
   }, []);
-  const category = useAppSelector((state) => state.categories.categories);
-  const categories = category.reduce(
-    (
-      acc: { title: string; id: string }[],
-      curr: { title: string; _id: string }
-    ) => {
-      acc.push({ title: curr.title, id: curr._id });
-      return acc;
-    },
-    []
-  );
+  const categories = useAppSelector((state) => state.categories.categories);
+
   return categories;
 };
 
