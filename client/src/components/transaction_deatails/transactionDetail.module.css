@@ -1,5 +1,6 @@
 .wrapper {
   display: grid;
+  position: relative;
   grid-template-columns: 1fr 1fr;
   max-width: 1200px;
   margin-inline: auto;
@@ -78,10 +79,18 @@
   grid-template-columns: 1fr 1fr;
   max-width: 300px;
   margin-inline: auto;
-  padding-bottom: 5rem;
+  padding-bottom: 3rem;
   align-items: center;
   gap: 2rem;
   button {
     width: 20rem;
   }
+}
+
+.arrow {
+  position: absolute;
+  left: 0;
+  top: -3rem;
+  cursor: pointer;
+  color: var(--color-light-200);
 }
