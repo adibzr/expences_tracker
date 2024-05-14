@@ -12,37 +12,31 @@ import { inputsDataState } from "../inputs/types";
 import style from "./income.module.css";
 import useGetCategories from "../../hooks/useGetCategories";
 import { title } from "process";
+import { postGuestIncome } from "../../redux/slices/incomeSlice";
 
 const Income = () => {
   const categories = useGetCategories();
   const banks = useGetBanks();
-  const wallet = useAppSelector((state) => state.userAuth.guest?.wallet);
-  if (wallet) banks.unshift({ title: "wallet", id: wallet });
+
   const dispatch = useAppDispatch();
 
   const [inputs, setInputs] = useState({
     category: "",
-    bank: {
-      title: "",
-      id: "",
-    },
-    wallet: {
-      title: "",
-      id: "",
-    },
-    date: dayjs().format("DD-MM-YYYY"),
+    bank: "",
+    date: dayjs().format("MM-DD-YYYY"),
     description: "",
     amount: 0,
   });
 
   const [errors, setError] = useState({
     category: false,
-    wallet: false,
+    bank: false,
     date: false,
   });
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
+    console.log(errors);
     if (inputs.category === "") {
       setError({
         ...errors,
@@ -50,29 +44,39 @@ const Income = () => {
       });
       return;
     }
-    if (inputs.wallet.id === "") {
+    if (inputs.bank === "") {
       setError({
         ...errors,
-        wallet: true,
+        bank: true,
       });
       return;
     }
     const foundCategory = categories.find(
       (cat) => cat.title === inputs.category
     );
-    if (!foundCategory) return;
+    if (!foundCategory) {
+      alert("category not found");
+      return;
+    }
+    const foundBank = banks.find((bank) => bank.title === inputs.bank);
+    if (!foundBank) {
+      alert("bank not found");
+      return;
+    }
+
     const data: inputsDataState = {
       ...inputs,
+      bank: foundBank.id,
       category: foundCategory.id,
     };
-    console.log(data);
+
+    dispatch(postGuestIncome(data));
     setInputs({
       category: "",
-      bank: { title: "", id: "" },
-      date: dayjs().format("DD-MM-YYYY"),
+      bank: "",
+      date: dayjs().format("MM-DD-YYYY"),
       description: "",
       amount: 0,
-      wallet: { title: "", id: "" },
     });
   };
 
@@ -96,7 +100,7 @@ const Income = () => {
         />
         <DescriptionTextfield input={inputs} setInput={setInputs} />
         <SelectComponent
-          label="Wallet/Bank"
+          label="Bank"
           items={banks}
           input={inputs}
           errors={errors}
@@ -106,7 +110,7 @@ const Income = () => {
       </div>
       <ButtonComponentLarge
         disabled={
-          errors?.category || errors?.date || errors?.wallet ? true : false
+          errors?.category || errors?.date || errors?.bank ? true : false
         }
         type="submit"
         className={style.button}

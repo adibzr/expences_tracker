@@ -1,10 +1,14 @@
 import { Request, Response, Router } from "express";
 import mongoose from "mongoose";
 import auth from "../../../middleware/authMiddleware";
-import Bank from "../../../models/bank";
-import Guest from "../../../models/guest";
+import Bank, { IBank } from "../../../models/bank";
+import Guest, { IGuest } from "../../../models/guest";
 
 const router = Router();
+
+interface populatedBank extends Omit<IGuest, "bank"> {
+  bank: IBank[];
+}
 
 router.post("/addguestbank", auth, async (req: Request, res: Response) => {
   try {
@@ -12,11 +16,16 @@ router.post("/addguestbank", auth, async (req: Request, res: Response) => {
     if (!mongoose.Types.ObjectId.isValid(guestId)) {
       return res.status(400).json({ error: true, message: "invalid guest id" });
     }
-    const guestFound = await Guest.findById(guestId);
+    const guestFound: populatedBank = await Guest.findById(guestId).populate(
+      "bank"
+    );
     if (!guestFound) {
       return res.status(404).json({ error: true, message: "Guest not found" });
     }
-    const foundBank = await Bank.findOne({ title: title.toLowerCase() });
+
+    const foundBank = guestFound.bank.find(
+      (bank) => bank.title === title.toLowerCase()
+    );
     if (foundBank) {
       return res
         .status(400)

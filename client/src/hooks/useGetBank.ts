@@ -25,6 +25,8 @@ const useGetBanks = () => {
     },
     []
   );
+  const wallet = useAppSelector((state) => state.userAuth.guest?.wallet);
+  if (wallet) banks.unshift({ title: "wallet", id: wallet });
   return banks;
 };
 

@@ -21,7 +21,7 @@ export interface UserState {
   user: userType | null;
   userId: string;
   guestId: string;
-  guest: guestType | null;
+  guest: guestType;
   token: string | undefined;
   error: string;
   success: boolean;
@@ -32,7 +32,15 @@ const initialState: UserState = {
   user: null,
   userId: "",
   guestId: "",
-  guest: null,
+  guest: {
+    _id: "",
+    bank: [],
+    wallet: "",
+    expense: [],
+    income: [],
+    budget: "",
+    created_at: undefined,
+  },
   token: undefined,
   error: "",
   success: false,

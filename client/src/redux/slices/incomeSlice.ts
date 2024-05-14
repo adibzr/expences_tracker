@@ -3,6 +3,7 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { inputsDataState } from "../../components/inputs/types";
 import { UserState } from "./userAuthSlice";
+import dayjs from "dayjs";
 
 interface incomeType {
   totalIncome: number;
@@ -94,18 +95,25 @@ export const postGuestIncome = createAsyncThunk(
   "guest/postIcome",
   async (data: inputsDataState, { getState }) => {
     const { token } = (getState() as { userAuth: UserState }).userAuth;
-    const { guestId } = (getState() as { userAuth: UserState }).userAuth;
-    const { category, date, description, amount, bank, wallet } = data;
+    const { guest } = (getState() as { userAuth: UserState }).userAuth;
+    const { category, date, description, amount } = data;
+    let bankData: string | undefined = data.bank;
+    let wallet;
+    if (guest.wallet === bankData) {
+      wallet = bankData;
+      bankData = undefined;
+    }
+
     const response = await axios.post(
       `${import.meta.env.VITE_BASEURL}/income/addguestincome`,
       {
-        guestId,
-        category,
+        guestId: guest._id,
         amount,
-        date,
-        bank,
-        wallet,
         description,
+        category,
+        date,
+        bank: bankData,
+        wallet,
       },
       {
         headers: {

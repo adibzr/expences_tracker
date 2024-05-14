@@ -2,7 +2,6 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { useAppSelector } from "../../hooks/reduxHooks";
 import { inputsDataError, inputsDataState } from "./types";
 
 interface selectComponentProps<T extends inputsDataState> {
@@ -38,7 +37,6 @@ const SelectComponent = <T extends inputsDataState>({
 
   const handleChange = (event: SelectChangeEvent) => {
     const value = event.target.value as string;
-    console.log(value);
     if (label === "Category") {
       setInput({
         ...input,
@@ -46,41 +44,22 @@ const SelectComponent = <T extends inputsDataState>({
       });
       setError({ ...errors, category: false });
     }
-    if (label === "Wallet/Bank") {
-      if (value === "wallet") {
-        const wallet = useAppSelector((state) => state.userAuth.guest?.wallet);
-        setInput({
-          ...input,
-          wallet: wallet,
-        });
-      } else {
-        setInput({
-          ...input,
-          bank: value,
-        });
-      }
-      setError({ ...errors, wallet: false });
+    if (label === "Bank") {
+      setInput({
+        ...input,
+        bank: value,
+      });
+      setError({ ...errors, bank: false });
     }
-  };
-
-  const setValue = () => {
-    if (label === "Category") {
-      return input.category;
-    } else if (label === "Wallet/Bank") {
-      if (input.wallet) {
-        return "wallet";
-      } else {
-        return input.bank?.title;
-      }
-    } else return undefined;
   };
 
   const errorHandler: () => boolean = () => {
     if (label === "Category") {
       return errors.category;
-    } else if (label === "Wallet/Bank") {
-      return errors.wallet;
-    } else return false;
+    } else if (label === "Bank") {
+      return errors.bank;
+    }
+    return false;
   };
 
   return (
@@ -90,7 +69,7 @@ const SelectComponent = <T extends inputsDataState>({
           {label}
         </InputLabel>
         <Select
-          value={setValue()}
+          value={label === "Category" ? input.category : input.bank}
           onChange={handleChange}
           MenuProps={MenuProps}
           error={errorHandler()}

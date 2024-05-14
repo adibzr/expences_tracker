@@ -18,7 +18,6 @@ const Expenses = () => {
   const wallet = useAppSelector((state) => state.userAuth.guest?.wallet);
   if (wallet) banks.unshift({ title: "wallet", id: wallet });
   const dispatch = useAppDispatch();
-  console.log(wallet);
   const [inputs, setInputs] = useState({
     category: "",
     bank: {
@@ -64,7 +63,6 @@ const Expenses = () => {
       ...inputs,
       category: foundCategory.id,
     };
-    console.log(data);
     setInputs({
       category: "",
       bank: { title: "", id: "" },

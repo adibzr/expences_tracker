@@ -3,12 +3,11 @@ export interface inputsDataState {
   date: string;
   description: string;
   amount: number;
-  wallet?: { title: string; id: string };
-  bank?: { title: string; id: string };
+  bank: string;
 }
 
 export interface inputsDataError {
   category: boolean;
   date: boolean;
-  wallet: boolean;
+  bank: boolean;
 }
