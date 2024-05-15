@@ -13,7 +13,6 @@ router.post("/addguestincome", auth, async (req: Request, res: Response) => {
   try {
     const { guestId, category, amount, date, bank, wallet, description } =
       req.body;
-    console.log(req.body);
     if (!mongoose.Types.ObjectId.isValid(guestId)) {
       return res.status(400).json({ error: true, message: "invalid user id" });
     }

@@ -3,10 +3,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import dayjs from "dayjs";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import useGetTransactions from "../../hooks/useGetTransactions";
 import { ButtonComponentLarge } from "../ButtonComponent";
 import style from "./transactionDetail.module.css";
+import { deleteTrasaction } from "../../redux/slices/transactionSlice";
 
 const TransactionDetail = () => {
   const query = useQuery().get("id");
@@ -19,11 +20,28 @@ const TransactionDetail = () => {
   const trans = transactions.find((exp) => exp._id === query);
   const cat = category.find((cat) => cat._id === trans?.category);
   const bank = banks.find((bank) => bank._id === trans?.paymentSource.item);
+  const dispatch = useAppDispatch();
+
+  let item: { type: string; id: string };
+  if (cat && trans) {
+    item = {
+      type: cat.type,
+      id: trans._id,
+    };
+  }
+
+  const handleDelete = () => {
+    dispatch(deleteTrasaction(item));
+    navigate("/");
+  };
 
   return (
     <>
       <div style={{ marginTop: "10rem" }} className={style.wrapper}>
-        <button onClick={() => navigate(-1)} className={style.arrow}>
+        <button
+          onClick={() => navigate("/", { replace: true })}
+          className={style.arrow}
+        >
           <ArrowBackIcon />
         </button>
         <div className={style.leftCol}>
@@ -52,7 +70,9 @@ const TransactionDetail = () => {
       </div>
       <div className={style.buttons}>
         <ButtonComponentLarge text="Edit" />
-        <DeleteIcon htmlColor="gray" />
+        <div className={style.delete} onClick={handleDelete}>
+          <DeleteIcon fontSize="large" />
+        </div>
       </div>
     </>
   );

@@ -4,10 +4,8 @@ import { Link } from "react-router-dom";
 import expenseSVG from "../../assets/expense.svg";
 import incomeSVG from "../../assets/income.svg";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { getGuestBalance } from "../../redux/slices/balanceSlice";
 import { cat, getCategories } from "../../redux/slices/categoriesSlice";
 import { getGuestExpense } from "../../redux/slices/expenseSlice";
-
 import { getGuest, registerGuest } from "../../redux/slices/userAuthSlice";
 import style from "./home.module.css";
 import { getGuestIncome } from "../../redux/slices/incomeSlice";
@@ -15,12 +13,14 @@ import { getGuestIncome } from "../../redux/slices/incomeSlice";
 const Home = () => {
   useGetGuestInfo();
   const categories = useGetCategories();
-
   const expense = useAppSelector((state) => state.expense);
   const income = useAppSelector((state) => state.income);
   const transactions = [...income.income, ...expense.expense];
   transactions.sort((a, b) => {
-    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    if (a.created_at > b.created_at) {
+      return -1;
+    }
+    return 1;
   });
   const balance = income.totalIncome - expense.totalExpense;
   return (

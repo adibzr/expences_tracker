@@ -1,7 +1,7 @@
 import { Action, ThunkAction, configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import balanceSlice from "./slices/balanceSlice";
+import balanceSlice from "./slices/transactionSlice";
 import categoriesSlice from "./slices/categoriesSlice";
 import expenseSlice from "./slices/expenseSlice";
 import incomeSlice from "./slices/incomeSlice";

@@ -2,9 +2,10 @@
   display: grid;
   position: relative;
   grid-template-columns: 1fr 1fr;
-  max-width: 1200px;
+  max-width: 1000px;
   margin-inline: auto;
   margin-top: 5%;
+  overflow: hidden;
   @media (max-width: 1200px) {
     margin-top: 10%;
   }
@@ -90,7 +91,12 @@
 .arrow {
   position: absolute;
   left: 0;
-  top: -3rem;
+  top: 0;
+  cursor: pointer;
+  color: var(--color-light-200);
+}
+
+.delete {
   cursor: pointer;
   color: var(--color-light-200);
 }
