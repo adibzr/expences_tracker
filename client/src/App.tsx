@@ -1,10 +1,10 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useParams } from "react-router-dom";
 import Home from "./components/Home/Home";
-import NavBar from "./components/navigation_bar/NavBar";
 import Expenses from "./components/expenses/Expenses";
 import Income from "./components/income/Income";
-import "./global.css";
+import NavBar from "./components/navigation_bar/NavBar";
 import TransactionDetail from "./components/transaction_deatails/TransactionDetail";
+import "./global.css";
 
 const App = () => {
   return (
@@ -15,6 +15,7 @@ const App = () => {
           <Route path="expenses" element={<Expenses />} />
           <Route path="income" element={<Income />} />
           <Route path="detail" element={<TransactionDetail />} />
+          <Route path="edit/:edit/*" element={<Edit />} />
           <Route path="tranfer" element={<h1>tranfer</h1>} />
           <Route path="financial-report" element={<h1>financial report</h1>} />
           <Route path="budget" element={<h1>budget</h1>} />
@@ -25,4 +26,21 @@ const App = () => {
   );
 };
 
+const Edit = () => {
+  const params = useParams();
+  if (params.edit === "expense")
+    return (
+      <Routes>
+        <Route path="/" element={<Expenses />} />
+        <Route path="*" element={<h1>Page not found</h1>} />
+      </Routes>
+    );
+  if (params.edit === "income")
+    return (
+      <Routes>
+        <Route path="/" element={<Income />} />
+        <Route path="*" element={<h1>Page not found</h1>} />
+      </Routes>
+    );
+};
 export default App;

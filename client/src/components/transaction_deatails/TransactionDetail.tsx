@@ -5,9 +5,9 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import useGetTransactions from "../../hooks/useGetTransactions";
+import { deleteTrasaction } from "../../redux/slices/transactionSlice";
 import { ButtonComponentLarge } from "../ButtonComponent";
 import style from "./transactionDetail.module.css";
-import { deleteTrasaction } from "../../redux/slices/transactionSlice";
 
 const TransactionDetail = () => {
   const query = useQuery().get("id");
@@ -33,6 +33,10 @@ const TransactionDetail = () => {
   const handleDelete = () => {
     dispatch(deleteTrasaction(item));
     navigate("/");
+  };
+  const handleEdit = () => {
+    if (cat?.type === "expense") navigate("/edit/expense");
+    if (cat?.type === "income") navigate("/edit/income");
   };
 
   return (
@@ -69,7 +73,7 @@ const TransactionDetail = () => {
         </div>
       </div>
       <div className={style.buttons}>
-        <ButtonComponentLarge text="Edit" />
+        <ButtonComponentLarge text="Edit" handleClick={() => handleEdit()} />
         <div className={style.delete} onClick={handleDelete}>
           <DeleteIcon fontSize="large" />
         </div>

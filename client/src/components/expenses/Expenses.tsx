@@ -1,9 +1,12 @@
 // import React, { useState } from "react";
 import dayjs from "dayjs";
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import useGetBankTitles from "../../hooks/useGetBank";
+import { useParams } from "react-router-dom";
+import { useAppDispatch } from "../../hooks/reduxHooks";
+import useGetBanks from "../../hooks/useGetBank";
 import useGetCategories from "../../hooks/useGetCategories";
+import { cat } from "../../redux/slices/categoriesSlice";
+import { postGuestExpense } from "../../redux/slices/expenseSlice";
 import { ButtonComponentLarge } from "../ButtonComponent";
 import AmountComponent from "./../inputs/AmountComponent";
 import DatePickerComponent from "./../inputs/DatePickerComponent";
@@ -11,11 +14,9 @@ import DescriptionTextfield from "./../inputs/DescriptionTextfield";
 import SelectComponent from "./../inputs/SelectComponent";
 import { inputsDataState } from "./../inputs/types";
 import style from "./expense.module.css";
-import useGetBanks from "../../hooks/useGetBank";
-import { postGuestExpense } from "../../redux/slices/expenseSlice";
-import { cat } from "../../redux/slices/categoriesSlice";
 
 const Expenses = () => {
+  const params = useParams();
   const categories = useGetCategories();
   const expenseCategories = categories.reduce(
     (acc: { title: string; id: string }[], curr: cat) => {
@@ -43,6 +44,7 @@ const Expenses = () => {
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
+
     if (inputs.category === "") {
       setError({
         ...errors,
@@ -75,8 +77,11 @@ const Expenses = () => {
       bank: foundBank.id,
       category: foundCategory._id,
     };
-
-    dispatch(postGuestExpense(data));
+    if (params.edit === "expense") {
+    } else if (params.edit === "income") {
+    } else {
+      dispatch(postGuestExpense(data));
+    }
     setInputs({
       category: "",
       bank: "",

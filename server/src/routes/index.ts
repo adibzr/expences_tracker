@@ -13,7 +13,7 @@ import postGuestIncome from "./guests/income/postGuestIncome";
 import getGuestBank from "./guests/guest/getGuestBank";
 import postGuestBank from "./guests/guest/postGuestBank";
 import getGuest from "./guests/guest/getGuest";
-import deleteGuestTransaction from "./guests/deleteGuestTransaction";
+import deleteGuestTransaction from "./guests/transactions/deleteGuestTransaction";
 
 const router = Router();
 

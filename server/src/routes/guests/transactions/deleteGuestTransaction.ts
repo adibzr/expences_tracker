@@ -1,8 +1,8 @@
 import { Request, Response, Router } from "express";
-import auth from "../../middleware/authMiddleware";
-import Expense, { IExpense } from "../../models/expense";
-import Income, { IIncome } from "../../models/income";
-import Guest, { IGuest } from "../../models/guest";
+import auth from "../../../middleware/authMiddleware";
+import Expense, { IExpense } from "../../../models/expense";
+import Income, { IIncome } from "../../../models/income";
+import Guest, { IGuest } from "../../../models/guest";
 import mongoose from "mongoose";
 
 const router = Router();
