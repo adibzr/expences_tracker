@@ -14,6 +14,7 @@ import getGuestBank from "./guests/guest/getGuestBank";
 import postGuestBank from "./guests/guest/postGuestBank";
 import getGuest from "./guests/guest/getGuest";
 import deleteGuestTransaction from "./guests/transactions/deleteGuestTransaction";
+import updateGuestTransaction from "./guests/transactions/updateGuestTransaction";
 
 const router = Router();
 
@@ -35,5 +36,6 @@ router.use("/category", postCategory);
 router.use("/category", getCategory);
 
 router.use("/transaction", deleteGuestTransaction);
+router.use("/transaction", updateGuestTransaction);
 
 export default router;

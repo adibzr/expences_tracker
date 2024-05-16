@@ -32,7 +32,6 @@ router.post("/addguestincome", auth, async (req: Request, res: Response) => {
     }
     const foundBank = await Bank.findById(bank);
     const foundWallet = await Wallet.findById(wallet);
-    console.log(foundBank);
     let paymentSource;
     if (foundBank) {
       const savedBank = await foundBank.save();
@@ -54,7 +53,6 @@ router.post("/addguestincome", auth, async (req: Request, res: Response) => {
     await guestFound.save();
     res.status(201).json({ success: true, income: savedIncome });
   } catch (err: any) {
-    console.log(err);
     res.status(500).json({ error: true, message: err.message });
   }
 });

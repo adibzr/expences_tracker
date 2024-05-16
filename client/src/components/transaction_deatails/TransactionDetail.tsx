@@ -35,8 +35,8 @@ const TransactionDetail = () => {
     navigate("/");
   };
   const handleEdit = () => {
-    if (cat?.type === "expense") navigate("/edit/expense");
-    if (cat?.type === "income") navigate("/edit/income");
+    if (cat?.type === "expense") navigate("/edit/expense/" + trans?._id);
+    if (cat?.type === "income") navigate("/edit/income/" + trans?._id);
   };
 
   return (

@@ -3,6 +3,18 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { UserState } from "./userAuthSlice";
 
+interface upateDataType {
+  type: string;
+  id: string;
+  updatedData: {
+    amount: number;
+    description: string;
+    category: string;
+    date: string;
+    bank?: string;
+    wallet?: string;
+  };
+}
 interface initialState {
   loading: boolean;
   error: string;
@@ -49,6 +61,33 @@ export const deleteTrasaction = createAsyncThunk(
           guestId,
           id,
           type,
+        },
+      }
+    );
+    return response.data;
+  }
+);
+export const updateTrasaction = createAsyncThunk(
+  "transaction/Update",
+  async ({ id, type, updatedData }: upateDataType, { getState }) => {
+    const { guest, token } = (getState() as { userAuth: UserState }).userAuth;
+    let bankData: string | undefined = updatedData.bank;
+    let wallet: string | undefined = undefined;
+    if (guest.wallet === bankData) {
+      wallet = bankData;
+      bankData = undefined;
+    }
+
+    const response = await axios.delete(
+      `${import.meta.env.VITE_BASEURL}/transaction/updateguesttransaction`,
+      {
+        headers: {
+          token,
+        },
+        data: {
+          id,
+          type,
+          updatedData,
         },
       }
     );

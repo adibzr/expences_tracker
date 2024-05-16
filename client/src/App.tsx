@@ -15,7 +15,7 @@ const App = () => {
           <Route path="expenses" element={<Expenses />} />
           <Route path="income" element={<Income />} />
           <Route path="detail" element={<TransactionDetail />} />
-          <Route path="edit/:edit/*" element={<Edit />} />
+          <Route path="edit/:edit/:id/*" element={<Edit />} />
           <Route path="tranfer" element={<h1>tranfer</h1>} />
           <Route path="financial-report" element={<h1>financial report</h1>} />
           <Route path="budget" element={<h1>budget</h1>} />

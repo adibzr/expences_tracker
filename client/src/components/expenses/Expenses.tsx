@@ -1,18 +1,19 @@
 // import React, { useState } from "react";
-import dayjs from "dayjs";
+import { cat } from "../../redux/slices/categoriesSlice";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/reduxHooks";
-import useGetBanks from "../../hooks/useGetBank";
-import useGetCategories from "../../hooks/useGetCategories";
-import { cat } from "../../redux/slices/categoriesSlice";
+import { inputsDataState } from "./../inputs/types";
 import { postGuestExpense } from "../../redux/slices/expenseSlice";
+import { updateTrasaction } from "../../redux/slices/transactionSlice";
 import { ButtonComponentLarge } from "../ButtonComponent";
+import dayjs from "dayjs";
+import useGetBanks from "../../hooks/useGetBank";
 import AmountComponent from "./../inputs/AmountComponent";
+import SelectComponent from "./../inputs/SelectComponent";
+import useGetCategories from "../../hooks/useGetCategories";
 import DatePickerComponent from "./../inputs/DatePickerComponent";
 import DescriptionTextfield from "./../inputs/DescriptionTextfield";
-import SelectComponent from "./../inputs/SelectComponent";
-import { inputsDataState } from "./../inputs/types";
 import style from "./expense.module.css";
 
 const Expenses = () => {
@@ -78,7 +79,9 @@ const Expenses = () => {
       category: foundCategory._id,
     };
     if (params.edit === "expense") {
+      updateTrasaction({ id: params.edit, type: "expense", updatedData: data });
     } else if (params.edit === "income") {
+      updateTrasaction({ id: params.edit, type: "income", updatedData: data });
     } else {
       dispatch(postGuestExpense(data));
     }

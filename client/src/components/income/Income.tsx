@@ -13,8 +13,11 @@ import style from "./income.module.css";
 import useGetCategories from "../../hooks/useGetCategories";
 import { postGuestIncome } from "../../redux/slices/incomeSlice";
 import { cat } from "../../redux/slices/categoriesSlice";
+import { useParams } from "react-router-dom";
+import { updateTrasaction } from "../../redux/slices/transactionSlice";
 
 const Income = () => {
+  const params = useParams();
   const categories = useGetCategories();
   const incomeCategories = categories.reduce(
     (acc: { title: string; id: string }[], curr: cat) => {
@@ -75,8 +78,14 @@ const Income = () => {
       bank: foundBank.id,
       category: foundCategory._id,
     };
+    if (params.id && params.edit === "expense") {
+      updateTrasaction({ id: params.id, type: "expense", updatedData: data });
+    } else if (params.id && params.edit === "income") {
+      updateTrasaction({ id: params.id, type: "income", updatedData: data });
+    } else {
+      dispatch(postGuestIncome(data));
+    }
 
-    dispatch(postGuestIncome(data));
     setInputs({
       category: "",
       bank: "",
