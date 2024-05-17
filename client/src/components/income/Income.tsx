@@ -79,9 +79,13 @@ const Income = () => {
       category: foundCategory._id,
     };
     if (params.id && params.edit === "expense") {
-      updateTrasaction({ id: params.id, type: "expense", updatedData: data });
+      dispatch(
+        updateTrasaction({ id: params.id, type: "expense", updatedData: data })
+      );
     } else if (params.id && params.edit === "income") {
-      updateTrasaction({ id: params.id, type: "income", updatedData: data });
+      dispatch(
+        updateTrasaction({ id: params.id, type: "income", updatedData: data })
+      );
     } else {
       dispatch(postGuestIncome(data));
     }

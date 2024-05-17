@@ -30,6 +30,8 @@ const TransactionDetail = () => {
     };
   }
 
+  const amountColor =
+    cat?.type === "expense" ? "red" : cat?.type === "income" ? "green" : "blue";
   const handleDelete = () => {
     dispatch(deleteTrasaction(item));
     navigate("/");
@@ -66,7 +68,16 @@ const TransactionDetail = () => {
           </div>
         </div>
         <div className={style.rightCol}>
-          <div className={style.amount}>${trans?.amount}</div>
+          <div
+            style={
+              {
+                "--color-transaction": `${amountColor}`,
+              } as React.CSSProperties
+            }
+            className={style.amount}
+          >
+            ${trans?.amount}
+          </div>
           <div className={style.date}>
             {dayjs(trans?.date).format("DD-MM-YYYY")}
           </div>

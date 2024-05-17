@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 import auth from "../../../middleware/authMiddleware";
-import Expense, { IExpense } from "../../../models/expense";
+import Expense from "../../../models/expense";
 import Income from "../../../models/income";
 import mongoose, { ObjectId } from "mongoose";
 
@@ -62,7 +62,6 @@ router.put(
         message: "Transaction updated",
         transaction: transaction,
       });
-      res.status(200).send("todo bien pa");
     } catch (err: any) {
       res.status(500).json({ error: true, message: err.message });
     }
