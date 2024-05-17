@@ -3,7 +3,7 @@ import Home from "./components/Home/Home";
 import Expenses from "./components/expenses/Expenses";
 import Income from "./components/income/Income";
 import NavBar from "./components/navigation_bar/NavBar";
-import TransactionDetail from "./components/transaction_deatails/TransactionDetail";
+import TransactionDetail from "./components/transactions/TransactionDetail";
 import "./global.css";
 
 const App = () => {
@@ -17,7 +17,7 @@ const App = () => {
           <Route path="detail" element={<TransactionDetail />} />
           <Route path="edit/:edit/:id/*" element={<Edit />} />
           <Route path="tranfer" element={<h1>tranfer</h1>} />
-          <Route path="financial-report" element={<h1>financial report</h1>} />
+          <Route path="transaction" element={<h1>Transaction</h1>} />
           <Route path="budget" element={<h1>budget</h1>} />
           <Route path="*" element={<h1>Page not found</h1>} />
         </Route>
