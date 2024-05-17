@@ -18,7 +18,7 @@ const pages = [
   { path: "/expenses", name: "Expenses" },
   { path: "/income", name: "Income" },
   { path: "/transfer", name: "Transfer" },
-  { path: "/fiancial-report", name: "Fiancial Report" },
+  { path: "/transaction", name: "Transaction" },
   { path: "/budget", name: "Budget" },
 ];
 

@@ -1,6 +1,5 @@
 import { CircularProgress } from "@mui/material";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
 import expenseSVG from "../../assets/expense.svg";
 import incomeSVG from "../../assets/income.svg";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
@@ -9,13 +8,31 @@ import { getGuestExpense } from "../../redux/slices/expenseSlice";
 import { getGuest, registerGuest } from "../../redux/slices/userAuthSlice";
 import style from "./home.module.css";
 import { getGuestIncome } from "../../redux/slices/incomeSlice";
+import useGetCategories from "../../hooks/useGetCategories";
+import Transactions from "../transactions/Transactions";
+
+export interface transactionType {
+  _id: string;
+  amount: number;
+  date: Date;
+  paymentSource: {
+    kind: "bank" | "wallet";
+    item: string;
+  };
+  category: string;
+  description: string;
+  created_at: Date;
+}
 
 const Home = () => {
-  useGetGuestInfo();
   const categories = useGetCategories();
+  useGetGuestInfo();
   const expense = useAppSelector((state) => state.expense);
   const income = useAppSelector((state) => state.income);
-  const transactions = [...income.income, ...expense.expense];
+  const transactions: transactionType[] = [
+    ...income.income,
+    ...expense.expense,
+  ];
   transactions.sort((a, b) => {
     if (a.created_at > b.created_at) {
       return -1;
@@ -86,7 +103,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      {categories.loading && expense.loading ? (
+      {expense.loading || income.loading ? (
         <CircularProgress
           size={28}
           style={{
@@ -99,58 +116,15 @@ const Home = () => {
         <div className={style.transactionsWrapper}>
           <div className={style.header}>
             <span>Recent Transactions</span>
-            {/* <button>View All</button> */}
           </div>
-
-          {transactions.map((item) => {
-            const category = categories.categories.find(
-              (cat) => cat._id === item.category
-            );
-            const { iconTitle, itemBgColor, svg } = useGetIcon(category);
-            const date = new Date(item.date).toLocaleDateString("es-AR");
-            const iconColor = category?.icon.iconColor;
-            const amountColor =
-              category?.type === "expense"
-                ? "red"
-                : category?.type === "income"
-                ? "green"
-                : "blue";
-            if (!category) return null;
-            return (
-              <Link
-                to={`detail?id=${item._id}`}
-                key={item._id}
-                className={style.transactions}
-                style={
-                  { "--iconBgColor": `${itemBgColor}` } as React.CSSProperties
-                }
-              >
-                <div className={style.transactionTitle}>
-                  <svg
-                    style={
-                      { "--icon-color": `${iconColor}` } as React.CSSProperties
-                    }
-                    dangerouslySetInnerHTML={{ __html: svg }}
-                  />
-                  <div>{iconTitle}</div>
-                  <div className={style.description}>{item.description}</div>
-                </div>
-                <div className={style.transactionAmount}>
-                  <div
-                    className={style.amount}
-                    style={
-                      {
-                        "--color-transaction": `${amountColor}`,
-                      } as React.CSSProperties
-                    }
-                  >
-                    ${item.amount}
-                  </div>
-                  <div style={{ color: "var(--color-light-200)" }}>{date}</div>
-                </div>
-              </Link>
-            );
-          })}
+          <div>
+            {transactions.map((item) => {
+              const category = categories.find(
+                (cat) => cat._id === item.category
+              );
+              return <Transactions transactions={item} category={category} />;
+            })}
+          </div>
         </div>
 
         //TODO: add a empty field message
@@ -190,39 +164,4 @@ const useGetGuestInfo = () => {
   }, [guestId]);
 };
 
-const useSetitemBgColor = (iconColor: string) => {
-  const iconColorSplit = iconColor.split(")");
-  const lighterIconColor = iconColorSplit[0] + ", 0.2)";
-  return lighterIconColor;
-};
-
-const useGetCategories = () => {
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    const promise = dispatch(getCategories());
-    return () => {
-      promise.abort();
-    };
-  }, [dispatch]);
-
-  const categories = useAppSelector((state) => state.categories);
-
-  return categories;
-};
-
-const useGetIcon = (categories: cat | undefined) => {
-  let itemBgColor;
-  let svg = "";
-
-  const iconTitle = categories?.title;
-
-  if (categories) {
-    const iconColor = categories.icon.iconColor;
-    itemBgColor = useSetitemBgColor(iconColor);
-    svg = String.fromCharCode.apply(null, categories.icon.data.data);
-  }
-
-  return { iconTitle, itemBgColor, svg };
-};
 export default Home;
