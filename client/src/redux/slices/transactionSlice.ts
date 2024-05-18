@@ -44,6 +44,15 @@ const trasactionSlice = createSlice({
     builder.addCase(deleteTrasaction.pending, (state) => {
       state.loading = true;
     });
+    builder.addCase(updateTrasaction.fulfilled, (state) => {
+      state.loading = false;
+    });
+    builder.addCase(updateTrasaction.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(updateTrasaction.rejected, (state) => {
+      state.loading = false;
+    });
   },
 });
 
@@ -77,17 +86,16 @@ export const updateTrasaction = createAsyncThunk(
       wallet = bankData;
       bankData = undefined;
     }
-
-    const response = await axios.delete(
+    const response = await axios.put(
       `${import.meta.env.VITE_BASEURL}/transaction/updateguesttransaction`,
+      {
+        id,
+        type,
+        updatedData,
+      },
       {
         headers: {
           token,
-        },
-        data: {
-          id,
-          type,
-          updatedData,
         },
       }
     );

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { cat } from "../../redux/slices/categoriesSlice";
 import { transactionType } from "../Home/Home";
 import style from "./transactions.module.css";
@@ -20,9 +20,11 @@ const Transactions = ({
       ? "green"
       : "blue";
   if (!category) return null;
+  const location = useLocation();
+  const url = new URL("", window.origin + location.pathname).origin;
   return (
     <Link
-      to={`detail?id=${transactions._id}`}
+      to={`${url}/detail?id=${transactions._id}`}
       key={transactions._id}
       className={style.transactions}
       style={{ "--iconBgColor": `${itemBgColor}` } as React.CSSProperties}

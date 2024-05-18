@@ -36,6 +36,7 @@ const TransactionDetail = () => {
     dispatch(deleteTrasaction(item));
     navigate("/");
   };
+
   const handleEdit = () => {
     if (cat?.type === "expense") navigate("/edit/expense/" + trans?._id);
     if (cat?.type === "income") navigate("/edit/income/" + trans?._id);
@@ -44,10 +45,7 @@ const TransactionDetail = () => {
   return (
     <>
       <div style={{ marginTop: "10rem" }} className={style.wrapper}>
-        <button
-          onClick={() => navigate("/", { replace: true })}
-          className={style.arrow}
-        >
+        <button onClick={() => navigate(-1)} className={style.arrow}>
           <ArrowBackIcon />
         </button>
         <div className={style.leftCol}>

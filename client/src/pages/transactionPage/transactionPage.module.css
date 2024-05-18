@@ -1,0 +1,111 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: 0.5fr 1fr;
+  margin-top: 5%;
+  align-items: center;
+  margin-inline: auto;
+  font-weight: var(--fw-700);
+  justify-items: center;
+  color: var(--color-dark-500);
+  @media (max-width: 1200px) {
+    margin-top: 10%;
+  }
+  @media (max-width: 900px) {
+    margin-top: 20%;
+  }
+}
+.rightCol {
+  margin-block: 5rem;
+  width: 60%;
+}
+.reset {
+  display: flex;
+  justify-content: space-between;
+  button {
+    font-size: var(--fs-200);
+    font-weight: var(--fw-500);
+    color: var(--color-violet-500);
+    background-color: var(--color-violet-200);
+    border-radius: 20px;
+    padding-block: 0.25rem;
+    padding-inline: 1rem;
+  }
+}
+
+.filter {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-block: 1rem;
+  button {
+    text-align: center;
+    font-size: var(--fs-200);
+    border-radius: 20px;
+    padding-block: 0.25rem;
+    padding-inline: 1rem;
+    outline: 1px solid var(--color-violet-500);
+    &:hover {
+      outline: none;
+      background-color: var(--color-violet-200);
+      color: var(--color-violet-500);
+    }
+    &.active {
+      outline: none;
+      background-color: var(--color-violet-200);
+      color: var(--color-violet-500);
+    }
+  }
+}
+.sort {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-block: 1rem;
+  button {
+    text-align: center;
+    font-size: var(--fs-200);
+    border-radius: 20px;
+    padding-block: 0.25rem;
+    padding-inline: 1rem;
+    outline: 1px solid var(--color-violet-500);
+    &:hover {
+      outline: none;
+      background-color: var(--color-violet-200);
+      color: var(--color-violet-500);
+    }
+    &.active {
+      outline: none;
+      background-color: var(--color-violet-200);
+      color: var(--color-violet-500);
+    }
+  }
+}
+.category {
+  padding: 0.5rem;
+  border-radius: 5px;
+  width: 100%;
+  background-color: transparent;
+  margin-block: 1rem;
+  color: var(--color-dark-500);
+  cursor: pointer;
+  user-select: none;
+  &:hover {
+    border-radius: 10px;
+    background-color: var(--color-violet-100);
+    color: var(--color-violet-500);
+  }
+}
+.transactions {
+  padding-top: 2rem;
+  align-self: baseline;
+  padding-inline: 2rem;
+  max-width: 700px;
+  a {
+    min-width: 700px;
+  }
+}
+
+.submit {
+  padding-block: 0.5rem;
+  width: 100%;
+}
