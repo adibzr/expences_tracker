@@ -1,0 +1,35 @@
+.wrapper {
+  margin: 5%;
+  color: var(--color-dark-500);
+  @media (max-width: 1200px) {
+    margin-top: 10%;
+  }
+  @media (max-width: 900px) {
+    margin-top: 20%;
+  }
+  button {
+    display: flex;
+    margin-inline: auto;
+    color: var(--color-light-500);
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 800px;
+  margin-inline: auto;
+  font-size: var(--fs-700);
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 30dvw;
+  height: 100%;
+  text-align: center;
+  line-height: 2;
+  font-size: var(--fs-600);
+}

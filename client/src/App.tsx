@@ -3,9 +3,10 @@ import Home from "./components/Home/Home";
 import Expenses from "./components/expenses/Expenses";
 import Income from "./components/income/Income";
 import NavBar from "./components/navigation_bar/NavBar";
+import Budget from "./pages/budget/Budget";
 import TransactionDetail from "./components/transactions/TransactionDetail";
-import "./global.css";
 import TransactionPage from "./pages/transactionPage/TransactionPage";
+import "./global.css";
 
 const App = () => {
   return (
@@ -19,7 +20,7 @@ const App = () => {
           <Route path="edit/:edit/:id/*" element={<Edit />} />
           <Route path="tranfer" element={<h1>tranfer</h1>} />
           <Route path="transaction" element={<TransactionPage />} />
-          <Route path="budget" element={<h1>budget</h1>} />
+          <Route path="budget" element={<Budget />} />
           <Route path="*" element={<h1>Page not found</h1>} />
         </Route>
       </Routes>
