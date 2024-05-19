@@ -32,7 +32,7 @@ const DatePickerComponent = <T extends inputsDataState>({
       <DatePicker
         label="Date"
         defaultValue={dayjs()}
-        disableFuture //disable future date
+        disableFuture
         onChange={handleChange}
       />
     </LocalizationProvider>

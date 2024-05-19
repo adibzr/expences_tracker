@@ -1,5 +1,5 @@
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { Stack, Typography } from "@mui/material";
+import { Menu, MenuItem, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import { ButtonComponentLarge } from "../../components/ButtonComponent";
 import { transactionType } from "../../components/Home/Home";
@@ -11,12 +11,32 @@ import style from "./transactionPage.module.css";
 const transactionPage = () => {
   const categories = useGetCategories();
   const transactions = useGetTransactions();
-  const incomeActive = false;
+
+  const [anchorEl, setAnchorEl] = useState(null);
   const [filter, setFilter] = useState({
     filter: "",
     sort: "",
-    categoty: [],
+    category: new Set<string>(),
   });
+  const open = Boolean(anchorEl);
+  const handleClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleAddCat = (event: any) => {
+    const value = event.target.outerText;
+    const category = filter.category;
+    category.add(value);
+    setFilter({ ...filter, category });
+  };
+
+  const active = {
+    filter: filter.filter,
+    sort: filter.sort,
+  };
+
   let filteredTransactions: transactionType[] = [...transactions];
 
   if (filter.sort) {
@@ -47,13 +67,22 @@ const transactionPage = () => {
     });
   }
 
+  if (filter.category.size > 0) {
+    filteredTransactions = filteredTransactions.filter((transaction) => {
+      const cat = categories.find((cat) => cat._id === transaction.category);
+      return cat ? filter.category.has(cat.title) : false;
+    });
+  }
+
   return (
     <div className={style.wrapper}>
       <div className={style.rightCol}>
         <div className={style.reset}>
           <h3>Filter Transaction</h3>
           <button
-            onClick={() => setFilter({ filter: "", sort: "", categoty: [] })}
+            onClick={() =>
+              setFilter({ filter: "", sort: "", category: new Set() })
+            }
           >
             reset
           </button>
@@ -62,27 +91,42 @@ const transactionPage = () => {
           <h3>Filter By</h3>
           <button
             onClick={() => setFilter({ ...filter, filter: "income" })}
-            className={incomeActive ? style.active : ""}
+            className={active.filter === "income" ? style.active : ""}
           >
             Income
           </button>
-          <button onClick={() => setFilter({ ...filter, filter: "expense" })}>
+          <button
+            className={active.filter === "expense" ? style.active : ""}
+            onClick={() => setFilter({ ...filter, filter: "expense" })}
+          >
             Expense
           </button>
           {/* <button>Transfer</button> */}
         </div>
         <div className={style.sort}>
           <h3>Sort By</h3>
-          <button onClick={() => setFilter({ ...filter, sort: "highest" })}>
+          <button
+            className={active.sort === "highest" ? style.active : ""}
+            onClick={() => setFilter({ ...filter, sort: "highest" })}
+          >
             Highest
           </button>
-          <button onClick={() => setFilter({ ...filter, sort: "lowest" })}>
+          <button
+            className={active.sort === "lowest" ? style.active : ""}
+            onClick={() => setFilter({ ...filter, sort: "lowest" })}
+          >
             Lowest
           </button>
-          <button onClick={() => setFilter({ ...filter, sort: "newest" })}>
+          <button
+            className={active.sort === "newest" ? style.active : ""}
+            onClick={() => setFilter({ ...filter, sort: "newest" })}
+          >
             Newest
           </button>
-          <button onClick={() => setFilter({ ...filter, sort: "oldest" })}>
+          <button
+            className={active.sort === "oldest" ? style.active : ""}
+            onClick={() => setFilter({ ...filter, sort: "oldest" })}
+          >
             Oldest
           </button>
         </div>
@@ -92,11 +136,40 @@ const transactionPage = () => {
           direction="row"
           alignItems="center"
           justifyContent="space-between"
-          onClick={() => null}
+          aria-haspopup="true"
+          aria-expanded={open ? "true" : undefined}
+          onClick={(event) => handleClick(event)}
         >
           <Typography variant="body1">Choose Category</Typography>
+          <span>{filter.category.size} selected</span>
           <ArrowForwardIosIcon fontSize="inherit" />
         </Stack>
+        <Menu
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "left",
+          }}
+        >
+          {categories.map((item) => {
+            return (
+              <MenuItem
+                key={item._id}
+                value={item.title}
+                onClick={(e) => handleAddCat(e)}
+                selected={filter.category.has(item.title)}
+              >
+                {item.title}
+              </MenuItem>
+            );
+          })}
+        </Menu>
         <ButtonComponentLarge text="Apply" className={style.submit} />
       </div>
 
