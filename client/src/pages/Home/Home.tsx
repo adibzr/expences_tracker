@@ -3,13 +3,12 @@ import { useEffect } from "react";
 import expenseSVG from "../../assets/expense.svg";
 import incomeSVG from "../../assets/income.svg";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { cat, getCategories } from "../../redux/slices/categoriesSlice";
-import { getGuestExpense } from "../../redux/slices/expenseSlice";
-import { getGuest, registerGuest } from "../../redux/slices/userAuthSlice";
-import style from "./home.module.css";
-import { getGuestIncome } from "../../redux/slices/incomeSlice";
 import useGetCategories from "../../hooks/useGetCategories";
+import { getGuestExpense } from "../../redux/slices/expenseSlice";
+import { getGuestIncome } from "../../redux/slices/incomeSlice";
+import { getGuest, registerGuest } from "../../redux/slices/userAuthSlice";
 import Transactions from "../transactions/Transactions";
+import style from "./home.module.css";
 
 export interface transactionType {
   _id: string;

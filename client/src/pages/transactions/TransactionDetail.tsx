@@ -3,10 +3,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import dayjs from "dayjs";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { ButtonComponentLarge } from "../../components/ButtonComponent";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import useGetTransactions from "../../hooks/useGetTransactions";
 import { deleteTrasaction } from "../../redux/slices/transactionSlice";
-import { ButtonComponentLarge } from "../ButtonComponent";
 import style from "./transactionDetail.module.css";
 
 const TransactionDetail = () => {

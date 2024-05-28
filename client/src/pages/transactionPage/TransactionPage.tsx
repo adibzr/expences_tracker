@@ -2,10 +2,10 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Menu, MenuItem, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import { ButtonComponentLarge } from "../../components/ButtonComponent";
-import { transactionType } from "../../components/Home/Home";
-import Transactions from "../../components/transactions/Transactions";
 import useGetCategories from "../../hooks/useGetCategories";
 import useGetTransactions from "../../hooks/useGetTransactions";
+import { transactionType } from "../Home/Home";
+import Transactions from "../transactions/Transactions";
 import style from "./transactionPage.module.css";
 
 const transactionPage = () => {
