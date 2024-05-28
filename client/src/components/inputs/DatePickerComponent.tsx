@@ -6,7 +6,7 @@ import dayjs, { Dayjs } from "dayjs";
 interface datePickerProps<T extends inputsDataState> {
   input: T;
   errors: inputsDataError;
-  setInput: (arg0: T) => void;
+  setInput: (updateFn: (prev: T) => T) => void;
   setError: (arg0: inputsDataError) => void;
 }
 
@@ -22,9 +22,9 @@ const DatePickerComponent = <T extends inputsDataState>({
       dayjs() > newValue
         ? setError({ ...errors, date: false })
         : setError({ ...errors, date: true });
-      setInput({ ...input, date: newValue.format("DD-MM-YYYY") });
-    } else {
-      setInput({ ...input, date: dayjs().format("DD-MM-YYYY") });
+      setInput((prev) => {
+        return { ...prev, date: newValue.format("MM-DD-YYYY") };
+      });
     }
   };
   return (

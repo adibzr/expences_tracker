@@ -17,7 +17,7 @@ interface expenseType {
     };
     category: string;
     description: string;
-    created_at: Date;
+    createdAt: Date;
   }[];
 }
 

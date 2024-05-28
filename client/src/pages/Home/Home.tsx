@@ -20,7 +20,7 @@ export interface transactionType {
   };
   category: string;
   description: string;
-  created_at: Date;
+  createdAt: Date;
 }
 
 const Home = () => {
@@ -33,7 +33,7 @@ const Home = () => {
     ...expense.expense,
   ];
   transactions.sort((a, b) => {
-    if (a.created_at > b.created_at) {
+    if (a.createdAt > b.createdAt) {
       return -1;
     }
     return 1;

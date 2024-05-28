@@ -8,7 +8,7 @@ interface payloadType {
     _id: string;
     title: string;
     logo: string;
-    created_at: Date;
+    createdAt: Date;
   }[];
 }
 

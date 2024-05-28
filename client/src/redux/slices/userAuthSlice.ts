@@ -14,7 +14,7 @@ interface guestType {
   expense: string[];
   income: string[];
   budget: string;
-  created_at?: Date;
+  createdAt?: Date;
 }
 export interface UserState {
   loading: boolean;
@@ -39,7 +39,6 @@ const initialState: UserState = {
     expense: [],
     income: [],
     budget: "",
-    created_at: undefined,
   },
   token: undefined,
   error: "",

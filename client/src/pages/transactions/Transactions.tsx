@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { Link, useLocation } from "react-router-dom";
 import { cat } from "../../redux/slices/categoriesSlice";
 import { transactionType } from "../Home/Home";
@@ -11,7 +12,7 @@ const Transactions = ({
   category: cat | undefined;
 }) => {
   const { iconTitle, itemBgColor, svg } = useGetIcon(category);
-  const date = new Date(transactions.date).toLocaleDateString("es-AR");
+  const date = dayjs(transactions.date).format("MM-DD-YYYY");
   const iconColor = category?.icon.iconColor;
   const amountColor =
     category?.type === "expense"
