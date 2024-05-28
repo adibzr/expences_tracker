@@ -3,12 +3,13 @@ import Budget from "../../../models/budget";
 import Category from "../../../models/category";
 import { Types } from "mongoose";
 import Guest from "../../../models/guest";
+import auth from "../../../middleware/authMiddleware";
 
 const router = Router();
 
-router.post("/postBudget", async (req: Request, res: Response) => {
+router.post("/postBudget", auth, async (req: Request, res: Response) => {
   try {
-    const { guestId, category, amount, date } = req.body;
+    const { guestId, category, amount } = req.body;
 
     if (!Types.ObjectId.isValid(guestId)) {
       return res.status(400).json({ error: true, message: "invalid user id" });
@@ -25,18 +26,21 @@ router.post("/postBudget", async (req: Request, res: Response) => {
 
     const foundCategory = await Category.findById(category);
     if (!foundCategory) {
-      return res.status(404).json({ message: "Category not found" });
+      return res
+        .status(404)
+        .json({ error: true, message: "Category not found" });
     }
 
     const newBudget = new Budget({
       category: foundCategory,
       amount,
-      date,
     });
 
-    // const savedBudget = await newBudget.save();
+    guestFound.budget.push(newBudget._id);
+    guestFound.save();
+    const savedBudget = await newBudget.save();
 
-    res.status(201).json({ success: true, budget: newBudget });
+    res.status(201).json({ success: true, budget: savedBudget });
   } catch (err: any) {
     res.status(500).json({ error: true, message: err.message });
   }

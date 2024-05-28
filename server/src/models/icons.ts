@@ -5,8 +5,6 @@ export interface IIcon extends Document {
   title: string;
   contentType: string;
   iconColor: string;
-  created_at: Date;
-  updated_at: Date;
 }
 
 const iconSchema = new Schema<IIcon>(
@@ -15,10 +13,10 @@ const iconSchema = new Schema<IIcon>(
     title: { type: String, required: true },
     contentType: { type: String },
     iconColor: { type: String, default: "", required: true },
-    created_at: { type: Date, default: Date.now(), unmutable: true },
-    updated_at: { type: Date, default: Date.now() },
+
   },
   {
+    timestamps: true,
     versionKey: false,
   }
 );

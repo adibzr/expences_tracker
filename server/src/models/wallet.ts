@@ -1,16 +1,14 @@
 import { Schema, model, Document } from "mongoose";
 
-export interface IWallet extends Document {
-  created_at: Date;
-  updated_at: Date;
-}
+export interface IWallet extends Document {}
 
 const walletSchema = new Schema(
+  {},
+
   {
-    created_at: { type: Date, default: Date.now(), unmutable: true },
-    updated_at: { type: Date, default: Date.now() },
-  },
-  { versionKey: false }
+    timestamps: true,
+    versionKey: false,
+  }
 );
 
 export default model<IWallet>("Wallet", walletSchema);

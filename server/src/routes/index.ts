@@ -15,6 +15,8 @@ import postGuestBank from "./guests/guest/postGuestBank";
 import getGuest from "./guests/guest/getGuest";
 import deleteGuestTransaction from "./guests/transactions/deleteGuestTransaction";
 import updateGuestTransaction from "./guests/transactions/updateGuestTransaction";
+import postBudget from "./guests/budget/postBudget";
+import getBudget from "./guests/budget/getBudget";
 
 const router = Router();
 
@@ -37,5 +39,8 @@ router.use("/category", getCategory);
 
 router.use("/transaction", deleteGuestTransaction);
 router.use("/transaction", updateGuestTransaction);
+
+router.use("/budget", postBudget);
+router.use("/budget", getBudget);
 
 export default router;

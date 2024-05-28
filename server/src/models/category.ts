@@ -14,6 +14,7 @@ const categorySchema = new Schema(
     type: { type: String, enum: ["expense", "income"], required: true },
   },
   {
+    timestamps: true,
     versionKey: false,
   }
 );
