@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import mongoose from "mongoose";
+import { Types } from "mongoose";
 import auth from "../../../middleware/authMiddleware";
 import Guest, { IGuest } from "../../../models/guest";
 import { IIncome } from "../../../models/income";
@@ -13,7 +13,7 @@ interface populatedIcome extends Omit<IGuest, "income"> {
 router.get("/guestincome", auth, async (req: Request, res: Response) => {
   try {
     const guestId = req.headers["guestid"] as string;
-    if (!mongoose.Types.ObjectId.isValid(guestId)) {
+    if (!Types.ObjectId.isValid(guestId)) {
       return res.status(400).json({ error: true, message: "invalid id" });
     }
     const guest: populatedIcome = await Guest.findById(guestId).populate(

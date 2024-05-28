@@ -2,7 +2,7 @@ import { Request, Response, Router } from "express";
 import auth from "../../../middleware/authMiddleware";
 import Expense from "../../../models/expense";
 import Income from "../../../models/income";
-import mongoose, { ObjectId } from "mongoose";
+import { ObjectId, Types } from "mongoose";
 
 const router = Router();
 
@@ -26,7 +26,7 @@ router.put(
     try {
       const { type, id, updatedData }: upateDataType = req.body;
 
-      if (!mongoose.Types.ObjectId.isValid(id.toString())) {
+      if (!Types.ObjectId.isValid(id.toString())) {
         return res.status(400).json({ error: true, message: "invalid id" });
       }
       const data = {

@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import mongoose from "mongoose";
+import {Types} from "mongoose";
 import auth from "../../../middleware/authMiddleware";
 import Bank, { IBank } from "../../../models/bank";
 import Guest, { IGuest } from "../../../models/guest";
@@ -13,7 +13,7 @@ interface populatedBank extends Omit<IGuest, "bank"> {
 router.post("/addguestbank", auth, async (req: Request, res: Response) => {
   try {
     const { title, logo, guestId } = req.body;
-    if (!mongoose.Types.ObjectId.isValid(guestId)) {
+    if (!Types.ObjectId.isValid(guestId)) {
       return res.status(400).json({ error: true, message: "invalid guest id" });
     }
     const guestFound: populatedBank = await Guest.findById(guestId).populate(

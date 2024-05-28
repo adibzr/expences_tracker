@@ -3,7 +3,7 @@ import auth from "../../../middleware/authMiddleware";
 import Expense, { IExpense } from "../../../models/expense";
 import Income, { IIncome } from "../../../models/income";
 import Guest, { IGuest } from "../../../models/guest";
-import mongoose from "mongoose";
+import { Types } from "mongoose";
 
 const router = Router();
 
@@ -18,10 +18,7 @@ router.delete(
   async (req: Request, res: Response) => {
     try {
       const { guestId, type, id } = req.body;
-      if (
-        !mongoose.Types.ObjectId.isValid(guestId) ||
-        !mongoose.Types.ObjectId.isValid(id)
-      ) {
+      if (!Types.ObjectId.isValid(guestId) || !Types.ObjectId.isValid(id)) {
         return res.status(400).json({ error: true, message: "invalid id" });
       }
 

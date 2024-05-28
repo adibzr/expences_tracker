@@ -1,20 +1,19 @@
-import mongoose, { Schema } from "mongoose";
-import bank from "./bank";
+import mongoose, { Document, Schema, Types, model } from "mongoose";
 
-export interface IIncome extends mongoose.Document {
+export interface IIncome extends Document {
   amount: number;
   date: Date;
   paymentSource: {
     kind: "bank" | "wallet";
-    item: mongoose.Types.ObjectId;
+    item: Types.ObjectId;
   };
-  category: { type: Schema.Types.ObjectId; ref: string };
+  category: Types.ObjectId;
   description: string;
   created_at: Date;
   updated_at: Date;
 }
 
-const incomeSchema = new mongoose.Schema(
+const incomeSchema = new Schema(
   {
     amount: { type: Number, required: true },
     date: { type: Date, default: Date.now() },
@@ -35,6 +34,6 @@ const incomeSchema = new mongoose.Schema(
   }
 );
 
-const income = mongoose.model<IIncome>("Income", incomeSchema);
+const income = model<IIncome>("Income", incomeSchema);
 
 export default income;

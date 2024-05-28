@@ -1,19 +1,19 @@
-import mongoose, { Schema } from "mongoose";
+import { Document, Schema, Types, model } from "mongoose";
 
-export interface IExpense extends mongoose.Document {
+export interface IExpense extends Document {
   amount: number;
   date: Date;
   paymentSource: {
     kind: "bank" | "wallet";
-    item: mongoose.Types.ObjectId;
+    item: Types.ObjectId;
   };
-  category: { type: Schema.Types.ObjectId; ref: "Category" };
+  category: Types.ObjectId;
   description: string;
   created_at: Date;
   updated_at: Date;
 }
 
-const expenseSchema = new mongoose.Schema(
+const expenseSchema = new Schema(
   {
     amount: { type: Number, required: true },
     date: { type: Date, default: Date.now() },
@@ -34,6 +34,6 @@ const expenseSchema = new mongoose.Schema(
   }
 );
 
-const Expense = mongoose.model<IExpense>("Expense", expenseSchema);
+const Expense = model<IExpense>("Expense", expenseSchema);
 
 export default Expense;

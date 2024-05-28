@@ -1,8 +1,8 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, model, Document, Types } from "mongoose";
 
 export interface ICategory extends Document {
   title: string;
-  icon: { [key: string]: any };
+  icon: Types.ObjectId;
   iconColor: string;
   type: string;
 }

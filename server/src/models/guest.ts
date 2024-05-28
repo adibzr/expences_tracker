@@ -1,14 +1,14 @@
-import mongoose, { ObjectId, Schema } from "mongoose";
+import { Document, Schema, Types, model } from "mongoose";
 
-export interface IGuest extends mongoose.Document {
+export interface IGuest extends Document {
   bank: {
-    type: ObjectId;
+    type: Types.ObjectId;
     ref: string;
   }[];
-  wallet: { type: ObjectId; ref: string };
-  expense: { type: ObjectId; ref: string }[];
-  income: { type: ObjectId; ref: string }[];
-  budget: { type: ObjectId; ref: string };
+  wallet: Types.ObjectId;
+  expense: Types.ObjectId[];
+  income: Types.ObjectId[];
+  budget: Types.ObjectId;
   created_at: Date;
   updated_at: Date;
 }
@@ -28,4 +28,4 @@ const userSchema = new Schema<IGuest>(
   }
 );
 
-export default mongoose.model<IGuest>("Guest", userSchema);
+export default model<IGuest>("Guest", userSchema);

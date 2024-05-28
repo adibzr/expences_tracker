@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "",
-    "build": "tsc -w",
-    "start": "nodemon"
+    "build": "tsc",
+    "dev": "nodemon"
   },
   "keywords": [],
   "author": "",

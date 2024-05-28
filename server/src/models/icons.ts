@@ -1,7 +1,6 @@
-import mongoose from "mongoose";
-const Schema = mongoose.Schema;
+import { Document, Schema, model } from "mongoose";
 
-export interface IIcon extends mongoose.Document {
+export interface IIcon extends Document {
   data: Buffer;
   title: string;
   contentType: string;
@@ -24,4 +23,4 @@ const iconSchema = new Schema<IIcon>(
   }
 );
 
-export default mongoose.model<IIcon>("Icon", iconSchema);
+export default model<IIcon>("Icon", iconSchema);

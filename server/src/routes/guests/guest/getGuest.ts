@@ -1,6 +1,6 @@
 import * as dotenv from "dotenv";
 import { Router } from "express";
-import mongoose from "mongoose";
+import { Types } from "mongoose";
 import auth from "../../../middleware/authMiddleware";
 import Guest, { IGuest } from "../../../models/guest";
 dotenv.config();
@@ -10,7 +10,7 @@ const router = Router();
 router.get("/getguest", auth, async (req, res) => {
   try {
     const guestId = req.headers["guestid"] as string;
-    if (!mongoose.Types.ObjectId.isValid(guestId)) {
+    if (!Types.ObjectId.isValid(guestId)) {
       return res.status(400).json({ error: true, message: "invalid id" });
     }
     const guest: IGuest = await Guest.findById(guestId);

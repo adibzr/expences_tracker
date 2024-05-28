@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import mongoose from "mongoose";
+import { Types } from "mongoose";
 import auth from "../../../middleware/authMiddleware";
 import Bank from "../../../models/bank";
 import Category from "../../../models/category";
@@ -13,12 +13,11 @@ router.post("/addguestexpense", auth, async (req: Request, res: Response) => {
   try {
     const { guestId, category, amount, date, bank, wallet, description } =
       req.body;
-    if (!mongoose.Types.ObjectId.isValid(guestId)) {
+    if (!Types.ObjectId.isValid(guestId)) {
       return res.status(400).json({ error: true, message: "invalid user id" });
     }
-    if (!mongoose.Types.ObjectId.isValid(category)) {
+    if (!Types.ObjectId.isValid(category)) {
       return res
-
         .status(400)
         .json({ error: true, message: "invalid category id" });
     }
