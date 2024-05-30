@@ -49,7 +49,12 @@ const SelectComponent = <T extends inputsDataState>({
         ...input,
         bank: value,
       });
-      setError({ ...errors, bank: false });
+      setError({
+        bank: false,
+        amount: false,
+        category: false,
+        date: false,
+      });
     }
   };
 

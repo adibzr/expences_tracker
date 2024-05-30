@@ -10,7 +10,6 @@ const router = Router();
 router.post("/postBudget", auth, async (req: Request, res: Response) => {
   try {
     const { guestId, category, amount } = req.body;
-
     if (!Types.ObjectId.isValid(guestId)) {
       return res.status(400).json({ error: true, message: "invalid user id" });
     }

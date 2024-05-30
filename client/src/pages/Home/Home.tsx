@@ -153,13 +153,16 @@ const useGetGuestInfo = () => {
       guestPromise.abort();
     };
   }, [dispatch]);
+
   useEffect(() => {
-    const expensePromise = dispatch(getGuestExpense());
-    const incomePrimise = dispatch(getGuestIncome());
-    return () => {
-      incomePrimise.abort();
-      expensePromise.abort();
-    };
+    if (guestId && token) {
+      const expensePromise = dispatch(getGuestExpense());
+      const incomePrimise = dispatch(getGuestIncome());
+      return () => {
+        incomePrimise.abort();
+        expensePromise.abort();
+      };
+    }
   }, [guestId]);
 };
 

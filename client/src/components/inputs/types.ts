@@ -1,12 +1,13 @@
 export interface inputsDataState {
   category: string;
-  date: string;
-  description: string;
   amount: number;
-  bank: string;
+  date?: string;
+  description?: string;
+  bank?: string;
 }
 
 export interface inputsDataError {
+  amount: boolean;
   category: boolean;
   date: boolean;
   bank: boolean;

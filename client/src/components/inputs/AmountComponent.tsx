@@ -1,16 +1,18 @@
 import style from "./inputs.module.css";
-import { inputsDataState } from "./types";
+import { inputsDataError, inputsDataState } from "./types";
 
 interface AmountComponentProps<T extends inputsDataState> {
   color: string;
   input: T;
   setInput: (arg0: T) => void;
+  setError: (arg0: inputsDataError) => void;
 }
 
 const AmountComponent = <T extends inputsDataState>({
   color,
   input,
   setInput,
+  setError,
 }: AmountComponentProps<T>) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!isNaN(Number(event.target.value))) {
@@ -18,6 +20,12 @@ const AmountComponent = <T extends inputsDataState>({
       setInput({
         ...input,
         amount: value,
+      });
+      setError({
+        amount: false,
+        category: false,
+        date: false,
+        bank: false,
       });
     }
   };

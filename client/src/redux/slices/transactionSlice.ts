@@ -8,9 +8,9 @@ interface upateDataType {
   id: string;
   updatedData: {
     amount: number;
-    description: string;
+    description?: string;
     category: string;
-    date: string;
+    date?: string;
     bank?: string;
     wallet?: string;
   };

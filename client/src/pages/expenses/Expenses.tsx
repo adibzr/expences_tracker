@@ -37,6 +37,7 @@ const Expenses = () => {
   });
 
   const [errors, setError] = useState({
+    amount: false,
     category: false,
     bank: false,
     date: false,
@@ -49,6 +50,13 @@ const Expenses = () => {
       setError({
         ...errors,
         category: true,
+      });
+      return;
+    }
+    if (inputs.amount === 0) {
+      setError({
+        ...errors,
+        amount: true,
       });
       return;
     }
@@ -99,7 +107,14 @@ const Expenses = () => {
 
   return (
     <form className={style.wrapper} onSubmit={handleSubmit}>
-      <AmountComponent color="red" input={inputs} setInput={setInputs} />
+      <AmountComponent
+        color="red"
+        input={inputs}
+        setInput={setInputs}
+        setError={setError}
+      />
+      {errors.amount && <p>you can't spend 0, try a different amount</p>}
+
       <div className={style.inputs}>
         <SelectComponent
           label="Category"

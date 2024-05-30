@@ -7,6 +7,7 @@ import Expenses from "./pages/expenses/Expenses";
 import Income from "./pages/income/Income";
 import TransactionPage from "./pages/transactionPage/TransactionPage";
 import TransactionDetail from "./pages/transactions/TransactionDetail";
+import BudgetCreate from "./pages/budget-create/BudgetCreate";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="tranfer" element={<h1>tranfer</h1>} />
           <Route path="transaction" element={<TransactionPage />} />
           <Route path="budget" element={<Budget />} />
+          <Route path="budget/create" element={<BudgetCreate />} />
           <Route path="*" element={<h1>Page not found</h1>} />
         </Route>
       </Routes>

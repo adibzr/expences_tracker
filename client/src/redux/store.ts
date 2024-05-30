@@ -7,6 +7,7 @@ import expenseSlice from "./slices/expenseSlice";
 import incomeSlice from "./slices/incomeSlice";
 import userAuthSlice from "./slices/userAuthSlice";
 import bankSlice from "./slices/bankSlice";
+import budgetSlice from "./slices/budgetSlice";
 
 const persistConfig = {
   key: "root",
@@ -22,6 +23,7 @@ const store = configureStore({
     categories: categoriesSlice,
     income: incomeSlice,
     bank: bankSlice,
+    budget: budgetSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }),
