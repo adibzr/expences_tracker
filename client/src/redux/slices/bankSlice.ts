@@ -40,7 +40,7 @@ const bankSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(getGuestBank.rejected, (state, action) => {
-      state.error = action.payload as string;
+      state.error = action.error.message as string;
       state.loading = false;
     });
   },
@@ -51,15 +51,16 @@ export const getGuestBank = createAsyncThunk(
   async (_, { getState }) => {
     const { guestId, token } = (getState() as { userAuth: UserState }).userAuth;
 
-    const response = await axios.get(
-      `${import.meta.env.VITE_BASEURL}/guest/getguestbank`,
-      {
+    const response = await axios
+      .get(`${import.meta.env.VITE_BASEURL}/guest/getguestbank`, {
         headers: {
           guestId,
           token,
         },
-      }
-    );
+      })
+      .catch((err) => {
+        return Promise.reject(err.response.data);
+      });
     return response.data;
   }
 );

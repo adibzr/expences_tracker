@@ -81,9 +81,8 @@ const userAuthSlice = createSlice({
       }
     );
     builder.addCase(loginUser.rejected, (state, action) => {
+      state.error = action.error.message as string;
       state.loading = false;
-      const errorMessage = action.payload as string;
-      state.error = errorMessage;
     });
     builder.addCase(registerUser.pending, (state) => {
       state.loading = true;
@@ -96,14 +95,12 @@ const userAuthSlice = createSlice({
       registerUser.fulfilled,
       (state, action: PayloadAction<userType>) => {
         state.loading = false;
-        state.success = true;
         state.user = action.payload;
       }
     );
     builder.addCase(registerUser.rejected, (state, action) => {
+      state.error = action.error.message as string;
       state.loading = false;
-      const errorMessage = action.payload as string;
-      state.error = errorMessage;
     });
     builder.addCase(
       registerGuest.fulfilled,
@@ -136,14 +133,18 @@ export const loginUser = createAsyncThunk(
           "Content-Type": "application/json",
         },
       };
-      const response = await axios.post(
-        `${import.meta.env.VITE_BASEURL}/user/login`,
-        {
-          email,
-          password,
-        },
-        config
-      );
+      const response = await axios
+        .post(
+          `${import.meta.env.VITE_BASEURL}/user/login`,
+          {
+            email,
+            password,
+          },
+          config
+        )
+        .catch((err) => {
+          return Promise.reject(err.response.data);
+        });
       if (response.data.token) {
         localStorage.setItem("jwtToken", response.data.token);
       }
@@ -166,15 +167,19 @@ export const registerUser = createAsyncThunk(
           "Content-Type": "application/json",
         },
       };
-      const response = await axios.post(
-        `${import.meta.env.VITE_BASEURL}/user/register`,
-        {
-          email,
-          fullname,
-          password,
-        },
-        config
-      );
+      const response = await axios
+        .post(
+          `${import.meta.env.VITE_BASEURL}/user/register`,
+          {
+            email,
+            fullname,
+            password,
+          },
+          config
+        )
+        .catch((err) => {
+          return Promise.reject(err.response.data);
+        });
       if (response.data.token) {
         localStorage.setItem("jwtToken", response.data.token);
       }
@@ -189,9 +194,11 @@ export const registerUser = createAsyncThunk(
   }
 );
 export const registerGuest = createAsyncThunk("guest/postGuest", async () => {
-  const response = await axios.post(
-    `${import.meta.env.VITE_BASEURL}/guest/guest`
-  );
+  const response = await axios
+    .post(`${import.meta.env.VITE_BASEURL}/guest/guest`)
+    .catch((err) => {
+      return Promise.reject(err.response.data);
+    });
   return response.data;
 });
 
@@ -199,15 +206,16 @@ export const getGuest = createAsyncThunk(
   "guest/getGuest",
   async (_, { getState }) => {
     const { guestId, token } = (getState() as { userAuth: UserState }).userAuth;
-    const response = await axios.get(
-      `${import.meta.env.VITE_BASEURL}/guest/getguest`,
-      {
+    const response = await axios
+      .get(`${import.meta.env.VITE_BASEURL}/guest/getguest`, {
         headers: {
           guestId,
           token,
         },
-      }
-    );
+      })
+      .catch((err) => {
+        return Promise.reject(err.response.data);
+      });
     return response.data;
   }
 );

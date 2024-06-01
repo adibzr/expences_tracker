@@ -18,11 +18,13 @@ export interface cat {
 export interface catInitialState {
   categories: cat[];
   loading: boolean;
+  error: string;
 }
 
 const initialState: catInitialState = {
   categories: [],
   loading: true,
+  error: "",
 };
 
 const categoriesSlice = createSlice({
@@ -34,13 +36,24 @@ const categoriesSlice = createSlice({
       state.categories = action.payload.categories;
       state.loading = false;
     });
+
+    builder.addCase(getCategories.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(getCategories.rejected, (state, action) => {
+      state.error = action.error.message as string;
+      state.loading = false;
+    });
   },
 });
 
 export const getCategories = createAsyncThunk("categories/get", async () => {
-  const response = await axios.get(
-    `${import.meta.env.VITE_BASEURL}/category/getcategory`
-  );
+  const response = await axios
+    .get(`${import.meta.env.VITE_BASEURL}/category/getcategory`)
+    .catch((err) => {
+      return Promise.reject(err.response.data);
+    });
   return response.data;
 });
 

@@ -5,7 +5,7 @@ import { UserState } from "./userAuthSlice";
 interface BudgetState {
   budget: IBudget[];
   loading: boolean;
-  error: any;
+  error: string;
 }
 
 interface IBudget {
@@ -33,14 +33,14 @@ const budgetSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(getBudgets.rejected, (state, action) => {
-      state.error = action.error.message;
+      state.error = action.error.message as string;
       state.loading = false;
     });
     builder.addCase(postBudget.fulfilled, (state) => {
       state.loading = false;
     });
     builder.addCase(postBudget.rejected, (state, action) => {
-      state.error = action.error.message;
+      state.error = action.error.message as string;
       state.loading = false;
     });
     builder.addCase(postBudget.pending, (state) => {

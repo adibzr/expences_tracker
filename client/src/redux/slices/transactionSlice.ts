@@ -37,9 +37,8 @@ const trasactionSlice = createSlice({
       state.success = true;
     });
     builder.addCase(deleteTrasaction.rejected, (state, action) => {
-      state.error = action.payload as string;
+      state.error = action.error.message as string;
       state.loading = false;
-      state.success = false;
     });
     builder.addCase(deleteTrasaction.pending, (state) => {
       state.loading = true;
@@ -50,7 +49,8 @@ const trasactionSlice = createSlice({
     builder.addCase(updateTrasaction.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(updateTrasaction.rejected, (state) => {
+    builder.addCase(updateTrasaction.rejected, (state,action) => {
+      state.error= action.error.message as string
       state.loading = false;
     });
   },
@@ -72,7 +72,9 @@ export const deleteTrasaction = createAsyncThunk(
           type,
         },
       }
-    );
+    ) .catch((err) => {
+      return Promise.reject(err.response.data);
+    });
     return response.data;
   }
 );
@@ -98,7 +100,9 @@ export const updateTrasaction = createAsyncThunk(
           token,
         },
       }
-    );
+    ) .catch((err) => {
+      return Promise.reject(err.response.data);
+    });
     return response.data;
   }
 );

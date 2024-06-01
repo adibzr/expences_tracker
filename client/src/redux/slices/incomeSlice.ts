@@ -53,7 +53,7 @@ const incomeSlice = createSlice({
       }
     );
     builder.addCase(getGuestIncome.rejected, (state, action) => {
-      state.error = action.payload as string;
+      state.error = action.error.message as string;
       state.loading = false;
       state.success = false;
     });
@@ -65,7 +65,7 @@ const incomeSlice = createSlice({
       state.success = true;
     });
     builder.addCase(postGuestIncome.rejected, (state, action) => {
-      state.error = action.error as string;
+      state.error = action.error.message as string;
       state.loading = false;
       state.success = false;
     });
@@ -79,15 +79,16 @@ export const getGuestIncome = createAsyncThunk(
   "guest/guestincome",
   async (_, { getState }) => {
     const { guestId, token } = (getState() as { userAuth: UserState }).userAuth;
-    const response = await axios.get(
-      `${import.meta.env.VITE_BASEURL}/income/guestincome`,
-      {
+    const response = await axios
+      .get(`${import.meta.env.VITE_BASEURL}/income/guestincome`, {
         headers: {
           guestId,
           token,
         },
-      }
-    );
+      })
+      .catch((err) => {
+        return Promise.reject(err.response.data);
+      });
     return response.data;
   }
 );
@@ -104,26 +105,28 @@ export const postGuestIncome = createAsyncThunk(
       bankData = undefined;
     }
 
-    const response = await axios.post(
-      `${import.meta.env.VITE_BASEURL}/income/addguestincome`,
-      {
-        guestId: guest._id,
-        amount,
-        description,
-        category,
-        date,
-        bank: bankData,
-        wallet,
-      },
-      {
-        headers: {
-          token,
+    const response = await axios
+      .post(
+        `${import.meta.env.VITE_BASEURL}/income/addguestincome`,
+        {
+          guestId: guest._id,
+          amount,
+          description,
+          category,
+          date,
+          bank: bankData,
+          wallet,
         },
-      }
-    );
+        {
+          headers: {
+            token,
+          },
+        }
+      )
+      .catch((err) => {
+        return Promise.reject(err.response.data);
+      });
     return response.data;
   }
 );
-//TODO: implemet wallet in the backend
-
 export default incomeSlice.reducer;

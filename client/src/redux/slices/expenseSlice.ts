@@ -52,7 +52,7 @@ const expenseSlice = createSlice({
       }
     );
     builder.addCase(getGuestExpense.rejected, (state, action) => {
-      state.error = action.payload as string;
+      state.error = action.error.message as string;
       state.loading = false;
       state.success = false;
     });
@@ -64,7 +64,7 @@ const expenseSlice = createSlice({
       state.success = true;
     });
     builder.addCase(postGuestExpense.rejected, (state, action) => {
-      state.error = action.error as string;
+      state.error = action.error.message as string;
       state.loading = false;
       state.success = false;
     });
@@ -86,7 +86,9 @@ export const getGuestExpense = createAsyncThunk(
           token,
         },
       }
-    );
+    ) .catch((err) => {
+      return Promise.reject(err.response.data);
+    });
     return response.data;
   }
 );
@@ -119,7 +121,9 @@ export const postGuestExpense = createAsyncThunk(
           token,
         },
       }
-    );
+    ) .catch((err) => {
+      return Promise.reject(err.response.data);
+    });
     return response.data;
   }
 );
