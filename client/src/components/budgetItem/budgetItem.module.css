@@ -1,0 +1,9 @@
+.category {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  list-style-position: inside;
+  background-color: var(--color-light-400);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+}

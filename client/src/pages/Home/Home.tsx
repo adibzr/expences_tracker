@@ -1,14 +1,12 @@
 import { CircularProgress } from "@mui/material";
-import { useEffect } from "react";
 import expenseSVG from "../../assets/expense.svg";
 import incomeSVG from "../../assets/income.svg";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import useGetCategories from "../../hooks/useGetCategories";
-import { getGuestExpense } from "../../redux/slices/expenseSlice";
-import { getGuestIncome } from "../../redux/slices/incomeSlice";
-import { getGuest, registerGuest } from "../../redux/slices/userAuthSlice";
 import Transactions from "../transactionPage/transactions/Transactions";
 import style from "./home.module.css";
+import { useAppSelector } from "../../hooks/reduxHooks";
+import useGetGuestInfo from "../../hooks/useGetGuestInfo";
+import useGetFinancesInfo from "../../hooks/useGetFinancialInfo";
 
 export interface transactionType {
   _id: string;
@@ -26,6 +24,7 @@ export interface transactionType {
 const Home = () => {
   const categories = useGetCategories();
   useGetGuestInfo();
+  useGetFinancesInfo();
   const expense = useAppSelector((state) => state.expense);
   const income = useAppSelector((state) => state.income);
   const transactions: transactionType[] = [
@@ -136,34 +135,6 @@ const Home = () => {
       )}
     </div>
   );
-};
-
-const useGetGuestInfo = () => {
-  const { guestId, token } = useAppSelector((state) => state.userAuth);
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    if (!guestId && !token) {
-      const promise = dispatch(registerGuest());
-      return () => {
-        promise.abort();
-      };
-    }
-    const guestPromise = dispatch(getGuest());
-    return () => {
-      guestPromise.abort();
-    };
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (guestId && token) {
-      const expensePromise = dispatch(getGuestExpense());
-      const incomePrimise = dispatch(getGuestIncome());
-      return () => {
-        incomePrimise.abort();
-        expensePromise.abort();
-      };
-    }
-  }, [guestId]);
 };
 
 export default Home;
