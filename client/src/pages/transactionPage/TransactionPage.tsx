@@ -5,8 +5,8 @@ import { ButtonComponentLarge } from "../../components/ButtonComponent";
 import useGetCategories from "../../hooks/useGetCategories";
 import useGetTransactions from "../../hooks/useGetTransactions";
 import { transactionType } from "../Home/Home";
-import Transactions from "../transactions/Transactions";
 import style from "./transactionPage.module.css";
+import Transactions from "./transactions/Transactions";
 
 const transactionPage = () => {
   const categories = useGetCategories();

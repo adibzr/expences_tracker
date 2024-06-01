@@ -7,7 +7,7 @@ import useGetCategories from "../../hooks/useGetCategories";
 import { getGuestExpense } from "../../redux/slices/expenseSlice";
 import { getGuestIncome } from "../../redux/slices/incomeSlice";
 import { getGuest, registerGuest } from "../../redux/slices/userAuthSlice";
-import Transactions from "../transactions/Transactions";
+import Transactions from "../transactionPage/transactions/Transactions";
 import style from "./home.module.css";
 
 export interface transactionType {

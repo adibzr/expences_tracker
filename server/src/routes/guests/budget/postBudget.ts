@@ -7,7 +7,7 @@ import auth from "../../../middleware/authMiddleware";
 
 const router = Router();
 
-router.post("/postBudget", auth, async (req: Request, res: Response) => {
+router.post("/postbudget", auth, async (req: Request, res: Response) => {
   try {
     const { guestId, category, amount } = req.body;
     if (!Types.ObjectId.isValid(guestId)) {

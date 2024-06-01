@@ -9,6 +9,7 @@
   --iconBgColor: white;
   &:hover {
     background-color: var(--iconBgColor);
+
     svg {
       border-radius: 20px;
       background-color: var(--color-light-500);

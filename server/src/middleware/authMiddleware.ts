@@ -17,7 +17,9 @@ const auth = (req: Request, res: Response, next: () => void) => {
       req.user = decoded;
       next();
     });
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).json({ error: true, message: error });
+  }
 };
 
 export default auth;

@@ -3,11 +3,11 @@ import NavBar from "./components/navigation_bar/NavBar";
 import "./global.css";
 import Home from "./pages/Home/Home";
 import Budget from "./pages/budget/Budget";
+import BudgetCreate from "./pages/budget/budget-create/BudgetCreate";
 import Expenses from "./pages/expenses/Expenses";
 import Income from "./pages/income/Income";
 import TransactionPage from "./pages/transactionPage/TransactionPage";
-import TransactionDetail from "./pages/transactions/TransactionDetail";
-import BudgetCreate from "./pages/budget-create/BudgetCreate";
+import TransactionDetail from "./pages/transactionPage/transactions/TransactionDetail";
 
 const App = () => {
   return (

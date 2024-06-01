@@ -1,4 +1,3 @@
-// import React, { useState } from "react";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
@@ -109,7 +108,12 @@ const Income = () => {
 
   return (
     <form className={style.wrapper} onSubmit={handleSubmit}>
-      <AmountComponent color="green" input={inputs} setInput={setInputs} setError={setError}/>
+      <AmountComponent
+        color="green"
+        input={inputs}
+        setInput={setInputs}
+        setError={setError}
+      />
       {errors.amount && <p>you can't have 0 income, try a different amount</p>}
       <div className={style.inputs}>
         <SelectComponent

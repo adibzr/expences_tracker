@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { Link, useLocation } from "react-router-dom";
-import { cat } from "../../redux/slices/categoriesSlice";
-import { transactionType } from "../Home/Home";
+import { cat } from "../../../redux/slices/categoriesSlice";
+import { transactionType } from "../../Home/Home";
 import style from "./transactions.module.css";
 
 const Transactions = ({

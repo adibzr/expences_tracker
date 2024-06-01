@@ -9,11 +9,7 @@
   @media (max-width: 900px) {
     margin-top: 20%;
   }
-  button {
-    display: block;
-    margin-inline: auto;
-    color: var(--color-light-500);
-  }
+
   p {
     color: var(--color-violet-400);
     margin-inline: auto;
@@ -34,4 +30,18 @@
   min-width: 30%;
   flex-direction: column;
   gap: 2rem;
+}
+
+.createButton {
+  display: block;
+  margin-inline: auto;
+  color: var(--color-light-500);
+}
+.arrow {
+  position: absolute;
+  /* background-color: red; */
+  left: 20%;
+  top: 15%;
+  cursor: pointer;
+  color: var(--color-light-200);
 }

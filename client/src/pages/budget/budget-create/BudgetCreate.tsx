@@ -1,17 +1,20 @@
 import { useState } from "react";
-import { ButtonComponentLarge } from "../../components/ButtonComponent";
-import AmountComponent from "../../components/inputs/AmountComponent";
-import useGetCategories from "../../hooks/useGetCategories";
+import { ButtonComponentLarge } from "../../../components/ButtonComponent";
+import AmountComponent from "../../../components/inputs/AmountComponent";
+import SelectComponent from "../../../components/inputs/SelectComponent";
+import { inputsDataState } from "../../../components/inputs/types";
+import { useAppDispatch } from "../../../hooks/reduxHooks";
+import useGetCategories from "../../../hooks/useGetCategories";
+import { postBudget } from "../../../redux/slices/budgetSlice";
+import { cat } from "../../../redux/slices/categoriesSlice";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import style from "./budgetCreate.module.css";
-import SelectComponent from "../../components/inputs/SelectComponent";
-import { cat } from "../../redux/slices/categoriesSlice";
-import { useAppDispatch } from "../../hooks/reduxHooks";
-import { postBudget } from "../../redux/slices/budgetSlice";
-import { inputsDataState } from "../../components/inputs/types";
+import { useNavigate } from "react-router-dom";
 
 const BudgetCreate = () => {
   const dispatch = useAppDispatch();
   const category = useGetCategories();
+  const navigate = useNavigate();
   const [input, setInput] = useState({ amount: 0, category: "" });
   const [errors, setErrors] = useState({
     amount: false,
@@ -62,6 +65,9 @@ const BudgetCreate = () => {
   };
   return (
     <div className={style.wrapper}>
+      <button onClick={() => navigate(-1)} className={style.arrow}>
+        <ArrowBackIcon />
+      </button>
       <h3>How much do you want to spend?</h3>
       <AmountComponent
         color="var(--color-violet-500)"
@@ -83,7 +89,11 @@ const BudgetCreate = () => {
         It’s important to set a realistic budget. Be sure to include all of your
         expenses and set realistic goals.
       </p>
-      <ButtonComponentLarge text="Create" onClick={handleSubmit} />
+      <ButtonComponentLarge
+        text="Create"
+        onClick={handleSubmit}
+        className={style.createButton}
+      />
     </div>
   );
 };
