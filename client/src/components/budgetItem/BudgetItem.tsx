@@ -4,59 +4,59 @@ import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
 import { styled } from "@mui/material/styles";
-import useGetCategories from "../../hooks/useGetCategories";
 import style from "./budgetItem.module.css";
 import { useAppSelector } from "../../hooks/reduxHooks";
 import { cat } from "../../redux/slices/categoriesSlice";
+import { useEffect, useState } from "react";
 
 interface Props {
-  _id: string;
   amount: number;
-  category: string;
+  category: cat;
 }
 
 const BudgetItem = ({ amount, category }: Props) => {
-  const categories = useGetCategories();
-  const foundCategory = categories.find((cat) => cat._id === category);
-  if (!foundCategory) return null;
-  const totalSpent = useGetSpent(foundCategory);
-  const iconColor = foundCategory.icon.iconColor;
+  const [limitReached, setLimitReached] = useState(false);
+  const totalSpent = useGetSpent(category);
+  const iconColor = category.icon.iconColor;
+  const remaining = amount - totalSpent > 0 ? amount - totalSpent : 0;
+  const percentage = Math.floor((totalSpent / amount) * 100);
+  useEffect(() => {
+    if (percentage >= 100) setLimitReached(true);
+  }, [percentage]);
   const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
     height: 10,
     borderRadius: 5,
     [`&.${linearProgressClasses.colorPrimary}`]: {
-      backgroundColor:
-        theme.palette.grey[theme.palette.mode === "light" ? 200 : 800],
+      backgroundColor: theme.palette.grey[200],
     },
     [`& .${linearProgressClasses.bar}`]: {
       borderRadius: 5,
       backgroundColor: iconColor,
     },
   }));
-  // const progressValue = amount * 100 / totalAmount;
   return (
     <div className={style.wrapper}>
       <div className={style.categoryWrapper}>
         <div className={style.category}>
           <CircleIcon sx={{ color: `${iconColor}`, marginRight: "10px" }} />
-          {foundCategory.title}
+          {category.title}
         </div>
-        <div>
-          <ErrorIcon />
-        </div>
+        <div>{limitReached ? <ErrorIcon color="error" /> : null}</div>
       </div>
-      <div className={style.label}>Remaining ${amount}</div>
+      <div className={style.label}>Remaining ${remaining}</div>
       <div>
-        <BorderLinearProgress variant="determinate" value={100} />
+        <BorderLinearProgress
+          variant="determinate"
+          value={percentage < 100 ? percentage : 100}
+        />
       </div>
       <div className={style.amountRemaining}>amount of {amount}</div>
-      <p>You've exceeded the limit!</p>
+      {limitReached ? <p>You've exceeded the limit!</p> : null}
     </div>
   );
 };
 
 export default BudgetItem;
-
 const useGetSpent = (category: cat) => {
   const { expense } = useAppSelector((state) => state.expense);
   const foundCategory = expense.filter((exp) => exp.category === category._id);

@@ -8,12 +8,15 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import useGetGuestInfo from "../../hooks/useGetGuestInfo";
 import { getBudgets } from "../../redux/slices/budgetSlice";
 import style from "./budget.module.css";
+import useGetCategories from "../../hooks/useGetCategories";
+import useGetTransactions from "../../hooks/useGetTransactions";
 
 const Budget = () => {
   const isFetchingComplete = useGetGuestInfo();
   const navigate = useNavigate();
   const budget = useGetBudgets(isFetchingComplete);
-
+  const categories = useGetCategories();
+  useGetTransactions();
   const handleCreate = () => {
     navigate("create");
   };
@@ -25,12 +28,24 @@ const Budget = () => {
         May
         <KeyboardArrowRightIcon />
       </div>
-      {budget ? (
-        budget.map((budget) => <BudgetItem key={budget._id} {...budget} />)
+      {budget?.length !== 0 ? (
+        budget?.map((budget) => {
+          const foundCategory = categories.find(
+            (cat) => cat._id === budget.category
+          );
+          if (!foundCategory) return null;
+          return (
+            <BudgetItem
+              key={budget._id}
+              amount={budget.amount}
+              category={foundCategory}
+            />
+          );
+        })
       ) : (
         <div className={style.content}>
-          You don’t have a budget. <br />
-          Let’s make one so you're in control.
+          You don't have a budget. <br />
+          Let's make one so you're in control.
         </div>
       )}
       <ButtonComponentLarge text="Create a budget" onClick={handleCreate} />
@@ -42,18 +57,15 @@ export default Budget;
 
 const useGetBudgets = (isFetchingComplete: boolean) => {
   const dispatch = useAppDispatch();
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (isFetchingComplete) {
-      dispatch(getBudgets())
-        .unwrap()
-        .finally(() => setLoading(false));
+      dispatch(getBudgets()).unwrap();
     }
   }, [dispatch, isFetchingComplete]);
 
   const budgetState = useAppSelector((state) => state.budget.budget);
-  if (loading || !budgetState) return null;
+  if (!budgetState) return null;
 
   return budgetState;
 };
