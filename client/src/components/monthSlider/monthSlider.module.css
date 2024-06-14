@@ -1,0 +1,27 @@
+/* src/MonthSlider.css */
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 500px;
+  margin-inline: auto;
+  overflow: hidden;
+  position: relative;
+}
+.slideLeft {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.arrow {
+  font-size: var(--fs-700);
+  cursor: pointer;
+}
+
+.month {
+  font-size: var(--fs-700);
+  min-width: 150px;
+  text-align: center;
+  position: relative;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}

@@ -4,10 +4,14 @@
   display: grid;
   gap: 0.25rem;
   color: var(--color-dark-500);
-  margin-block: 1.5rem;
+  margin-block: 2rem;
   & p {
     font-size: var(--fs-200);
     color: var(--color-red);
+  }
+  @media (width < 800px) {
+    max-width: none;
+    margin-inline: 2rem;
   }
 }
 .category {

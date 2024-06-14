@@ -1,5 +1,3 @@
-import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ButtonComponentLarge } from "../../components/ButtonComponent";
@@ -10,6 +8,7 @@ import { getBudgets } from "../../redux/slices/budgetSlice";
 import style from "./budget.module.css";
 import useGetCategories from "../../hooks/useGetCategories";
 import useGetTransactions from "../../hooks/useGetTransactions";
+import MonthSlider from "../../components/monthSlider/MonthSlider";
 
 const Budget = () => {
   const isFetchingComplete = useGetGuestInfo();
@@ -17,19 +16,25 @@ const Budget = () => {
   const budget = useGetBudgets(isFetchingComplete);
   const categories = useGetCategories();
   useGetTransactions();
+  const [currentMonthIndex, setCurrentMonthIndex] = useState(
+    new Date().getMonth()
+  );
   const handleCreate = () => {
     navigate("create");
   };
+  const monthBudget = budget?.filter((budget) => {
+    if (budget.createdAt)
+      return new Date(budget.createdAt).getMonth() === currentMonthIndex;
+  });
 
   return (
     <div className={style.wrapper}>
-      <div className={style.header}>
-        <KeyboardArrowLeftIcon />
-        May
-        <KeyboardArrowRightIcon />
-      </div>
-      {budget?.length !== 0 ? (
-        budget?.map((budget) => {
+      <MonthSlider
+        currentMonthIndex={currentMonthIndex}
+        setCurrentMonthIndex={setCurrentMonthIndex}
+      />
+      {monthBudget?.length !== 0 ? (
+        monthBudget?.map((budget) => {
           const foundCategory = categories.find(
             (cat) => cat._id === budget.category
           );

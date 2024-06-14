@@ -14,15 +14,6 @@
   }
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 800px;
-  margin-inline: auto;
-  font-size: var(--fs-700);
-}
-
 .content {
   display: flex;
   justify-content: center;
