@@ -9,7 +9,6 @@ interface BudgetState {
 }
 
 interface IBudget {
-  _id: string;
   category: string;
   amount: number;
   createdAt?: Date;
