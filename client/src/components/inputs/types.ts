@@ -1,4 +1,5 @@
 export interface inputsDataState {
+  _id?: string;
   category: string;
   amount: number;
   date?: string;
